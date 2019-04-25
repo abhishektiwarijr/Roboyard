@@ -148,8 +148,8 @@ public class GridGameScreen extends GameScreen {
         renderManager.setColor(Color.BLACK);
         int textS = yGrid/2-50;
         renderManager.setTextSize(textS);
-        renderManager.drawText(10, textS, "Nombre de coups: " + nbCoups);
-        renderManager.drawText(10, yGrid/2+textS, "Temps: " + timeCpt/60 + ":" + timeCpt%60);
+        renderManager.drawText(10, textS, "Number of moves: " + nbCoups);
+        renderManager.drawText(10, yGrid/2+textS, "Time: " + timeCpt/60 + ":" + timeCpt%60);
 
         if(imageLoaded)
         {
@@ -513,11 +513,11 @@ public class GridGameScreen extends GameScreen {
     {
         if(IAMovesNumber > 0)
         {
-            gameManager.requestToast("IA : solution trouvée en "+IAMovesNumber+" coups.", true);
+            gameManager.requestToast("AI: solution found in "+IAMovesNumber+" moves.", true);
         }
         else
         {
-            gameManager.requestToast("Gagné en "+nbCoups+" coups.", true);
+            gameManager.requestToast("You won in "+nbCoups+" moves.", true);
         }
         updatePlayedMaps();
     }

@@ -59,7 +59,7 @@ public class SettingsGameScreen extends GameScreen {
 
         renderManager.setColor(Color.BLACK);
         renderManager.setTextSize(ts);
-        renderManager.drawText(10, 1*ts, "Choix du solveur :");
+        renderManager.drawText(10, 1*ts, "Choose solver algorithm:");
         if(solverBFS)
             renderManager.drawText(10, 3*ts, "BFS");
         else
