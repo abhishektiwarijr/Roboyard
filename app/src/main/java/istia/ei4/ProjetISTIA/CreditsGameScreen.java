@@ -34,19 +34,22 @@ public class CreditsGameScreen extends GameScreen {
 
         renderManager.setColor(Color.BLACK);
         int ts = hs2/10;
-        renderManager.setTextSize((int)(2.0*ts));
-        renderManager.drawText(10, 2*ts, "Application");
-        renderManager.drawText(10, 4*ts, "créée par:");
-        renderManager.setTextSize(ts);
-        renderManager.drawText(10, 6*ts, "Alain CAILLAUD");
-        renderManager.drawText(10, 7*ts, "Pierre MICHEL");
-        renderManager.drawText(10, 8*ts, "Dans le cadre d'un projet");
-        renderManager.drawText(10, 9*ts, "étudiant à l'ISTIA");
         renderManager.setTextSize((int)(1.5*ts));
-        renderManager.drawText(10, 12*ts, "Basé sur le");
-        renderManager.drawText(10, (int)(13.5*ts), "jeu de société:");
-        renderManager.setTextSize(ts);
-        renderManager.drawText(10, 15*ts, "Ricochet Robots(r)");
+        renderManager.drawText(10, 2*ts, "Created by:");
+        renderManager.setTextSize((int)(0.7*ts));
+        renderManager.drawText(10, 4*ts, "Alain CAILLAUD");
+        renderManager.drawText(10, 5*ts, "Pierre MICHEL");
+        renderManager.drawText(10, 6*ts, "Dans le cadre d'un projet");
+        renderManager.drawText(10, 7*ts, "étudiant à l'ISTIA");
+        renderManager.setTextSize((int)(1.2*ts));
+        renderManager.drawText(10, 10*ts, "Based on:");
+        renderManager.setTextSize((int)(0.7*ts));
+        renderManager.drawText(10, 11*ts, "Ricochet Robots(r)");
+        renderManager.setTextSize((int)(1.2*ts));
+        renderManager.drawText(10, 14*ts, "Open Source:");
+        renderManager.setTextSize((int)(0.7*ts));
+        renderManager.drawText(10, 15*ts, "https://git.io/fjs5H");
+        renderManager.drawText(10, 17*ts, "Version: 2.0.1");
 
         super.draw(renderManager);
     }
