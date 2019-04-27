@@ -52,8 +52,8 @@ public class MainActivity extends Activity
                 if(big) {
                     LinearLayout l = (LinearLayout) t.getView();
                     TextView mtv = (TextView) l.getChildAt(0);
-                    mtv.setTextSize(25);
-                    t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    mtv.setTextSize(18);
+                    t.setGravity(Gravity.TOP, 0, 0);
                 }
                 t.show();
             }
