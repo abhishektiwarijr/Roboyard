@@ -219,6 +219,16 @@ public class GridGameScreen extends GameScreen {
         {
             isSolved = true;
             buttonSolve.setEnabled(true);
+            GameSolution solution = solver.getSolution();
+            int i=0;
+            for(IGameMove m : solution.getMoves()){
+                i++;
+            }
+            if(i<=6) {
+                // very simple puzzle with max 6 moves
+                // gameManager.requestToast("The AI found a solution in " + i + " moves.", true);
+                gameManager.requestToast("AI sais: this is a simple puzzle.", true);
+            }
         }
     }
 
@@ -513,7 +523,7 @@ public class GridGameScreen extends GameScreen {
     {
         if(IAMovesNumber > 0)
         {
-            gameManager.requestToast("AI: solution found in "+IAMovesNumber+" moves.", true);
+            gameManager.requestToast("The AI found a solution in "+IAMovesNumber+" moves.", true);
         }
         else
         {

@@ -17,7 +17,7 @@ or use the direct link to a compliled version here: https://github.com/rubo77/Pr
 - choose all standard and next at the end of the setup choose to import project (Gradle)
 - if you get any error while syncing the project, click on the links next to the
   error and accept to download the missing components/add repositories and do refactor
-- Disable File → Settings → Experimental → Gradle → Only sync the active variant
+- choose build → APK from the build menu
 
 # Licence
 The solver algorithm implementation is developed at [DriftingDroids](https://github.com/smack42/DriftingDroids), which is released under **GNU GPL**. Therefore the Bouncing Spere code is distributed under the same Licence.

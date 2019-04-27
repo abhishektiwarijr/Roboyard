@@ -7,8 +7,8 @@ android {
         applicationId "com.github.sphere.bouncing"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 3
-        versionName "2.0.1"
+        versionCode 4
+        versionName "2.1"
     }
     buildTypes {
         release {
