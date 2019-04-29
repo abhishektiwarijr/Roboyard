@@ -27,6 +27,11 @@ public class GridGameScreen extends GameScreen {
     private Dictionary dict;
 
     private boolean isSolved = false;
+    private int solutionMoves = 0; // store the current optimal solution globally
+    private int numSolutionClicks = 0; // count how often you clicked on the solution button, each time the shown count goes down by one
+    private int showSolutionAtHint = 5; // interval between the first hint and the current optimal solution (will be set to random 3..5 later
+    private int goodPuzzleMinMoves = 7; // below this number of moves there is a special hint shown from the start
+    private int simplePuzzleMinMoves = 5; // below this threshold a new puzzle is generated
 
     private ISolver solver;
 
@@ -148,7 +153,25 @@ public class GridGameScreen extends GameScreen {
         renderManager.setColor(Color.BLACK);
         int textS = yGrid/2-50;
         renderManager.setTextSize(textS);
-        renderManager.drawText(10, textS, "Number of moves: " + nbCoups);
+        if(nbCoups>0){
+            // at least one move was made by hand or by AI
+            renderManager.drawText(10, textS, "Number of moves: " + nbCoups);
+        } else if(isSolved && numSolutionClicks>0){
+            // show solution
+            if(numSolutionClicks-showSolutionAtHint >= 0) {
+                renderManager.drawText(10, textS, "AI solution: " + solutionMoves + " moves");
+            } else {
+                renderManager.drawText(10, textS, "Hint " + numSolutionClicks + ": AI solution < " + (solutionMoves+showSolutionAtHint-numSolutionClicks) + " moves");
+            }
+        } else if(nbCoups==0 && isSolved && solutionMoves < simplePuzzleMinMoves){
+            // too simple ... restart
+            renderManager.drawText(10, textS, "AI solution: " + solutionMoves + " moves ... restarting!");
+            mustStartNext = true;
+        } else if(nbCoups==0 && isSolved && solutionMoves < goodPuzzleMinMoves){
+            // still simple, show hint
+            renderManager.drawText(10, textS, "Number of moves < " + goodPuzzleMinMoves);
+            showSolutionAtHint = goodPuzzleMinMoves - solutionMoves;
+        }
         renderManager.drawText(10, yGrid/2+textS, "Time: " + timeCpt/60 + ":" + timeCpt%60);
 
         if(imageLoaded)
@@ -162,8 +185,13 @@ public class GridGameScreen extends GameScreen {
     public void update(GameManager gameManager){
         super.update(gameManager);
 
-        if(mustStartNext)
-        {
+        if(mustStartNext) {
+
+            numSolutionClicks = 0;
+
+            // show solution as the 3rd to 5th hint
+            showSolutionAtHint = 3 + (int)(Math.random() * ((5 - 3) + 1));
+
             allMoves.clear();
 
             buttonSolve.setEnabled(false);
@@ -220,13 +248,12 @@ public class GridGameScreen extends GameScreen {
             isSolved = true;
             buttonSolve.setEnabled(true);
             GameSolution solution = solver.getSolution();
-            int i=0;
+            solutionMoves=0;
             for(IGameMove m : solution.getMoves()){
-                i++;
+                solutionMoves++;
             }
-            if(i<=6) {
+            if(solutionMoves > simplePuzzleMinMoves && solutionMoves < goodPuzzleMinMoves) {
                 // very simple puzzle with max 6 moves
-                // gameManager.requestToast("The AI found a solution in " + i + " moves.", true);
                 gameManager.requestToast("AI sais: this is a simple puzzle.", true);
             }
         }
@@ -593,8 +620,17 @@ public class GridGameScreen extends GameScreen {
 
     private class ButtonSolution implements IExecutor{
         public void execute(){
-            GameSolution solution = solver.getSolution();
-            showSolution(solution);
+            if(numSolutionClicks >= showSolutionAtHint) {
+                GameSolution solution = solver.getSolution();
+                showSolution(solution);
+            }else{
+                numSolutionClicks++;
+                if(numSolutionClicks < showSolutionAtHint) {
+                    gameManager.requestToast("Press again to see the next hint.", true);
+                } else {
+                    gameManager.requestToast("Press again to see the solution.", true);
+                }
+            }
         }
     }
 
