@@ -151,28 +151,39 @@ public class GridGameScreen extends GameScreen {
         renderManager.paintScreen();
 
         renderManager.setColor(Color.BLACK);
-        int textS = yGrid/2-50;
-        renderManager.setTextSize(textS);
+        int lineHeight = yGrid/2-50; // 58
+        int lineHeightSmall = lineHeight-15;
+        int textPosY = lineHeight;
+        int textPosYSmall = 2*lineHeight-4;
+        int textPosYTime = yGrid/2+lineHeight;
+        renderManager.setTextSize(lineHeight);
         if(nbCoups>0){
             // at least one move was made by hand or by AI
-            renderManager.drawText(10, textS, "Number of moves: " + nbCoups);
+            renderManager.drawText(10, textPosY, "Number of moves: " + nbCoups);
         } else if(isSolved && numSolutionClicks>0){
             // show solution
             if(numSolutionClicks-showSolutionAtHint >= 0) {
-                renderManager.drawText(10, textS, "AI solution: " + solutionMoves + " moves");
+                renderManager.drawText(10, textPosY, "AI solution: " + solutionMoves + " moves");
             } else {
-                renderManager.drawText(10, textS, "Hint " + numSolutionClicks + ": AI solution < " + (solutionMoves+showSolutionAtHint-numSolutionClicks) + " moves");
+                renderManager.drawText(10, textPosY, "AI Hint " + numSolutionClicks + ": < " + (solutionMoves+showSolutionAtHint-numSolutionClicks) + " moves");
             }
         } else if(nbCoups==0 && isSolved && solutionMoves < simplePuzzleMinMoves){
             // too simple ... restart
-            renderManager.drawText(10, textS, "AI solution: " + solutionMoves + " moves ... restarting!");
+            renderManager.drawText(10, textPosY, "AI solution: " + solutionMoves + " moves");
+            renderManager.setTextSize(lineHeightSmall);
+            renderManager.drawText(10, textPosYSmall, "... restarting!");
             mustStartNext = true;
         } else if(nbCoups==0 && isSolved && solutionMoves < goodPuzzleMinMoves){
             // still simple, show hint
-            renderManager.drawText(10, textS, "Number of moves < " + goodPuzzleMinMoves);
+            renderManager.drawText(10, textPosY, "Number of moves < " + goodPuzzleMinMoves);
             showSolutionAtHint = goodPuzzleMinMoves - solutionMoves;
         }
-        renderManager.drawText(10, yGrid/2+textS, "Time: " + timeCpt/60 + ":" + timeCpt%60);
+        int seconds = timeCpt%60;
+        if(seconds < 10){
+            renderManager.drawText(10, textPosYTime, "Time: " + timeCpt/60 + ":0" + seconds);
+        } else {
+            renderManager.drawText(10, yGrid / 2 + lineHeight, "Time: " + timeCpt / 60 + ":" + seconds);
+        }
 
         if(imageLoaded)
         {
