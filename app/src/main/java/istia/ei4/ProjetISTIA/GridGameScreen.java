@@ -30,8 +30,11 @@ public class GridGameScreen extends GameScreen {
     private int solutionMoves = 0; // store the current optimal solution globally
     private int numSolutionClicks = 0; // count how often you clicked on the solution button, each time the shown count goes down by one
     private int showSolutionAtHint = 5; // interval between the first hint and the current optimal solution (will be set to random 3..5 later
-    private int goodPuzzleMinMoves = 7; // below this number of moves there is a special hint shown from the start
-    private int simplePuzzleMinMoves = 5; // below this threshold a new puzzle is generated
+
+    private static int goodPuzzleMinMoves = 8; // below this number of moves there is a special hint shown from the start
+    private static int simplePuzzleMinMoves = 6; // below this threshold a new puzzle is generated
+
+    private static String requestToast = ""; // this can be set from outside to set the text for a popup
 
     private ISolver solver;
 
@@ -51,11 +54,27 @@ public class GridGameScreen extends GameScreen {
     private int nbCoups = 0;
     private long prevTime;
 
+    public static void setLevel(String UserLevel) {
+        GridGameScreen.UserLevel = UserLevel;
+        if(UserLevel=="Beginner") {
+            GridGameScreen.goodPuzzleMinMoves = 6;
+            GridGameScreen.simplePuzzleMinMoves = 4;
+        } else if(UserLevel=="Advanced") {
+            GridGameScreen.goodPuzzleMinMoves = 8;
+            GridGameScreen.simplePuzzleMinMoves = 6;
+        } else if(UserLevel=="Insane") {
+            GridGameScreen.goodPuzzleMinMoves = 14;
+            GridGameScreen.simplePuzzleMinMoves = 14;
+            GridGameScreen.requestToast="Insane level will search for a puzzle wich is not solvable in less than 14 moves. This can take a while. In case the solver gets stuck, press >>";
+        }
+    }
+
     public static void setSolverBFS(boolean solverBFS) {
         GridGameScreen.solverBFS = solverBFS;
     }
 
-    private static boolean solverBFS = false;
+    private static boolean solverBFS = false; // default IDDFS (faster)
+    private static String UserLevel="Advanced";
 
     private int IAMovesNumber = 0;
 
@@ -157,6 +176,12 @@ public class GridGameScreen extends GameScreen {
         int textPosYSmall = 2*lineHeight-4;
         int textPosYTime = yGrid/2+lineHeight;
         renderManager.setTextSize(lineHeight);
+
+        if(requestToast!=""){
+            gameManager.requestToast(requestToast, true);
+            requestToast="";
+        }
+
         if(nbCoups>0){
             // at least one move was made by hand or by AI
             renderManager.drawText(10, textPosY, "Number of moves: " + nbCoups);
@@ -172,18 +197,24 @@ public class GridGameScreen extends GameScreen {
             renderManager.drawText(10, textPosY, "AI solution: " + solutionMoves + " moves");
             renderManager.setTextSize(lineHeightSmall);
             renderManager.drawText(10, textPosYSmall, "... restarting!");
+            if(timeCpt>2 || solutionMoves>14){
+                // show a popup on restart if it took very long or on very big puzzles
+                requestToast = "Solved in " + solutionMoves + " moves " + (solverBFS?"with BFS (which is slower than IDDFS. this can be changed in Settings)":"") + ". Restarting...";
+            }
             mustStartNext = true;
         } else if(nbCoups==0 && isSolved && solutionMoves < goodPuzzleMinMoves){
             // still simple, show hint
             renderManager.drawText(10, textPosY, "Number of moves < " + goodPuzzleMinMoves);
             showSolutionAtHint = goodPuzzleMinMoves - solutionMoves;
+        } else if(!isSolved){
+            renderManager.drawText(10, textPosY, "AI solving with " + (solverBFS?"BFS (slower)":"IDDFS") + "...");
         }
         int seconds = timeCpt%60;
+        String secondsS = Integer.toString(seconds);
         if(seconds < 10){
-            renderManager.drawText(10, textPosYTime, "Time: " + timeCpt/60 + ":0" + seconds);
-        } else {
-            renderManager.drawText(10, yGrid / 2 + lineHeight, "Time: " + timeCpt / 60 + ":" + seconds);
+            secondsS="0" + secondsS;
         }
+        renderManager.drawText(10, yGrid / 2 + lineHeight, "Time: " + timeCpt / 60 + ":" + secondsS);
 
         if(imageLoaded)
         {
@@ -321,12 +352,11 @@ public class GridGameScreen extends GameScreen {
 
     public void createGrid()
     {
-        if(solverBFS)
-        {
+        if(solverBFS) {
+            // set to BFS (slower)
             this.solver = new SolverRR();
-        }
-        else
-        {
+        } else {
+            // IDFSS
             this.solver = new SolverDD();
         }
         IAMovesNumber = 0;
