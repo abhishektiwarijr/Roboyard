@@ -92,6 +92,7 @@ public class GridGameScreen extends GameScreen {
     private ArrayList<Move> allMoves= new ArrayList<>();
 
     private GameButtonGeneral buttonSolve;
+    private GameButtonGoto buttonSave;
 
 
     public GridGameScreen(GameManager gameManager){
@@ -133,25 +134,31 @@ public class GridGameScreen extends GameScreen {
         int x1 = gameManager.getScreenWidth()/20;
         int x2 = 11*gameManager.getScreenWidth()/20;
 
-        this.instances.add(new GameButtonGeneral(x1, y1, w, h, R.drawable.bt_jeu_retour_up, R.drawable.bt_jeu_retour_down, new ButtonBack()));
-        this.instances.add(new GameButtonGeneral(x2, y1, w, h, R.drawable.bt_jeu_reset_up, R.drawable.bt_jeu_reset_down, new ButtonRestart()));
-        this.instances.add(new GameButtonGoto(x1, y2, w, h, R.drawable.bt_jeu_save_up, R.drawable.bt_jeu_save_down, 9));
-
         float ratioW = ((float)gameManager.getScreenWidth()) /((float)1080);
         float ratioH = ((float)gameManager.getScreenHeight()) /((float)1920);
 
+        // Button Next game (top right)
         this.instances.add(new GameButtonGeneral((int)(870*ratioW), (int)(10*ratioH), (int)(200*ratioW), (int)(200*ratioH), R.drawable.bt_next_up, R.drawable.bt_next_down, new ButtonNext()));
 
-        gameManager.getRenderManager().loadImage(R.drawable.bt_jeu_resolution_up);
-        gameManager.getRenderManager().loadImage(R.drawable.bt_jeu_resolution_down);
-        gameManager.getRenderManager().loadImage(R.drawable.bt_jeu_resolution_disabled);
+        // Button one step back
+        this.instances.add(new GameButtonGeneral(x1, y1, w, h, R.drawable.bt_jeu_retour_up, R.drawable.bt_jeu_retour_down, new ButtonBack()));
 
+        // Button restart
+        this.instances.add(new GameButtonGeneral(x2, y1, w, h, R.drawable.bt_jeu_reset_up, R.drawable.bt_jeu_reset_down, new ButtonRestart()));
+
+        // Button Save
+        gameManager.getRenderManager().loadImage(R.drawable.transparent);
+        buttonSave = new GameButtonGoto(x1, y2, w, h, R.drawable.bt_jeu_save_up, R.drawable.bt_jeu_save_down, 9);
+        buttonSave.setImageDisabled(R.drawable.transparent);
+        // TODO: don't show save button if playing a saved game
+        buttonSave.setEnabled(true);
+        this.instances.add(buttonSave);
+
+        // Button Solve
+        gameManager.getRenderManager().loadImage(R.drawable.bt_jeu_resolution_disabled);
         buttonSolve = new GameButtonGeneral(x2, y2, w, h, R.drawable.bt_jeu_resolution_up, R.drawable.bt_jeu_resolution_down, new ButtonSolution());
         buttonSolve.setImageDisabled(R.drawable.bt_jeu_resolution_disabled);
-
-
         buttonSolve.setEnabled(false);
-
         this.instances.add(buttonSolve);
 
         this.solver = new SolverDD();
@@ -444,15 +451,15 @@ public class GridGameScreen extends GameScreen {
         colors.put("cv", Color.GREEN);
         colors.put("cj", Color.YELLOW);
 
-        ArrayList<GamePiece> aRetirer = new ArrayList<>();
+        ArrayList<GamePiece> aRemove = new ArrayList<>();
         for(Object currentObject : this.instances)
         {
             if(currentObject.getClass() == GamePiece.class)
             {
-                aRetirer.add((GamePiece)currentObject);
+                aRemove.add((GamePiece)currentObject);
             }
         }
-        for(GamePiece p : aRetirer)
+        for(GamePiece p : aRemove)
         {
             this.instances.remove(p);
         }

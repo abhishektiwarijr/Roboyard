@@ -26,18 +26,21 @@ public class SaveGameScreen extends GameScreen{
         createButtons();
     }
 
+    /**
+     * creates Buttons for the savescreen which are used both, for saving and loading
+     */
     public void createButtons()
     {
 
-        ArrayList<GameButtonGotoSavedGame> aRetirer = new ArrayList<>();
+        ArrayList<GameButtonGotoSavedGame> aRemove = new ArrayList<>();
         for(Object currentObject : this.instances)
         {
             if(currentObject.getClass() == GameButtonGotoSavedGame.class)
             {
-                aRetirer.add((GameButtonGotoSavedGame)currentObject);
+                aRemove.add((GameButtonGotoSavedGame)currentObject);
             }
         }
-        for(GameButtonGotoSavedGame p : aRetirer)
+        for(GameButtonGotoSavedGame p : aRemove)
         {
             this.instances.remove(p);
         }
@@ -48,49 +51,18 @@ public class SaveGameScreen extends GameScreen{
         float ratioW = ((float)gameManager.getScreenWidth()) / ((float)1080);
         float ratioH = ((float)gameManager.getScreenHeight()) / ((float)1920);
 
-        mapPath = getMapPath(0);
-        this.instances.add(new GameButtonGotoSavedGame(78*ratioW, 45*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(1);
-        this.instances.add(new GameButtonGotoSavedGame(412*ratioW, 45*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(2);
-        this.instances.add(new GameButtonGotoSavedGame(746*ratioW, 45*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-
-        mapPath = getMapPath(3);
-        this.instances.add(new GameButtonGotoSavedGame(78*ratioW, 356*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(4);
-        this.instances.add(new GameButtonGotoSavedGame(412*ratioW, 356*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(5);
-        this.instances.add(new GameButtonGotoSavedGame(746*ratioW, 356*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-
-        mapPath = getMapPath(6);
-        this.instances.add(new GameButtonGotoSavedGame(78*ratioW, 667*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(7);
-        this.instances.add(new GameButtonGotoSavedGame(412*ratioW, 667*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(8);
-        this.instances.add(new GameButtonGotoSavedGame(746*ratioW, 667*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-
-        mapPath = getMapPath(9);
-        this.instances.add(new GameButtonGotoSavedGame(78*ratioW, 978*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(10);
-        this.instances.add(new GameButtonGotoSavedGame(412*ratioW, 978*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(11);
-        this.instances.add(new GameButtonGotoSavedGame(746*ratioW, 978*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-
-        mapPath = getMapPath(12);
-        this.instances.add(new GameButtonGotoSavedGame(78*ratioW, 1289*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(13);
-        this.instances.add(new GameButtonGotoSavedGame(412*ratioW, 1289*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(14);
-        this.instances.add(new GameButtonGotoSavedGame(746*ratioW, 1289*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
-
-        int y = 1080/5+gameManager.getScreenWidth();
-        int dy = gameManager.getScreenHeight()-y;
-        int w = 8*gameManager.getScreenWidth()/20;
-        int h = 8*dy/20;
-        int y1 = y+dy/20;
-        int y2 = y+11*dy/20;
-        int x1 = gameManager.getScreenWidth()/20;
-        int x2 = 11*gameManager.getScreenWidth()/20;
+        int col, row;
+        for (int i = 0;  i < 15;  i++) {
+            col = i % 3;
+            row = (i / 3) % 5;
+            mapPath = getMapPath(i);
+            if(i == 0){
+                // TODO: autosave Button with a different image
+                this.instances.add(new GameButtonGotoSavedGame((78+(334*col))*ratioW, (45+(311*row))*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
+            } else {
+                this.instances.add(new GameButtonGotoSavedGame((78+(334*col))*ratioW, (45+(311*row))*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
+            }
+        }
 
         this.instances.add(new GameButtonGotoBack((int)(54*ratioW), (int)(1600*ratioH), (int)(432*ratioH), (int)(250*ratioW), R.drawable.bt_page_gauche_up, R.drawable.bt_page_gauche_down));
     }
@@ -107,15 +79,28 @@ public class SaveGameScreen extends GameScreen{
 
     @Override
     public void draw(RenderManager renderManager) {
-        renderManager.setColor(Color.YELLOW);
         renderManager.setColor(Color.parseColor("#cccccc"));
         renderManager.paintScreen();
-/*
-        renderManager.setColor(Color.BLACK);
-        int textS = yGrid/2-50;
-        renderManager.setTextSize(textS);
-        renderManager.drawText(10, textS, "Nombre de coups: " + nbCoups);*/
 
+        renderManager.setColor(Color.BLACK);
+
+        int hs2 = this.gameManager.getScreenHeight()/2;
+        int ts = hs2/10;
+        renderManager.setTextSize((int)(0.5*ts));
+
+        float ratioW = ((float)gameManager.getScreenWidth()) / ((float)1080);
+        float ratioH = ((float)gameManager.getScreenHeight()) / ((float)1920);
+        int col, row;
+        for (int i = 0;  i < 15;  i++) {
+            col = i % 3;
+            row = (i / 3) % 5;
+            if(i == 0){
+                //renderManager.drawText(99, 36, "Autosave");
+                renderManager.drawText((int)((78+(334*col))*ratioW)+21, (int)((45+(311*row))*ratioH), i + ".");
+            } else {
+                renderManager.drawText((int)((78+(334*col))*ratioW)+21, (int)((45+(311*row))*ratioH), i + ".");
+            }
+        }
         super.draw(renderManager);
     }
 

@@ -67,15 +67,15 @@ public class LevelChoiceGameScreen extends GameScreen {
         int ws2 = this.gameManager.getScreenWidth()/2;
         int hs2 = this.gameManager.getScreenHeight()/2;
 
-        ArrayList<GameButtonGotoLevelGame> aRetirer = new ArrayList<>();
+        ArrayList<GameButtonGotoLevelGame> aRemove = new ArrayList<>();
         for(Object currentObject : this.instances)
         {
             if(currentObject.getClass() == GameButtonGotoLevelGame.class)
             {
-                aRetirer.add((GameButtonGotoLevelGame)currentObject);
+                aRemove.add((GameButtonGotoLevelGame)currentObject);
             }
         }
-        for(GameButtonGotoLevelGame p : aRetirer)
+        for(GameButtonGotoLevelGame p : aRemove)
         {
             this.instances.remove(p);
         }
@@ -120,16 +120,6 @@ public class LevelChoiceGameScreen extends GameScreen {
         this.instances.add(new GameButtonGotoLevelGame(412*ratioW, 1289*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
         mapPath = getMapPath(14);
         this.instances.add(new GameButtonGotoLevelGame(746*ratioW, 1289*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-
-
-        int y = 1080/5+gameManager.getScreenWidth();
-        int dy = gameManager.getScreenHeight()-y;
-        int w = 8*gameManager.getScreenWidth()/20;
-        int h = 8*dy/20;
-        int y1 = y+dy/20;
-        int y2 = y+11*dy/20;
-        int x1 = gameManager.getScreenWidth()/20;
-        int x2 = 11*gameManager.getScreenWidth()/20;
 
         if(this.leftScreen > 0)
             this.instances.add(new GameButtonGoto((int)(54*ratioW), (int)(1600*ratioH), (int)(432*ratioH), (int)(250*ratioW), R.drawable.bt_page_gauche_up, R.drawable.bt_page_gauche_down, this.leftScreen));
