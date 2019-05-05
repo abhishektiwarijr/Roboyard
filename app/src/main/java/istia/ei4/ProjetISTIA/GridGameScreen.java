@@ -150,7 +150,7 @@ public class GridGameScreen extends GameScreen {
         gameManager.getRenderManager().loadImage(R.drawable.transparent);
         buttonSave = new GameButtonGoto(x1, y2, w, h, R.drawable.bt_jeu_save_up, R.drawable.bt_jeu_save_down, 9);
         buttonSave.setImageDisabled(R.drawable.transparent);
-        // TODO: don't show save button if playing a saved game
+        // save button will be disabled when playing a saved game
         buttonSave.setEnabled(true);
         this.instances.add(buttonSave);
 
@@ -162,6 +162,14 @@ public class GridGameScreen extends GameScreen {
         this.instances.add(buttonSolve);
 
         this.solver = new SolverDD();
+    }
+
+    /**
+     * possibility to disable the saveButton from outside in GameButtonGotoSavedGame.java
+     * @param status set false to disable
+     */
+    public void buttonSaveSetEnabled(boolean status){
+        buttonSave.setEnabled(status);
     }
 
     @Override
@@ -242,6 +250,8 @@ public class GridGameScreen extends GameScreen {
             showSolutionAtHint = 3 + (int)(Math.random() * ((5 - 3) + 1));
 
             allMoves.clear();
+
+            buttonSave.setEnabled(true);
 
             buttonSolve.setEnabled(false);
             if(t != null){
