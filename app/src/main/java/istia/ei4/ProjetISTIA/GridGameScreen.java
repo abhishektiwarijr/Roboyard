@@ -38,6 +38,8 @@ public class GridGameScreen extends GameScreen {
 
     private ISolver solver;
 
+    private boolean autoSaved = false;
+
     private ArrayList gridElements;
     private int imageGridID;
     private boolean imageLoaded = false;
@@ -192,11 +194,6 @@ public class GridGameScreen extends GameScreen {
         int textPosYTime = yGrid/2+lineHeight;
         renderManager.setTextSize(lineHeight);
 
-        if(requestToast!=""){
-            gameManager.requestToast(requestToast, true);
-            requestToast="";
-        }
-
         if(nbCoups>0){
             // at least one move was made by hand or by AI
             renderManager.drawText(10, textPosY, "Number of moves: " + nbCoups);
@@ -231,12 +228,27 @@ public class GridGameScreen extends GameScreen {
         }
         renderManager.drawText(10, yGrid / 2 + lineHeight, "Time: " + timeCpt / 60 + ":" + secondsS);
 
+        if(timeCpt>=60 && autoSaved == false){
+            // save autosave in slot 0
+            ArrayList gridElements = getGridElements();
+            String autosaveMapPath=SaveGameScreen.getMapPath(0);
+            FileReadWrite.clearPrivateData(gameManager.getActivity(), autosaveMapPath);
+            FileReadWrite.writePrivateData((gameManager.getActivity()), autosaveMapPath, MapObjects.createStringFromList(gridElements));
+            requestToast = "Autosaving...";
+            autoSaved = true;
+        }
+
         if(imageLoaded)
         {
             gameManager.getRenderManager().drawImage(xGrid, yGrid, (int)(16*gridSpace) + xGrid, (int)(16*gridSpace) + yGrid,  imageGridID);
         }
         super.draw(renderManager);
         this.gmi.draw(renderManager);
+
+        if(requestToast!=""){
+            gameManager.requestToast(requestToast, true);
+            requestToast="";
+        }
     }
 
     public void update(GameManager gameManager){

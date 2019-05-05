@@ -77,4 +77,22 @@ public class SaveManager {
                 return R.drawable.bt_start_down_saved;
         }
     }
+
+    public int getButtonAutoSaved(String mapPath, Boolean up)
+    {
+        if (getMapsStateSaved(mapPath, "mapsSaved.txt"))
+        {
+            if(up)
+                return R.drawable.bt_start_up_played;
+            else
+                return R.drawable.bt_start_down;
+        }
+        else
+        {
+            if(up)
+                return R.drawable.bt_start_up_played;
+            else
+                return R.drawable.bt_start_down;
+        }
+    }
 }

@@ -57,8 +57,8 @@ public class SaveGameScreen extends GameScreen{
             row = (i / 3) % 5;
             mapPath = getMapPath(i);
             if(i == 0){
-                // TODO: autosave Button with a different image
-                this.instances.add(new GameButtonGotoSavedGame((78+(334*col))*ratioW, (45+(311*row))*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
+                // autosave Button with a different image
+                this.instances.add(new GameButtonGotoSavedGame((78+(334*col))*ratioW, (45+(311*row))*ratioH, 256*ratioH, 256*ratioW, saver.getButtonAutoSaved(mapPath, true), saver.getButtonAutoSaved(mapPath, false), 4, mapPath));
             } else {
                 this.instances.add(new GameButtonGotoSavedGame((78+(334*col))*ratioW, (45+(311*row))*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
             }
@@ -67,7 +67,7 @@ public class SaveGameScreen extends GameScreen{
         this.instances.add(new GameButtonGotoBack((int)(54*ratioW), (int)(1600*ratioH), (int)(432*ratioH), (int)(250*ratioW), R.drawable.bt_page_gauche_up, R.drawable.bt_page_gauche_down));
     }
 
-    private String getMapPath(int levelInScreen)
+    public static String getMapPath(int levelInScreen)
     {
         return "map_"+levelInScreen+".txt";
     }
@@ -95,8 +95,7 @@ public class SaveGameScreen extends GameScreen{
             col = i % 3;
             row = (i / 3) % 5;
             if(i == 0){
-                //renderManager.drawText(99, 36, "Autosave");
-                renderManager.drawText((int)((78+(334*col))*ratioW)+21, (int)((45+(311*row))*ratioH), i + ".");
+                renderManager.drawText(99, 36, "Autosave");
             } else {
                 renderManager.drawText((int)((78+(334*col))*ratioW)+21, (int)((45+(311*row))*ratioH), i + ".");
             }
