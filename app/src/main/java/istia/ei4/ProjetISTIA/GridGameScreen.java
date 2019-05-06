@@ -129,12 +129,10 @@ public class GridGameScreen extends GameScreen {
 
         int y = yGrid+gameManager.getScreenWidth();
         int dy = gameManager.getScreenHeight()-y;
-        int w = 8*gameManager.getScreenWidth()/20;
-        int h = 8*dy/20;
-        int y1 = y+dy/20;
-        int y2 = y+11*dy/20;
-        int x1 = gameManager.getScreenWidth()/20;
-        int x2 = 11*gameManager.getScreenWidth()/20;
+        int w = gameManager.getScreenWidth()/4;
+        int h = w;
+        int buttonPosY = y+10*dy/20;
+        int buttonW = gameManager.getScreenWidth()/4;
 
         float ratioW = ((float)gameManager.getScreenWidth()) /((float)1080);
         float ratioH = ((float)gameManager.getScreenHeight()) /((float)1920);
@@ -142,23 +140,23 @@ public class GridGameScreen extends GameScreen {
         // Button Next game (top right)
         this.instances.add(new GameButtonGeneral((int)(870*ratioW), (int)(10*ratioH), (int)(200*ratioW), (int)(200*ratioH), R.drawable.bt_next_up, R.drawable.bt_next_down, new ButtonNext()));
 
-        // Button one step back
-        this.instances.add(new GameButtonGeneral(x1, y1, w, h, R.drawable.bt_jeu_retour_up, R.drawable.bt_jeu_retour_down, new ButtonBack()));
-
-        // Button restart
-        this.instances.add(new GameButtonGeneral(x2, y1, w, h, R.drawable.bt_jeu_reset_up, R.drawable.bt_jeu_reset_down, new ButtonRestart()));
-
         // Button Save
         gameManager.getRenderManager().loadImage(R.drawable.transparent);
-        buttonSave = new GameButtonGoto(x1, y2, w, h, R.drawable.bt_jeu_save_up, R.drawable.bt_jeu_save_down, 9);
+        buttonSave = new GameButtonGoto(0, buttonPosY, w, h, R.drawable.bt_jeu_save_up, R.drawable.bt_jeu_save_down, 9);
         buttonSave.setImageDisabled(R.drawable.transparent);
         // save button will be disabled when playing a saved game
         buttonSave.setEnabled(true);
         this.instances.add(buttonSave);
 
+        // Button one step back
+        this.instances.add(new GameButtonGeneral(buttonW, buttonPosY, w, h, R.drawable.bt_jeu_retour_up, R.drawable.bt_jeu_retour_down, new ButtonBack()));
+
+        // Button restart
+        this.instances.add(new GameButtonGeneral(buttonW*2, buttonPosY, w, h, R.drawable.bt_jeu_reset_up, R.drawable.bt_jeu_reset_down, new ButtonRestart()));
+
         // Button Solve
         gameManager.getRenderManager().loadImage(R.drawable.bt_jeu_resolution_disabled);
-        buttonSolve = new GameButtonGeneral(x2, y2, w, h, R.drawable.bt_jeu_resolution_up, R.drawable.bt_jeu_resolution_down, new ButtonSolution());
+        buttonSolve = new GameButtonGeneral(buttonW*3, buttonPosY, w, h, R.drawable.bt_jeu_resolution_up, R.drawable.bt_jeu_resolution_down, new ButtonSolution());
         buttonSolve.setImageDisabled(R.drawable.bt_jeu_resolution_disabled);
         buttonSolve.setEnabled(false);
         this.instances.add(buttonSolve);
@@ -183,7 +181,9 @@ public class GridGameScreen extends GameScreen {
     @Override
     public void draw(RenderManager renderManager)
     {
-        renderManager.setColor(Color.argb(255, 175, 167, 123));
+        renderManager.setColor(Color.argb(255, 255, 228, 0));
+        // ffe400
+        // ff7c24
         renderManager.paintScreen();
 
         renderManager.setColor(Color.BLACK);
@@ -398,22 +398,23 @@ public class GridGameScreen extends GameScreen {
 
         currentRenderManager.setTarget(canvasGrid);
 
-        drawables.put("grid", currentRenderManager.getResources().getDrawable(R.drawable.grid));
-        drawables.put("mh", currentRenderManager.getResources().getDrawable(R.drawable.mh));
-        drawables.put("mv", currentRenderManager.getResources().getDrawable(R.drawable.mv));
+        drawables.put("grid", currentRenderManager.getResources().getDrawable(R.drawable.grid)); // white background
+        drawables.put("mh", currentRenderManager.getResources().getDrawable(R.drawable.mh)); // horizontal lines
+        drawables.put("mv", currentRenderManager.getResources().getDrawable(R.drawable.mv)); // vertical lines
 
-        drawables.put("rv", currentRenderManager.getResources().getDrawable(R.drawable.rv));
-        drawables.put("rr", currentRenderManager.getResources().getDrawable(R.drawable.rr));
-        drawables.put("rj", currentRenderManager.getResources().getDrawable(R.drawable.rj));
-        drawables.put("rb", currentRenderManager.getResources().getDrawable(R.drawable.rb));
+        drawables.put("rv", currentRenderManager.getResources().getDrawable(R.drawable.rv)); // green robot
+        drawables.put("rr", currentRenderManager.getResources().getDrawable(R.drawable.rr)); // red
+        drawables.put("rj", currentRenderManager.getResources().getDrawable(R.drawable.rj)); // yellow
+        drawables.put("rb", currentRenderManager.getResources().getDrawable(R.drawable.rb)); // blue
 
-        drawables.put("cv", currentRenderManager.getResources().getDrawable(R.drawable.cv));
-        drawables.put("cr", currentRenderManager.getResources().getDrawable(R.drawable.cr));
-        drawables.put("cj", currentRenderManager.getResources().getDrawable(R.drawable.cj));
-        drawables.put("cb", currentRenderManager.getResources().getDrawable(R.drawable.cb));
-        drawables.put("cm", currentRenderManager.getResources().getDrawable(R.drawable.cm));
+        drawables.put("cv", currentRenderManager.getResources().getDrawable(R.drawable.cv)); // green goal
+        drawables.put("cr", currentRenderManager.getResources().getDrawable(R.drawable.cr)); // ...
+        drawables.put("cj", currentRenderManager.getResources().getDrawable(R.drawable.cj)); //
+        drawables.put("cb", currentRenderManager.getResources().getDrawable(R.drawable.cb)); //
+        drawables.put("cm", currentRenderManager.getResources().getDrawable(R.drawable.cm)); // multicolor goal
 
 
+        // white background of grid
         drawables.get("grid").setBounds(0, 0,(int)( 16 * gridSpace),(int)( 16 * gridSpace));
         drawables.get("grid").draw(canvasGrid);
 
@@ -421,21 +422,25 @@ public class GridGameScreen extends GameScreen {
             GridElement myp = (GridElement) element;
 
             if (myp.getType().equals("cr") || myp.getType().equals("cv") || myp.getType().equals("cj") || myp.getType().equals("cb") || myp.getType().equals("cm")) {
+                // goal
                 drawables.get(myp.getType()).setBounds((int)(myp.getX() * gridSpace),(int)( myp.getY() * gridSpace),(int)( (myp.getX() + 1) * gridSpace),(int)( (myp.getY()+1) * gridSpace));
                 drawables.get(myp.getType()).draw(canvasGrid);
             }
         }
 
+        int gridLineThickness = 3;
         for (Object element : gridElements) {
             GridElement myp = (GridElement) element;
 
             if (myp.getType().equals("mh")) {
-                drawables.get("mh").setBounds((int)(myp.getX() * gridSpace), (int)(myp.getY() * gridSpace -1), (int)((myp.getX() + 1) * gridSpace), (int)(myp.getY() * gridSpace + 1));
+                // horizontal lines
+                drawables.get("mh").setBounds((int)(myp.getX() * gridSpace), (int)(myp.getY() * gridSpace -1), (int)((myp.getX() + 1) * gridSpace), (int)(myp.getY() * gridSpace + 1 + gridLineThickness));
                 drawables.get("mh").draw(canvasGrid);
             }
 
             if (myp.getType().equals("mv")) {
-                drawables.get("mv").setBounds((int)(myp.getX() * gridSpace-1), (int)(myp.getY() * gridSpace), (int)(myp.getX() * gridSpace + 1), (int)((myp.getY() + 1) * gridSpace));
+                // vertical lines
+                drawables.get("mv").setBounds((int)(myp.getX() * gridSpace-1), (int)(myp.getY() * gridSpace), (int)(myp.getX() * gridSpace + 1 + gridLineThickness), (int)((myp.getY() + 1) * gridSpace));
                 drawables.get("mv").draw(canvasGrid);
             }
         }

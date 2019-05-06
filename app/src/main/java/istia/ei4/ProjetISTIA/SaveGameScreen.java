@@ -69,7 +69,7 @@ public class SaveGameScreen extends GameScreen{
             }
         }
 
-        this.instances.add(new GameButtonGotoBack((int)(54*ratioW), (int)(1650*ratioH), (int)(432*ratioH), (int)(200*ratioW), R.drawable.bt_page_gauche_up, R.drawable.bt_page_gauche_down));
+        this.instances.add(new GameButtonGotoBack((int)(814*ratioW), (int)(1650*ratioH), (int)(222*ratioH), (int)(222*ratioW), R.drawable.bt_back_up, R.drawable.bt_back_down));
     }
 
     public static String getMapPath(int levelInScreen)
@@ -101,16 +101,16 @@ public class SaveGameScreen extends GameScreen{
         float ratioW = ((float)gameManager.getScreenWidth()) / ((float)1080);
         float ratioH = ((float)gameManager.getScreenHeight()) / ((float)1920);
 
-        renderManager.drawText((int)(33*ratioW)-10, (int)(55*ratioH), "Select Savegame");
+        renderManager.drawText((int)(20*ratioW), (int)(55*ratioH), "Select Savegame");
 
         int col, row;
         for (int i = 0;  i < cols*rows;  i++) {
             col = i % cols;
             row = (i / cols) % rows;
             if(i == 0){
-                renderManager.drawText((int)((55+(stepX*col))*ratioW)-32, (int)((42+ts+(stepY*row))*ratioH), "Autosave");
+                renderManager.drawText((int)((20+(stepX*col))*ratioW), (int)((42+ts+(stepY*row))*ratioH), "Autosave");
             } else {
-                renderManager.drawText((int)((55+(stepX*col))*ratioW)-10, (int)((45+ts+(stepY*row))*ratioH), i + ".");
+                renderManager.drawText((int)((40+(stepX*col))*ratioW), (int)((45+ts+(stepY*row))*ratioH), i + ".");
             }
         }
         super.draw(renderManager);
