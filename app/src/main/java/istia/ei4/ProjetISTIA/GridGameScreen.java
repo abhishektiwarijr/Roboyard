@@ -228,7 +228,7 @@ public class GridGameScreen extends GameScreen {
         }
         renderManager.drawText(10, yGrid / 2 + lineHeight, "Time: " + timeCpt / 60 + ":" + secondsS);
 
-        if(timeCpt>=60 && autoSaved == false){
+        if(timeCpt>=40 && autoSaved == false){
             // save autosave in slot 0
             ArrayList gridElements = getGridElements();
             String autosaveMapPath=SaveGameScreen.getMapPath(0);
@@ -262,6 +262,7 @@ public class GridGameScreen extends GameScreen {
             showSolutionAtHint = 3 + (int)(Math.random() * ((5 - 3) + 1));
 
             allMoves.clear();
+            autoSaved = false;
 
             buttonSave.setEnabled(true);
 
@@ -323,10 +324,10 @@ public class GridGameScreen extends GameScreen {
             for(IGameMove m : solution.getMoves()){
                 solutionMoves++;
             }
-            if(solutionMoves > simplePuzzleMinMoves && solutionMoves < goodPuzzleMinMoves) {
+            /*if(solutionMoves > simplePuzzleMinMoves && solutionMoves < goodPuzzleMinMoves) {
                 // very simple puzzle with max 6 moves
                 gameManager.requestToast("AI sais: this is a simple puzzle.", true);
-            }
+            }*/
         }
     }
 
