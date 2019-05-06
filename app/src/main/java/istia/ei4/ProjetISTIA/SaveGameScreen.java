@@ -9,8 +9,6 @@ import java.util.ArrayList;
  */
 public class SaveGameScreen extends GameScreen{
 
-    private ArrayList gridElements;
-
     public SaveGameScreen(GameManager gameManager){
         super(gameManager);
     }
@@ -31,7 +29,11 @@ public class SaveGameScreen extends GameScreen{
      */
     public void createButtons()
     {
-
+        int stepX = 211;
+        int stepY = 222;
+        int cols = 5;
+        int rows = 7;
+        int iconsize = 144;
         ArrayList<GameButtonGotoSavedGame> aRemove = new ArrayList<>();
         for(Object currentObject : this.instances)
         {
@@ -51,20 +53,23 @@ public class SaveGameScreen extends GameScreen{
         float ratioW = ((float)gameManager.getScreenWidth()) / ((float)1080);
         float ratioH = ((float)gameManager.getScreenHeight()) / ((float)1920);
 
+        int hs2 = this.gameManager.getScreenHeight()/2;
+        int ts = hs2/10;
+
         int col, row;
-        for (int i = 0;  i < 15;  i++) {
-            col = i % 3;
-            row = (i / 3) % 5;
+        for (int i = 0;  i < cols*rows;  i++) {
+            col = i % cols;
+            row = (i / cols) % rows;
             mapPath = getMapPath(i);
             if(i == 0){
                 // autosave Button with a different image
-                this.instances.add(new GameButtonGotoSavedGame((78+(334*col))*ratioW, (45+(311*row))*ratioH, 256*ratioH, 256*ratioW, saver.getButtonAutoSaved(mapPath, true), saver.getButtonAutoSaved(mapPath, false), 4, mapPath));
+                this.instances.add(new GameButtonGotoSavedGame((55+(stepX*col))*ratioW, (45+ts+(stepY*row))*ratioH, iconsize*ratioH, iconsize*ratioW, saver.getButtonAutoSaved(mapPath, true), saver.getButtonAutoSaved(mapPath, false), 4, mapPath));
             } else {
-                this.instances.add(new GameButtonGotoSavedGame((78+(334*col))*ratioW, (45+(311*row))*ratioH, 256*ratioH, 256*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
+                this.instances.add(new GameButtonGotoSavedGame((55+(stepX*col))*ratioW, (45+ts+(stepY*row))*ratioH, iconsize*ratioH, iconsize*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
             }
         }
 
-        this.instances.add(new GameButtonGotoBack((int)(54*ratioW), (int)(1600*ratioH), (int)(432*ratioH), (int)(250*ratioW), R.drawable.bt_page_gauche_up, R.drawable.bt_page_gauche_down));
+        this.instances.add(new GameButtonGotoBack((int)(54*ratioW), (int)(1650*ratioH), (int)(432*ratioH), (int)(200*ratioW), R.drawable.bt_page_gauche_up, R.drawable.bt_page_gauche_down));
     }
 
     public static String getMapPath(int levelInScreen)
@@ -79,6 +84,11 @@ public class SaveGameScreen extends GameScreen{
 
     @Override
     public void draw(RenderManager renderManager) {
+        int stepX = 211;
+        int stepY = 222;
+        int cols = 5;
+        int rows = 7;
+
         renderManager.setColor(Color.parseColor("#cccccc"));
         renderManager.paintScreen();
 
@@ -90,14 +100,17 @@ public class SaveGameScreen extends GameScreen{
 
         float ratioW = ((float)gameManager.getScreenWidth()) / ((float)1080);
         float ratioH = ((float)gameManager.getScreenHeight()) / ((float)1920);
+
+        renderManager.drawText((int)(33*ratioW)-10, (int)(55*ratioH), "Select Savegame");
+
         int col, row;
-        for (int i = 0;  i < 15;  i++) {
-            col = i % 3;
-            row = (i / 3) % 5;
+        for (int i = 0;  i < cols*rows;  i++) {
+            col = i % cols;
+            row = (i / cols) % rows;
             if(i == 0){
-                renderManager.drawText(99, 36, "Autosave");
+                renderManager.drawText((int)((55+(stepX*col))*ratioW)-32, (int)((42+ts+(stepY*row))*ratioH), "Autosave");
             } else {
-                renderManager.drawText((int)((78+(334*col))*ratioW)+21, (int)((45+(311*row))*ratioH), i + ".");
+                renderManager.drawText((int)((55+(stepX*col))*ratioW)-10, (int)((45+ts+(stepY*row))*ratioH), i + ".");
             }
         }
         super.draw(renderManager);

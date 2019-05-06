@@ -62,10 +62,19 @@ public class LevelChoiceGameScreen extends GameScreen {
 
     }
 
+    /**
+     * create buttons to load Levels
+     */
     public void createButtons()
     {
-        int ws2 = this.gameManager.getScreenWidth()/2;
-        int hs2 = this.gameManager.getScreenHeight()/2;
+        //int ws2 = this.gameManager.getScreenWidth()/2;
+        //int hs2 = this.gameManager.getScreenHeight()/2;
+
+        int stepX = 211;
+        int stepY = 222;
+        int cols = 5;
+        int rows = 7;
+        int iconsize = 144;
 
         ArrayList<GameButtonGotoLevelGame> aRemove = new ArrayList<>();
         for(Object currentObject : this.instances)
@@ -86,46 +95,22 @@ public class LevelChoiceGameScreen extends GameScreen {
         float ratioW = ((float)gameManager.getScreenWidth()) /((float)1080);
         float ratioH = ((float)gameManager.getScreenHeight()) /((float)1920);
 
-        mapPath = getMapPath(0);
-        this.instances.add(new GameButtonGotoLevelGame(78*ratioW, 45*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(1);
-        this.instances.add(new GameButtonGotoLevelGame(412*ratioW, 45*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(2);
-        this.instances.add(new GameButtonGotoLevelGame(746*ratioW, 45*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
+        int hs2 = this.gameManager.getScreenHeight()/2;
+        int ts = hs2/10;
 
-        mapPath = getMapPath(3);
-        this.instances.add(new GameButtonGotoLevelGame(78*ratioW, 356*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(4);
-        this.instances.add(new GameButtonGotoLevelGame(412*ratioW, 356*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(5);
-        this.instances.add(new GameButtonGotoLevelGame(746*ratioW, 356*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-
-        mapPath = getMapPath(6);
-        this.instances.add(new GameButtonGotoLevelGame(78*ratioW, 667*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(7);
-        this.instances.add(new GameButtonGotoLevelGame(412*ratioW, 667*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(8);
-        this.instances.add(new GameButtonGotoLevelGame(746*ratioW, 667*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-
-        mapPath = getMapPath(9);
-        this.instances.add(new GameButtonGotoLevelGame(78*ratioW, 978*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(10);
-        this.instances.add(new GameButtonGotoLevelGame(412*ratioW, 978*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(11);
-        this.instances.add(new GameButtonGotoLevelGame(746*ratioW, 978*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-
-        mapPath = getMapPath(12);
-        this.instances.add(new GameButtonGotoLevelGame(78*ratioW, 1289*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(13);
-        this.instances.add(new GameButtonGotoLevelGame(412*ratioW, 1289*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
-        mapPath = getMapPath(14);
-        this.instances.add(new GameButtonGotoLevelGame(746*ratioW, 1289*ratioH, 256*ratioH, 256*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
+        int col, row;
+        for (int i = 0;  i < cols*rows;  i++) {
+            col = i % cols;
+            row = (i / cols) % rows;
+            mapPath = getMapPath(i);
+            this.instances.add(new GameButtonGotoLevelGame((55+(stepX*col))*ratioW, (45+ts+(stepY*row))*ratioH, iconsize*ratioH, iconsize*ratioW, saver.getButtonLevels(mapPath, true), saver.getButtonLevels(mapPath, false), 4, mapPath));
+        }
 
         if(this.leftScreen > 0)
-            this.instances.add(new GameButtonGoto((int)(54*ratioW), (int)(1600*ratioH), (int)(432*ratioH), (int)(250*ratioW), R.drawable.bt_page_gauche_up, R.drawable.bt_page_gauche_down, this.leftScreen));
+            this.instances.add(new GameButtonGoto((int)(77*ratioW), (int)((1600+ts)*ratioH), (int)(432*ratioH), (int)(200*ratioW), R.drawable.bt_page_gauche_up, R.drawable.bt_page_gauche_down, this.leftScreen));
 
         if(this.rightScreen > 0)
-            this.instances.add(new GameButtonGoto((int)(594*ratioW), (int)(1600*ratioH), (int)(432*ratioH), (int)(250*ratioW), R.drawable.bt_page_droite_up, R.drawable.bt_page_droite_down, this.rightScreen));
+            this.instances.add(new GameButtonGoto((int)(611*ratioW), (int)((1600+ts)*ratioH), (int)(432*ratioH), (int)(200*ratioW), R.drawable.bt_page_droite_up, R.drawable.bt_page_droite_down, this.rightScreen));
 
     }
 
@@ -142,9 +127,32 @@ public class LevelChoiceGameScreen extends GameScreen {
 
     @Override
     public void draw(RenderManager renderManager) {
+        int stepX = 211;
+        int stepY = 222;
+        int cols = 5;
+        int rows = 7;
+
         //renderManager.setColor(Color.GRAY);
         renderManager.setColor(Color.parseColor("#77ABD6"));
         renderManager.paintScreen();
+
+        renderManager.setColor(Color.BLACK);
+
+        int hs2 = this.gameManager.getScreenHeight()/2;
+        int ts = hs2/10;
+        renderManager.setTextSize((int)(0.5*ts));
+
+        float ratioW = ((float)gameManager.getScreenWidth()) / ((float)1080);
+        float ratioH = ((float)gameManager.getScreenHeight()) / ((float)1920);
+
+        renderManager.drawText((int)(55*ratioW)-10, (int)(55*ratioH), "Select Level");
+
+        int col, row;
+        for (int i = 0;  i < cols*rows;  i++) {
+            col = i % cols;
+            row = (i / cols) % rows;
+            renderManager.drawText((int)((55+(stepX*col))*ratioW)-10, (int)((45+ts+(stepY*row))*ratioH), (i+1) + ".");
+        }
         super.draw(renderManager);
     }
 
