@@ -1,10 +1,13 @@
 package istia.ei4.ProjetISTIA;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
@@ -158,8 +161,30 @@ public class RenderManager {
         return resources;
     }
 
+
+    /**
+     * Writes a text at a certain position
+     * @param x coordinate
+     * @param y coordinate
+     * @param str to be written
+     */
     public void drawText(int x, int y, String str){
         this.target.drawText(str, x, y, this.brush);
+    }
+
+    /** TODO: still crashes
+     * second possibility to call the same function name
+     * @param x coordinate
+     * @param y coordinate
+     * @param str to be written
+     * @param font Typeface
+     */
+    public void drawText(int x, int y, String str, String font, Context ctx){
+        Typeface oldfont=this.brush.getTypeface();
+        Typeface.createFromAsset(ctx.getAssets(), "fonts/" + font + ".ttf");
+        this.brush.setTypeface(Typeface.create(font,oldfont.getStyle()));
+        this.target.drawText(str, x, y, this.brush);
+        this.brush.setTypeface(oldfont);
     }
 
     public void setTextSize(int s){

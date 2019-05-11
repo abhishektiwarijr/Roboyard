@@ -181,13 +181,15 @@ public class GridGameScreen extends GameScreen {
     @Override
     public void draw(RenderManager renderManager)
     {
-        renderManager.setColor(Color.argb(255, 255, 228, 0));
+        //renderManager.setColor(Color.argb(255, 255, 228, 0));
+        renderManager.setColor(Color.BLACK);
         // ffe400
         // ff7c24
         renderManager.paintScreen();
 
-        renderManager.setColor(Color.BLACK);
-        int lineHeight = yGrid/2-50; // 58
+        //renderManager.setColor(Color.BLACK);
+        renderManager.setColor(Color.GRAY);
+        int lineHeight = yGrid/2-60; // 58
         int lineHeightSmall = lineHeight-15;
         int textPosY = lineHeight;
         int textPosYSmall = 2*lineHeight-4;
@@ -215,7 +217,9 @@ public class GridGameScreen extends GameScreen {
             }
             mustStartNext = true;
         } else if(nbCoups==0 && isSolved && solutionMoves < goodPuzzleMinMoves){
-            // still simple, show hint
+            // still simple, show a hint that this is solved with less than ... moves
+            // TODO: change font (still crashes):
+            //  renderManager.drawText(10, textPosY, "Number of moves < " + goodPuzzleMinMoves, "FiraMono-Bold", gameManager.getActivity());
             renderManager.drawText(10, textPosY, "Number of moves < " + goodPuzzleMinMoves);
             showSolutionAtHint = goodPuzzleMinMoves - solutionMoves;
         } else if(!isSolved){
@@ -226,7 +230,7 @@ public class GridGameScreen extends GameScreen {
         if(seconds < 10){
             secondsS="0" + secondsS;
         }
-        renderManager.drawText(10, yGrid / 2 + lineHeight, "Time: " + timeCpt / 60 + ":" + secondsS);
+        renderManager.drawText(10, textPosYTime, "Time: " + timeCpt / 60 + ":" + secondsS);
 
         if(timeCpt>=40 && autoSaved == false){
             // save autosave in slot 0
