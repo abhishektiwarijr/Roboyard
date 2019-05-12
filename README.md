@@ -7,7 +7,7 @@ Bouncing Spheres allows to record up to 15 diferent maps. So if during your game
 
 # Download App
 You can either clone this Repository and open it with android-studio to build the app
-or use the direct link to a compliled version here: https://github.com/rubo77/ProjetEi4_Android/raw/apk/download/app-debug.apk
+or use the direct link to a compliled version here: https://github.com/rubo77/Bouncing-Spheres/releases/
 
 # Screenshot
 ![](http://perso-laris.univ-angers.fr/~projetsei4/1415/P2/img/screenshots/app-1.png)
