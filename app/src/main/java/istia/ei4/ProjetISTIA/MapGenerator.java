@@ -9,18 +9,19 @@ import java.util.Random;
 public class MapGenerator {
 
     Random rand;
+    int boardSize=16;
+
     public MapGenerator(){
         rand = new Random();
     }
 
-    public ArrayList<GridElement> translateArraysToMap(int[][] horizontalWalls, int[][] verticalWalls)
-    {
+    public ArrayList<GridElement> translateArraysToMap(int[][] horizontalWalls, int[][] verticalWalls) {
         int i = 0;
         int j = 0;
         ArrayList<GridElement> data = new ArrayList<GridElement>();
 
-        for(i=0; i<17; i++)
-            for(j=0; j < 17; j++)
+        for(i=0; i<boardSize+1; i++)
+            for(j=0; j < boardSize+1; j++)
             {
                 if(horizontalWalls[i][j]== 1)
                 {
@@ -35,16 +36,13 @@ public class MapGenerator {
 
     }
 
-    public int getRandom(int min, int max)
-    {
+    public int getRandom(int min, int max) {
         return rand.nextInt((max - min) + 1) + min;
     }
 
-    public ArrayList<GridElement> get16DimensionalMap()
-    {
-
-        int[][] horizontalWalls = new int[17][17];
-        int[][] verticalWalls = new int[17][17];
+    public ArrayList<GridElement> get16DimensionalMap() {
+        int[][] horizontalWalls = new int[boardSize+1][boardSize+1];
+        int[][] verticalWalls = new int[boardSize+1][boardSize+1];
 
         int i =0;
         int j =0;
@@ -58,55 +56,55 @@ public class MapGenerator {
             restart = false;
 
             //On initialise avec aucun mur
-            for (i = 0; i < 16; i++)
-                for (j = 0; j < 16; j++)
+            for (i = 0; i < boardSize; i++)
+                for (j = 0; j < boardSize; j++)
                     horizontalWalls[i][j] = verticalWalls[i][j] = 0;
 
             //Création des bords
-            for (i = 0; i < 16; i++) {
+            for (i = 0; i < boardSize; i++) {
                 horizontalWalls[i][0] = 1;
-                horizontalWalls[i][16] = 1;
+                horizontalWalls[i][boardSize] = 1;
                 verticalWalls[0][i] = 1;
-                verticalWalls[16][i] = 1;
+                verticalWalls[boardSize][i] = 1;
             }
 
             //Murs près de la bordure gauche
             horizontalWalls[0][getRandom(2, 7)] = 1;
             do {
-                temp = getRandom(8, 15);
+                temp = getRandom(8, boardSize-1);
             }
             while (horizontalWalls[0][temp - 1] == 1 || horizontalWalls[0][temp] == 1 || horizontalWalls[0][temp + 1] == 1);
             horizontalWalls[0][temp] = 1;
 
             //Murs près de la bordure droite
-            horizontalWalls[15][getRandom(2, 7)] = 1;
+            horizontalWalls[boardSize-1][getRandom(2, 7)] = 1;
             do {
-                temp = getRandom(8, 15);
+                temp = getRandom(8, boardSize-1);
             }
-            while (horizontalWalls[15][temp - 1] == 1 || horizontalWalls[15][temp] == 1 || horizontalWalls[15][temp + 1] == 1);
-            horizontalWalls[15][temp] = 1;
+            while (horizontalWalls[boardSize-1][temp - 1] == 1 || horizontalWalls[boardSize-1][temp] == 1 || horizontalWalls[boardSize-1][temp + 1] == 1);
+            horizontalWalls[boardSize-1][temp] = 1;
 
             //Murs près de la bordure haut
             verticalWalls[getRandom(2, 7)][0] = 1;
             do {
-                temp = getRandom(8, 15);
+                temp = getRandom(8, boardSize-1);
             }
             while (verticalWalls[temp - 1][0] == 1 || verticalWalls[temp][0] == 1 || verticalWalls[temp + 1][0] == 1);
             verticalWalls[temp][0] = 1;
 
             //Murs près de la bordure bas
-            verticalWalls[getRandom(2, 7)][15] = 1;
+            verticalWalls[getRandom(2, 7)][boardSize-1] = 1;
             do {
-                temp = getRandom(8, 15);
+                temp = getRandom(8, boardSize-1);
             }
-            while (verticalWalls[temp - 1][15] == 1 || verticalWalls[temp][15] == 1 || verticalWalls[temp + 1][15] == 1);
-            verticalWalls[temp][15] = 1;
+            while (verticalWalls[temp - 1][boardSize-1] == 1 || verticalWalls[temp][boardSize-1] == 1 || verticalWalls[temp + 1][boardSize-1] == 1);
+            verticalWalls[temp][boardSize-1] = 1;
 
             //Dessin du carré du milieu
             horizontalWalls[7][7] = horizontalWalls[8][7] = horizontalWalls[7][9] = horizontalWalls[8][9] = 1;
             verticalWalls[7][7] = verticalWalls[7][8] = verticalWalls[9][7] = verticalWalls[9][8] = 1;
 
-            for (int k = 0; k < 17; k++) {
+            for (int k = 0; k < boardSize+1; k++) {
                 Boolean flag = false;
                 int tempX = 0;
                 int tempY = 0;
@@ -123,17 +121,17 @@ public class MapGenerator {
                         tempX = getRandom(1, 7);
                         tempY = getRandom(1, 7);
                     } else if (k < 8) {
-                        tempX = getRandom(8, 15);
+                        tempX = getRandom(8, boardSize-1);
                         tempY = getRandom(1, 7);
                     } else if (k < 12) {
                         tempX = getRandom(1, 7);
-                        tempY = getRandom(8, 15);
+                        tempY = getRandom(8, boardSize-1);
                     } else if (k < 16) {
-                        tempX = getRandom(8, 15);
-                        tempY = getRandom(8, 15);
+                        tempX = getRandom(8, boardSize-1);
+                        tempY = getRandom(8, boardSize-1);
                     } else {
-                        tempX = getRandom(1, 15);
-                        tempY = getRandom(1, 15);
+                        tempX = getRandom(1, boardSize-1);
+                        tempY = getRandom(1, boardSize-1);
                     }
 
                     if (horizontalWalls[tempX][tempY] == 1 || horizontalWalls[tempX - 1][tempY] == 1 || horizontalWalls[tempX + 1][tempY] == 1)
@@ -151,7 +149,7 @@ public class MapGenerator {
                     if (!flag) {
                         //On compte le nombre de murs dans la même ligne/colonne
                         countX = countY = 0;
-                        for (i = 1; i < 15; i++) {
+                        for (i = 1; i < boardSize-1; i++) {
                             if (horizontalWalls[i][tempY] == 1)
                                 countX++;
                             if (horizontalWalls[tempX][i] == 1)
@@ -223,8 +221,8 @@ public class MapGenerator {
         int cibleY = 0;
         do{
             flag = false;
-            cibleX = getRandom(0, 15);
-            cibleY = getRandom(0, 15);
+            cibleX = getRandom(0, boardSize-1);
+            cibleY = getRandom(0, boardSize-1);
 
             if(horizontalWalls[cibleX][cibleY] == 0 && horizontalWalls[cibleX][cibleY+1] == 0)
                 flag = true;
@@ -252,8 +250,8 @@ public class MapGenerator {
         {
             do {
                 flag = false;
-                cX = getRandom(0, 15);
-                cY = getRandom(0, 15);
+                cX = getRandom(0, boardSize-1);
+                cY = getRandom(0, boardSize-1);
 
                 for(GridElement robot:robotsTemp) {
                     if (robot.getX() == cX && robot.getY() == cY)
