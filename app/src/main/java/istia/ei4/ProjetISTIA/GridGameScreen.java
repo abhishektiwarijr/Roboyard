@@ -127,36 +127,44 @@ public class GridGameScreen extends GameScreen {
         xGrid = 0;
         yGrid = 1080/5;
 
+        int visibleScreenHeight=gameManager.getScreenHeight(); // bei 720x1280:1184px
+
         int y = yGrid+gameManager.getScreenWidth();
-        int dy = gameManager.getScreenHeight()-y;
-        int w = gameManager.getScreenWidth()/4;
-        int h = w;
-        int buttonPosY = y+10*dy/20;
+        int dy = visibleScreenHeight-y; // 248
         int buttonW = gameManager.getScreenWidth()/4;
 
-        float ratioW = ((float)gameManager.getScreenWidth()) /((float)1080);
-        float ratioH = ((float)gameManager.getScreenHeight()) /((float)1920);
+        float ratioW = ((float)gameManager.getScreenWidth()) /((float)1080); // bei 720x1280:0.6667 bei 1440x2580:1.333
+        float ratioH = ((float)visibleScreenHeight) /((float)1920); // bei 720x1280:0.61667 bei 1440x2580:2.45
+        //int buttonPosY = (int)(6.5*dy * ratioH);
+        int buttonPosY = y+10*dy/20; // 1060
+        int nextButtonDim=(int)(160*ratioH);
+
+        if(visibleScreenHeight<=1280){
+            // on very low res screens
+            nextButtonDim=(int)(220*ratioH);
+            buttonPosY = -50 +y+10*dy/20;
+        }
 
         // Button Next game (top right)
-        this.instances.add(new GameButtonGeneral((int)(870*ratioW), (int)(10*ratioH), (int)(200*ratioW), (int)(200*ratioH), R.drawable.bt_next_up, R.drawable.bt_next_down, new ButtonNext()));
+        this.instances.add(new GameButtonGeneral((int)(870*ratioW), (int)(0*ratioH), nextButtonDim, nextButtonDim, R.drawable.bt_next_up, R.drawable.bt_next_down, new ButtonNext()));
 
         // Button Save
         gameManager.getRenderManager().loadImage(R.drawable.transparent);
-        buttonSave = new GameButtonGoto(0, buttonPosY, w, h, R.drawable.bt_jeu_save_up, R.drawable.bt_jeu_save_down, 9);
+        buttonSave = new GameButtonGoto(0, buttonPosY, buttonW,buttonW, R.drawable.bt_jeu_save_up, R.drawable.bt_jeu_save_down, 9);
         buttonSave.setImageDisabled(R.drawable.transparent);
         // save button will be disabled when playing a saved game
         buttonSave.setEnabled(true);
         this.instances.add(buttonSave);
 
         // Button one step back
-        this.instances.add(new GameButtonGeneral(buttonW, buttonPosY, w, h, R.drawable.bt_jeu_retour_up, R.drawable.bt_jeu_retour_down, new ButtonBack()));
+        this.instances.add(new GameButtonGeneral(buttonW, buttonPosY, buttonW,buttonW, R.drawable.bt_jeu_retour_up, R.drawable.bt_jeu_retour_down, new ButtonBack()));
 
         // Button restart
-        this.instances.add(new GameButtonGeneral(buttonW*2, buttonPosY, w, h, R.drawable.bt_jeu_reset_up, R.drawable.bt_jeu_reset_down, new ButtonRestart()));
+        this.instances.add(new GameButtonGeneral(buttonW*2, buttonPosY, buttonW,buttonW, R.drawable.bt_jeu_reset_up, R.drawable.bt_jeu_reset_down, new ButtonRestart()));
 
         // Button Solve
         gameManager.getRenderManager().loadImage(R.drawable.bt_jeu_resolution_disabled);
-        buttonSolve = new GameButtonGeneral(buttonW*3, buttonPosY, w, h, R.drawable.bt_jeu_resolution_up, R.drawable.bt_jeu_resolution_down, new ButtonSolution());
+        buttonSolve = new GameButtonGeneral(buttonW*3, buttonPosY, buttonW,buttonW, R.drawable.bt_jeu_resolution_up, R.drawable.bt_jeu_resolution_down, new ButtonSolution());
         buttonSolve.setImageDisabled(R.drawable.bt_jeu_resolution_disabled);
         buttonSolve.setEnabled(false);
         this.instances.add(buttonSolve);
