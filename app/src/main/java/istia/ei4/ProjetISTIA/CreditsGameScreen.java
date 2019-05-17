@@ -49,7 +49,7 @@ public class CreditsGameScreen extends GameScreen {
         renderManager.drawText(10, 14*ts, "Open Source:");
         renderManager.setTextSize((int)(0.7*ts));
         renderManager.drawText(10, 15*ts, "https://git.io/fjs5H");
-        renderManager.drawText(10, 17*ts, "Version: 3.2");
+        renderManager.drawText(10, 17*ts, "Version: 4.0");
 
         super.draw(renderManager);
     }

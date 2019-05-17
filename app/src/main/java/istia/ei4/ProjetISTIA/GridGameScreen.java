@@ -10,7 +10,6 @@ import java.util.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import driftingdroids.model.Solver;
 import istia.ei4.ProjetISTIA.solver.ISolver;
 import istia.ei4.ProjetISTIA.solver.SolverRR;
 import istia.ei4.ProjetISTIA.solver.SolverDD;
@@ -22,9 +21,7 @@ import istia.ei4.pm.ia.ricochet.RRGameMove;
  * Created by Alain on 25/02/2015.
  */
 public class GridGameScreen extends GameScreen {
-    private boolean randomGrid = false;
     private Canvas canvasGrid;
-    private Dictionary dict;
 
     private boolean isSolved = false;
     private int solutionMoves = 0; // store the current optimal solution globally
@@ -50,11 +47,14 @@ public class GridGameScreen extends GameScreen {
     private int yGrid = 100;
 
     private float gridSpace = 0;
-    private int margin = 0;
 
     private int timeCpt = 0;
     private int nbCoups = 0;
     private long prevTime;
+
+    public static String getLevel() {
+        return GridGameScreen.UserLevel;
+    }
 
     public static void setLevel(String UserLevel) {
         GridGameScreen.UserLevel = UserLevel;
@@ -65,9 +65,9 @@ public class GridGameScreen extends GameScreen {
             GridGameScreen.goodPuzzleMinMoves = 8;
             GridGameScreen.simplePuzzleMinMoves = 6;
         } else if(UserLevel=="Insane") {
-            GridGameScreen.goodPuzzleMinMoves = 14;
-            GridGameScreen.simplePuzzleMinMoves = 14;
-            GridGameScreen.requestToast="Insane level will search for a puzzle wich is not solvable in less than 14 moves. This can take a while. In case the solver gets stuck, press >>";
+            GridGameScreen.goodPuzzleMinMoves = 10;
+            GridGameScreen.simplePuzzleMinMoves = 10;
+            GridGameScreen.requestToast = "Insane level will generate a fitting puzzle. This can take a while. In case the solver gets stuck, press >>";
         }
     }
 
@@ -246,7 +246,7 @@ public class GridGameScreen extends GameScreen {
             String autosaveMapPath=SaveGameScreen.getMapPath(0);
             FileReadWrite.clearPrivateData(gameManager.getActivity(), autosaveMapPath);
             FileReadWrite.writePrivateData((gameManager.getActivity()), autosaveMapPath, MapObjects.createStringFromList(gridElements));
-            requestToast = "Autosaving...";
+            gameManager.requestToast("Autosaving...", true);
             autoSaved = true;
         }
 
@@ -258,6 +258,8 @@ public class GridGameScreen extends GameScreen {
         this.gmi.draw(renderManager);
 
         if(requestToast!=""){
+            // show double toast to last longer
+            gameManager.requestToast(requestToast, true);
             gameManager.requestToast(requestToast, true);
             requestToast="";
         }
