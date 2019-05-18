@@ -3,6 +3,12 @@ CHANGELOG
 
 These are all relevant changes since Version 1.0:
 
+### Version 5.1
+
+- rename to Robotoyard
+- carré always in the middle again (fixes robot posistions due to keeping the initial playingfield)
+- increased movement speed of robots
+
 ### Version 5.0
 
 - keep initial playingfield when starting the next game

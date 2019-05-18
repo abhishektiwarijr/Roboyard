@@ -28,6 +28,9 @@ public class CreditsGameScreen extends GameScreen {
 
     @Override
     public void draw(RenderManager renderManager) {
+        int versionCode = BuildConfig.VERSION_CODE;
+        String versionName = BuildConfig.VERSION_NAME;
+
         //renderManager.setColor(Color.BLUE);
         renderManager.setColor(Color.parseColor("#B0CC99"));
         renderManager.paintScreen();
@@ -49,7 +52,7 @@ public class CreditsGameScreen extends GameScreen {
         renderManager.drawText(10, 14*ts, "Open Source:");
         renderManager.setTextSize((int)(0.7*ts));
         renderManager.drawText(10, 15*ts, "https://git.io/fjs5H");
-        renderManager.drawText(10, 17*ts, "Version: 5.0");
+        renderManager.drawText(10, 17*ts, "Version: " + versionName + " (Build " + versionCode + ")");
 
         super.draw(renderManager);
     }
