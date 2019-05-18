@@ -64,7 +64,7 @@ public class GridGameScreen extends GameScreen {
 
     private Thread t = null;
 
-    private GameMouvementInterface gmi;
+    private GameMovementInterface gmi;
     private Bitmap bitmapGrid;
     RenderManager currentRenderManager;
     Map<String, Drawable> drawables = new HashMap<String, Drawable>();
@@ -130,7 +130,7 @@ public class GridGameScreen extends GameScreen {
     @Override
     public void create()
     {
-        gmi = new GameMouvementInterface();
+        gmi = new GameMovementInterface();
 
         xGrid = 0;
         yGrid = 1080/5;

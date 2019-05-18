@@ -21,11 +21,11 @@ public class GamePiece implements IGameObject {
     private float heightCell        = 16;
     private int radius              = 32;
     private int color               = Color.RED;
-    private boolean inMouvement     = false;
+    private boolean inMovement      = false;
     private int deltaX              = 0;
     private int deltaY              = 0;
-    private int deltaValue          = 2;
-    private boolean testSiGagne     = true;
+    private int deltaValue          = 3; // movement speed of robots
+    private boolean testIfWon       = true;
 
     private int image               = 0;
 
@@ -38,8 +38,8 @@ public class GamePiece implements IGameObject {
         this.x = x;
         deltaX = 0;
     }
-    public boolean isInMouvement() {
-        return inMouvement;
+    public boolean isInMovement() {
+        return inMovement;
     }
 
     public int getColor() {
@@ -68,6 +68,13 @@ public class GamePiece implements IGameObject {
     public int getX() {
         return x;
     }
+
+    /**
+     * Constructor
+     * @param x
+     * @param y
+     * @param color
+     */
     public GamePiece(int x, int y, int color){
         this.x = x;
         this.y = y;
@@ -131,19 +138,17 @@ public class GamePiece implements IGameObject {
         if((this.x == this.xObjective) && (this.y == this.yObjective) && (deltaX == 0) && (deltaY == 0)){
 
 //            System.out.println(" GamePiece "+color + " x = "+ x + " y = " + y + " xObj = "+xObjective+ " yObj = "+yObjective + " deltaX = "+deltaX + " deltaY = "+deltaY);
-            if(inMouvement)
-            {
+            if(inMovement) {
                 ((GridGameScreen)(gameManager.getCurrentScreen())).doMovesInMemory();
             }
 
-            inMouvement = false;
+            inMovement = false;
 
-            if(testSiGagne)
-            {
+            if(testIfWon) {
                 ((GridGameScreen)(gameManager.getCurrentScreen())).gagne(this);
-                testSiGagne = false;
+                testIfWon = false;
             }
-//            inMouvement = false;
+//            inMovement = false;
             //si il y a une entrée utilisateur, ...
             InputManager inputManager = gameManager.getInputManager();
             if(inputManager.eventHasOccurred()){
@@ -163,8 +168,8 @@ public class GamePiece implements IGameObject {
 
         }else{ //sinon (si le pion doit bouger),
 
-            inMouvement = true;
-            testSiGagne = true;
+            inMovement = true;
+            testIfWon = true;
 
             if(this.x < this.xObjective)
                 deltaX +=deltaValue;

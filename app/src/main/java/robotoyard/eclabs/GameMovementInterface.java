@@ -3,7 +3,7 @@ package robotoyard.eclabs;
 /**
  * Created by Pierre on 04/03/2015.
  */
-public class GameMouvementInterface implements IGameObject {
+public class GameMovementInterface implements IGameObject {
 
     private float[] scales;
     private int img_up          = R.drawable.img_int_up;
@@ -18,7 +18,7 @@ public class GameMouvementInterface implements IGameObject {
     private int decision        = -1;
     private GamePiece target;
 
-    public GameMouvementInterface(){
+    public GameMovementInterface(){
         this.scales = new float[4];
         this.resetScale();
     }
