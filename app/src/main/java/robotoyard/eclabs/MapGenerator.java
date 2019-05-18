@@ -14,7 +14,6 @@ public class MapGenerator {
     int boardXSize=16; // TODO
     int boardYSize=16; // TODO
 
-
     int carrePosX = boardSize/2-1; // horizontal position of the top wall of carré, starting with 0
     int carrePosY = boardSize/2-1; // vertical position the left wall of the carré
 
@@ -27,15 +26,16 @@ public class MapGenerator {
 
     Boolean loneWallsAllowed = false; // TODO: walls that are not attached in a 90 deg. angle
 
-
     public MapGenerator(){
         rand = new Random();
 
         if(GridGameScreen.getLevel()!="Beginner"){
-            // random position of carré in the middle
-            carrePosX=getRandom(3,boardSize-5);
-            carrePosY=getRandom(3,boardSize-5);
-
+            if (generateNewMapEachTime) {
+                // random position of carré in the middle
+                // TODO: doesn't work if not generateNewMapEachTime because the position is not remembered above restarts with the same map
+                carrePosX=getRandom(3,boardSize-5);
+                carrePosY=getRandom(3,boardSize-5);
+            }
             allowMulticolorTarget = false;
 
             maxWallsInOneVerticalCol = 3;
