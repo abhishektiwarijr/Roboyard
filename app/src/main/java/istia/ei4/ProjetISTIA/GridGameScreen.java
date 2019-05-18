@@ -385,9 +385,9 @@ public class GridGameScreen extends GameScreen {
 
         this.mapPath = "";  //La carte étant générée, elle n'a pas de chemin d'accès
         MapGenerator generatedMap = new MapGenerator();
-        gridElements = generatedMap.get16DimensionalMap();
+        gridElements = generatedMap.getGameMap();
 
-       // this.solver = new SolverDD();
+        // this.solver = new SolverDD();
 
         createGrid();
 

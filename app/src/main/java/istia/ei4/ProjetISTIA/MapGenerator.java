@@ -9,26 +9,59 @@ import java.util.Random;
 public class MapGenerator {
 
     Random rand;
-    int boardSize=16;
-    int boardXSize=16;
-    int boardYSize=16;
+    int boardSize=16; // TODO: still crashes on other than 16
+    int boardXSize=16; // TODO
+    int boardYSize=16; // TODO
+
+
+    int carrePosX = boardSize/2-1; // horizontal position of the top wall of carré, starting with 0
+    int carrePosY = boardSize/2-1; // vertical position the left wall of the carré
+
+    Boolean targetMustBeInCorner = true;
+    Boolean allowMulticolorTarget = true;
+
+    int maxWallsInOneVerticalCol = 2;
+    int maxWallsInOneHorizontalRow = 2;
+
+    Boolean loneWallsAllowed = false; // TODO: walls that are not attached in a 90 deg. angle
+
 
     public MapGenerator(){
         rand = new Random();
+
+        if(GridGameScreen.getLevel()!="Beginner"){
+            // random position of carré in the middle
+            carrePosX=getRandom(3,boardSize-5);
+            carrePosY=getRandom(3,boardSize-5);
+
+            allowMulticolorTarget = false;
+
+            maxWallsInOneVerticalCol = 3;
+            maxWallsInOneHorizontalRow = 3;
+
+            loneWallsAllowed = true;
+        }
+
+        if(GridGameScreen.getLevel()=="Insane") {
+            targetMustBeInCorner = false;
+
+            maxWallsInOneVerticalCol = 5;
+            maxWallsInOneHorizontalRow = 5;
+        }
     }
 
     public ArrayList<GridElement> translateArraysToMap(int[][] horizontalWalls, int[][] verticalWalls) {
         ArrayList<GridElement> data = new ArrayList<GridElement>();
 
-        for(int x=0; x<boardSize+1; x++)
-            for(int y=0; y < boardSize+1; y++)
+        for(int x=0; x<=boardSize; x++)
+            for(int y=0; y <= boardSize; y++)
             {
-                if(horizontalWalls[x][y]== 1)
-                {
+                if(horizontalWalls[x][y]== 1) {
+                    // add all horizontal walls
                     data.add(new GridElement(x,y,"mh"));
                 }
-                if(verticalWalls[x][y]== 1)
-                {
+                if(verticalWalls[x][y]== 1) {
+                    // add all vertical walls
                     data.add(new GridElement(x,y,"mv"));
                 }
             }
@@ -40,7 +73,81 @@ public class MapGenerator {
         return rand.nextInt((max - min) + 1) + min;
     }
 
-    public ArrayList<GridElement> get16DimensionalMap() {
+    public ArrayList<GridElement> addGameElementsToGameMap(ArrayList<GridElement> data ,int[][] horizontalWalls, int[][]verticalWalls){
+
+        Boolean abandon;
+        int cibleX;
+        int cibleY;
+        Boolean tempTargetMustBeInCorner;
+
+        tempTargetMustBeInCorner = targetMustBeInCorner;
+        if(!targetMustBeInCorner && getRandom(0,1) != 1){
+            // 50% probability that the target is in a corner
+            tempTargetMustBeInCorner=true;
+        }
+        do{
+            abandon = false;
+            cibleX = getRandom(0, boardSize-1);
+            cibleY = getRandom(0, boardSize-1);
+
+            if(tempTargetMustBeInCorner && horizontalWalls[cibleX][cibleY] == 0 && horizontalWalls[cibleX][cibleY+1] == 0)
+                abandon = true;
+            if(tempTargetMustBeInCorner && verticalWalls[cibleX][cibleY] == 0 && verticalWalls[cibleX+1][cibleY] == 0)
+                abandon = true;
+
+            if((cibleX == carrePosX && cibleY == carrePosY)
+                    || (cibleX == carrePosX && cibleY == carrePosY+1)
+                    || (cibleX == carrePosX+1 && cibleY == carrePosY)
+                    || (cibleX == carrePosX+1 && cibleY == carrePosY+1))
+                abandon = true; // target was in carré
+
+        }while(abandon);
+
+        String typesOfCibles[] = {"cj","cr","cb", "cv", "cm"};
+
+        if(allowMulticolorTarget) {
+            data.add(new GridElement(cibleX, cibleY, typesOfCibles[getRandom(0,4)]));
+        } else {
+            data.add(new GridElement(cibleX, cibleY, typesOfCibles[getRandom(0,3)]));
+        }
+
+        String typesOfRobots[] = {"rr", "rb", "rj", "rv"};
+
+        ArrayList<GridElement> robotsTemp = new ArrayList<GridElement>();
+
+        int cX;
+        int cY;
+
+        for(String currentRobotType : typesOfRobots)
+        {
+            do {
+                abandon = false;
+                cX = getRandom(0, boardSize-1);
+                cY = getRandom(0, boardSize-1);
+
+                for(GridElement robot:robotsTemp) {
+                    if (robot.getX() == cX && robot.getY() == cY)
+                        abandon = true;
+                }
+
+                if((cX == carrePosX && cY == carrePosY) || (cX == carrePosX && cY == carrePosY+1) || (cX == carrePosX+1 && cY == carrePosY) || (cX == carrePosX+1 && cY == carrePosY+1))
+                    abandon = true; // robot was inside carré
+                if(cX == cibleX && cY == cibleY)
+                    abandon = true; // robot was target
+
+            }while(abandon);
+            robotsTemp.add(new GridElement(cX, cY, currentRobotType));
+        }
+        data.addAll(robotsTemp);
+
+        return data;
+    }
+
+    /**
+     * generates a new map
+     * @return Arraylist with all grid elements that belong to the map
+     */
+    public ArrayList<GridElement> getGameMap() {
         int[][] horizontalWalls = new int[boardSize+1][boardSize+1];
         int[][] verticalWalls = new int[boardSize+1][boardSize+1];
 
@@ -49,34 +156,6 @@ public class MapGenerator {
         int countY = 0;
 
         Boolean restart;
-
-        int carrePosX = boardSize/2-1; // horizontal position of the top wall of carré, starting with 0
-        int carrePosY = boardSize/2-1; // vertical position the left wall of the carré
-
-        int maxWallsInOneVerticalCol = 2;
-        int maxWallsInOneHorizontalRow = 2;
-
-        Boolean targetMustBeInCorner = true;
-        Boolean allowMulticolorTarget = true;
-        Boolean loneWallsAllowed = false; // TODO
-
-        if(GridGameScreen.getLevel()!="Beginner"){
-            // random position of carré in the middle
-            carrePosX=getRandom(3,boardSize-5);
-            carrePosY=getRandom(3,boardSize-5);
-
-            maxWallsInOneVerticalCol = 3;
-            maxWallsInOneHorizontalRow = 3;
-
-            allowMulticolorTarget = false;
-            loneWallsAllowed = true;
-        }
-
-        if(GridGameScreen.getLevel()=="Insane") {
-            maxWallsInOneVerticalCol = 5;
-            maxWallsInOneHorizontalRow = 5;
-            targetMustBeInCorner = false;
-        }
 
         do {
             restart = false;
@@ -254,72 +333,9 @@ public class MapGenerator {
             }
         }while(restart);
 
-
-        Boolean abandon;
-        int cibleX;
-        int cibleY;
-        Boolean tempTargetMustBeInCorner;
-
-        tempTargetMustBeInCorner = targetMustBeInCorner;
-        if(!targetMustBeInCorner && getRandom(0,1) != 1){
-            // 50% probability that the target is in a corner
-            tempTargetMustBeInCorner=true;
-        }
-        do{
-            abandon = false;
-            cibleX = getRandom(0, boardSize-1);
-            cibleY = getRandom(0, boardSize-1);
-
-            if(tempTargetMustBeInCorner && horizontalWalls[cibleX][cibleY] == 0 && horizontalWalls[cibleX][cibleY+1] == 0)
-                abandon = true;
-            if(tempTargetMustBeInCorner && verticalWalls[cibleX][cibleY] == 0 && verticalWalls[cibleX+1][cibleY] == 0)
-                abandon = true;
-
-            if((cibleX == carrePosX && cibleY == carrePosY)
-                || (cibleX == carrePosX && cibleY == carrePosY+1)
-                || (cibleX == carrePosX+1 && cibleY == carrePosY)
-                || (cibleX == carrePosX+1 && cibleY == carrePosY+1))
-                abandon = true; // target was in carré
-
-        }while(abandon);
-
-        String typesOfCibles[] = {"cj","cr","cb", "cv", "cm"};
-
         ArrayList<GridElement> data = translateArraysToMap(horizontalWalls, verticalWalls);
-        if(allowMulticolorTarget) {
-            data.add(new GridElement(cibleX, cibleY, typesOfCibles[getRandom(0,4)]));
-        } else {
-            data.add(new GridElement(cibleX, cibleY, typesOfCibles[getRandom(0,3)]));
-        }
 
-        String typesOfRobots[] = {"rr", "rb", "rj", "rv"};
-
-        ArrayList<GridElement> robotsTemp = new ArrayList<GridElement>();
-
-        int cX;
-        int cY;
-
-        for(String currentRobotType : typesOfRobots)
-        {
-            do {
-                abandon = false;
-                cX = getRandom(0, boardSize-1);
-                cY = getRandom(0, boardSize-1);
-
-                for(GridElement robot:robotsTemp) {
-                    if (robot.getX() == cX && robot.getY() == cY)
-                        abandon = true;
-                }
-
-                if((cX == carrePosX && cY == carrePosY) || (cX == carrePosX && cY == carrePosY+1) || (cX == carrePosX+1 && cY == carrePosY) || (cX == carrePosX+1 && cY == carrePosY+1))
-                    abandon = true; // robot was inside carré
-                if(cX == cibleX && cY == cibleY)
-                    abandon = true; // robot was target
-
-            }while(abandon);
-            robotsTemp.add(new GridElement(cX, cY, currentRobotType));
-        }
-        data.addAll(robotsTemp);
+        data = addGameElementsToGameMap(data, horizontalWalls, verticalWalls);
 
         return data;
     }
