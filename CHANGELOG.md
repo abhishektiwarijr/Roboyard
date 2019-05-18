@@ -3,6 +3,11 @@ CHANGELOG
 
 These are all relevant changes since Version 1.0:
 
+### Version 5.0
+
+- keep initial playingfield when starting the next game
+- keep playingfield when loading a saved game
+
 ### Version 4.0
 
 - added more complexity to Advanced and Insane Level

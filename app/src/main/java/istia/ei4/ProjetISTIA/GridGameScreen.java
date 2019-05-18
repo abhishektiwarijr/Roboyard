@@ -52,31 +52,9 @@ public class GridGameScreen extends GameScreen {
     private int nbCoups = 0;
     private long prevTime;
 
-    public static String getLevel() {
-        return GridGameScreen.UserLevel;
-    }
-
-    public static void setLevel(String UserLevel) {
-        GridGameScreen.UserLevel = UserLevel;
-        if(UserLevel=="Beginner") {
-            GridGameScreen.goodPuzzleMinMoves = 6;
-            GridGameScreen.simplePuzzleMinMoves = 4;
-        } else if(UserLevel=="Advanced") {
-            GridGameScreen.goodPuzzleMinMoves = 8;
-            GridGameScreen.simplePuzzleMinMoves = 6;
-        } else if(UserLevel=="Insane") {
-            GridGameScreen.goodPuzzleMinMoves = 10;
-            GridGameScreen.simplePuzzleMinMoves = 10;
-            GridGameScreen.requestToast = "Insane level will generate a fitting puzzle. This can take a while. In case the solver gets stuck, press >>";
-        }
-    }
-
-    public static void setSolverBFS(boolean solverBFS) {
-        GridGameScreen.solverBFS = solverBFS;
-    }
-
     private static boolean solverBFS = false; // default IDDFS (faster)
     private static String UserLevel="Advanced";
+    private static ArrayList<GridElement> currentMap;
 
     private int IAMovesNumber = 0;
 
@@ -95,7 +73,6 @@ public class GridGameScreen extends GameScreen {
 
     private GameButtonGeneral buttonSolve;
     private GameButtonGoto buttonSave;
-
 
     public GridGameScreen(GameManager gameManager){
         super(gameManager);
@@ -117,6 +94,37 @@ public class GridGameScreen extends GameScreen {
         gameManager.getRenderManager().loadImage(R.drawable.rv);
         gameManager.getRenderManager().loadImage(R.drawable.rr);
 
+    }
+
+    public static String getLevel() {
+        return GridGameScreen.UserLevel;
+    }
+
+    public static void setLevel(String UserLevel) {
+        GridGameScreen.UserLevel = UserLevel;
+        if(UserLevel=="Beginner") {
+            GridGameScreen.goodPuzzleMinMoves = 6;
+            GridGameScreen.simplePuzzleMinMoves = 4;
+        } else if(UserLevel=="Advanced") {
+            GridGameScreen.goodPuzzleMinMoves = 8;
+            GridGameScreen.simplePuzzleMinMoves = 6;
+        } else if(UserLevel=="Insane") {
+            GridGameScreen.goodPuzzleMinMoves = 10;
+            GridGameScreen.simplePuzzleMinMoves = 10;
+            GridGameScreen.requestToast = "Insane level will generate a fitting puzzle. This can take a while. In case the solver gets stuck, press >>";
+        }
+    }
+
+    public static ArrayList<GridElement> getMap() {
+        return GridGameScreen.currentMap;
+    }
+
+    public static void setMap(ArrayList<GridElement> data){
+        GridGameScreen.currentMap = data;
+    }
+
+    public static void setSolverBFS(boolean solverBFS) {
+        GridGameScreen.solverBFS = solverBFS;
     }
 
     @Override
@@ -363,6 +371,7 @@ public class GridGameScreen extends GameScreen {
         this.mapPath = "";
 
         gridElements = MapObjects.extractDataFromString(FileReadWrite.readPrivateData(gameManager.getActivity(), mapPath));
+        GridGameScreen.setMap(gridElements);
 
         createGrid();
     }
@@ -375,7 +384,10 @@ public class GridGameScreen extends GameScreen {
         System.out.println("SetLevelGame");
         gridElements = MapObjects.extractDataFromString(FileReadWrite.readAssets(gameManager.getActivity(), mapPath));
         System.out.println("SetLevelGame, gridElements :"+gridElements.size());
-       // this.solver = new SolverRR();
+        // TODO: this doesn't work here:
+        //  GridGameScreen.setMap(gridElements);
+
+        // this.solver = new SolverRR();
 
         createGrid();
     }
@@ -385,13 +397,11 @@ public class GridGameScreen extends GameScreen {
 
         this.mapPath = "";  //La carte étant générée, elle n'a pas de chemin d'accès
         MapGenerator generatedMap = new MapGenerator();
-        gridElements = generatedMap.getGameMap();
+        gridElements = generatedMap.getGeneratedGameMap();
 
         // this.solver = new SolverDD();
 
         createGrid();
-
-
     }
 
     public void createGrid()

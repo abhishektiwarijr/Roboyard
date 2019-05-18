@@ -1,6 +1,7 @@
 package istia.ei4.ProjetISTIA;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -19,6 +20,7 @@ public class MapGenerator {
 
     Boolean targetMustBeInCorner = true;
     Boolean allowMulticolorTarget = true;
+    Boolean generateNewMapEachTime = false; // TODO: add option in settings
 
     int maxWallsInOneVerticalCol = 2;
     int maxWallsInOneHorizontalRow = 2;
@@ -50,6 +52,16 @@ public class MapGenerator {
         }
     }
 
+    public ArrayList<GridElement> removeGameElementsFromMap(ArrayList<GridElement> data) {
+        String[] gameElementTypes = {"rv", "rj", "rr", "rb", "cv", "cj", "cr", "cb", "cm"};
+        for (GridElement e: data){
+            if(Arrays.asList(gameElementTypes).contains(e.getType())){
+                data.remove(e);
+            }
+        }
+        return data;
+    }
+
     public ArrayList<GridElement> translateArraysToMap(int[][] horizontalWalls, int[][] verticalWalls) {
         ArrayList<GridElement> data = new ArrayList<GridElement>();
 
@@ -66,7 +78,6 @@ public class MapGenerator {
                 }
             }
         return data;
-
     }
 
     public int getRandom(int min, int max) {
@@ -113,7 +124,7 @@ public class MapGenerator {
 
         String typesOfRobots[] = {"rr", "rb", "rj", "rv"};
 
-        ArrayList<GridElement> robotsTemp = new ArrayList<GridElement>();
+        ArrayList<GridElement> robotsTemp = new ArrayList<>();
 
         int cX;
         int cY;
@@ -147,7 +158,7 @@ public class MapGenerator {
      * generates a new map
      * @return Arraylist with all grid elements that belong to the map
      */
-    public ArrayList<GridElement> getGameMap() {
+    public ArrayList<GridElement> getGeneratedGameMap() {
         int[][] horizontalWalls = new int[boardSize+1][boardSize+1];
         int[][] verticalWalls = new int[boardSize+1][boardSize+1];
 
@@ -333,7 +344,14 @@ public class MapGenerator {
             }
         }while(restart);
 
-        ArrayList<GridElement> data = translateArraysToMap(horizontalWalls, verticalWalls);
+        ArrayList<GridElement> data = GridGameScreen.getMap();
+
+        if(data == null || generateNewMapEachTime){
+            data = translateArraysToMap(horizontalWalls, verticalWalls);
+            GridGameScreen.setMap(data);
+        } else{
+            data = removeGameElementsFromMap(data);
+        }
 
         data = addGameElementsToGameMap(data, horizontalWalls, verticalWalls);
 
