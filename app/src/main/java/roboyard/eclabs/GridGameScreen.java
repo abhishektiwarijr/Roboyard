@@ -3,6 +3,9 @@ package roboyard.eclabs;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
 
@@ -23,6 +26,8 @@ import roboyard.pm.ia.ricochet.RRGameMove;
 public class GridGameScreen extends GameScreen {
     private Canvas canvasGrid;
 
+    private int gridLineThickness = 4; // thickness of walls
+    private ColorFilter wallColor = new PorterDuffColorFilter(Color.rgb(44, 96, 0), PorterDuff.Mode.SRC_ATOP); // green
     private boolean isSolved = false;
     private int solutionMoves = 0; // store the current optimal solution globally
     private int numSolutionClicks = 0; // count how often you clicked on the solution button, each time the shown count goes down by one
@@ -442,29 +447,30 @@ public class GridGameScreen extends GameScreen {
         drawables.get("grid").setBounds(0, 0,(int)( 16 * gridSpace),(int)( 16 * gridSpace));
         drawables.get("grid").draw(canvasGrid);
 
+        // draw targets
         for (Object element : gridElements) {
             GridElement myp = (GridElement) element;
 
             if (myp.getType().equals("cr") || myp.getType().equals("cv") || myp.getType().equals("cj") || myp.getType().equals("cb") || myp.getType().equals("cm")) {
-                // goal
                 drawables.get(myp.getType()).setBounds((int)(myp.getX() * gridSpace),(int)( myp.getY() * gridSpace),(int)( (myp.getX() + 1) * gridSpace),(int)( (myp.getY()+1) * gridSpace));
                 drawables.get(myp.getType()).draw(canvasGrid);
             }
         }
 
-        int gridLineThickness = 3;
+        // draw horizontal lines
         for (Object element : gridElements) {
             GridElement myp = (GridElement) element;
 
             if (myp.getType().equals("mh")) {
-                // horizontal lines
                 drawables.get("mh").setBounds((int)(myp.getX() * gridSpace), (int)(myp.getY() * gridSpace -1), (int)((myp.getX() + 1) * gridSpace), (int)(myp.getY() * gridSpace + 1 + gridLineThickness));
+                drawables.get("mh").setColorFilter(wallColor);
                 drawables.get("mh").draw(canvasGrid);
             }
 
             if (myp.getType().equals("mv")) {
                 // vertical lines
                 drawables.get("mv").setBounds((int)(myp.getX() * gridSpace-1), (int)(myp.getY() * gridSpace), (int)(myp.getX() * gridSpace + 1 + gridLineThickness), (int)((myp.getY() + 1) * gridSpace));
+                drawables.get("mv").setColorFilter(wallColor);
                 drawables.get("mv").draw(canvasGrid);
             }
         }

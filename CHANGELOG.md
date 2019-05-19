@@ -3,11 +3,15 @@ CHANGELOG
 
 These are all relevant changes since Version 1.0:
 
-### Version 5.1
+### Version 5.2
 
 - rename to Roboyard
+- Walls are green and a bit thicker
+- increase initial movement speed of robots with linear slow-down
+
+### Version 5.1
+
 - carré always in the middle again (fixes robot posistions due to keeping the initial playingfield)
-- increased movement speed of robots
 
 ### Version 5.0
 
