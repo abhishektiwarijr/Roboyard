@@ -1,6 +1,7 @@
 package roboyard.eclabs;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.SurfaceTexture;
@@ -13,6 +14,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import roboyard.SoundService;
 
 public class MainActivity extends Activity
         implements TextureView.SurfaceTextureListener {
@@ -79,7 +82,14 @@ public class MainActivity extends Activity
     }
 
     @Override
+    public void onResume(){
+        startSound();
+        super.onResume();
+    }
+
+    @Override
     public void onPause(){
+        stopSound();
         super.onPause();
         if(mThread != null){
             mThread.interrupt();
@@ -98,11 +108,21 @@ public class MainActivity extends Activity
 
     @Override
     public void onDestroy(){
+        stopSound();
         super.onDestroy();
         if(mThread != null){
             mThread.interrupt();
             mThread = null;
         }
+    }
+
+    public void startSound(){
+        //start service and play music
+        startService(new Intent(MainActivity.this, SoundService.class));
+    }
+    public void stopSound(){
+        //stop service and stop music
+        stopService(new Intent(MainActivity.this, SoundService.class));
     }
 
     public void draw(Canvas pCanvas) {
@@ -142,8 +162,9 @@ public class MainActivity extends Activity
 
         content.addView(mTextureView, new FrameLayout.LayoutParams(sWidth, sHeight));
         setContentView(content);
-    }
 
+        startSound();
+    }
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
         mThread = new RenderingThread(mTextureView);
@@ -166,8 +187,8 @@ public class MainActivity extends Activity
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
         // Ignored
     }
-
     private class RenderingThread extends Thread {
+
         private final TextureView mSurface;
         private volatile boolean mRunning = true;
 
