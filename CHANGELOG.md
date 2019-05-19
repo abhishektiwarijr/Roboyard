@@ -3,6 +3,13 @@ CHANGELOG
 
 These are all relevant changes since Version 1.0:
 
+### Version 5.3
+
+- Add ambient background sound
+- green walls are now more like garden hedges
+- walls on the right screen are now visible
+- In beginner level generate a new map each time
+
 ### Version 5.2
 
 - rename to Roboyard
