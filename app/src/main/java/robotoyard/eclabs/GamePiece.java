@@ -24,7 +24,8 @@ public class GamePiece implements IGameObject {
     private boolean inMovement      = false;
     private int deltaX              = 0;
     private int deltaY              = 0;
-    private int deltaValue          = 3; // movement speed of robots
+    private int initialSpeed        = 16;
+
     private boolean testIfWon       = true;
 
     private int image               = 0;
@@ -134,6 +135,8 @@ public class GamePiece implements IGameObject {
 
     @Override
     public void update(GameManager gameManager){
+        int deltaValue; // movement speed of robots
+
         //si le pion n'est pas en mouvement, ...
         if((this.x == this.xObjective) && (this.y == this.yObjective) && (deltaX == 0) && (deltaY == 0)){
 
@@ -171,15 +174,30 @@ public class GamePiece implements IGameObject {
             inMovement = true;
             testIfWon = true;
 
-            if(this.x < this.xObjective)
-                deltaX +=deltaValue;
-            if(this.x > this.xObjective)
-                deltaX -=deltaValue;
+            deltaValue = initialSpeed; // initial speed of robots
 
-            if(this.y < this.yObjective)
-                deltaY+=deltaValue;
-            if(this.y > this.yObjective)
-                deltaY-=deltaValue;
+            if(this.x < this.xObjective) {
+                for(int i=deltaValue-1; i>0; i--){
+                    if(this.x > this.xObjective-(i+1)) deltaValue=i; // slow down
+                }
+                deltaX += deltaValue;
+            } else if(this.x > this.xObjective) {
+                for(int i=deltaValue-1; i>0; i--) {
+                    if (this.x < this.xObjective + (i+1)) deltaValue = i; // slow down
+                }
+                deltaX -= deltaValue;
+            }
+            if(this.y < this.yObjective){
+                for(int i=deltaValue-1; i>0; i--) {
+                    if (this.y > this.yObjective - (i+1)) deltaValue = i; // slow down
+                }
+                deltaY += deltaValue;
+            } else if(this.y > this.yObjective) {
+                for(int i=deltaValue-1; i>0; i--) {
+                    if (this.y < this.yObjective + (i+1)) deltaValue = i; // slow down
+                }
+                deltaY -= deltaValue;
+            }
 
 
             if(deltaX > 9) {
