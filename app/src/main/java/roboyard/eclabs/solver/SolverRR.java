@@ -37,7 +37,7 @@ public class SolverRR implements ISolver{
 
         RRGameState baseState = new RRGameState(null, null);
 
-        world = RRGetMap.createWorld(elements, baseState);
+        world = RRGetMap.createRRWorld(elements, baseState);
 
         RREndCondition endCondition = new RREndCondition();
 

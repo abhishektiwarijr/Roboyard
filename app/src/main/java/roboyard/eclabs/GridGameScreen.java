@@ -26,7 +26,7 @@ import roboyard.pm.ia.ricochet.RRGameMove;
 public class GridGameScreen extends GameScreen {
     private Canvas canvasGrid;
 
-    private int gridLineThickness = 4; // thickness of walls
+    private int wallThickness = 6; // thickness of walls
     private ColorFilter wallColor = new PorterDuffColorFilter(Color.rgb(44, 96, 0), PorterDuff.Mode.SRC_ATOP); // green
     private boolean isSolved = false;
     private int solutionMoves = 0; // store the current optimal solution globally
@@ -79,16 +79,19 @@ public class GridGameScreen extends GameScreen {
     private GameButtonGeneral buttonSolve;
     private GameButtonGoto buttonSave;
 
+    private int boardSizeX = 16; // TODO: has to be the same value as MapGenerator boardSize. crashes on >16
+    private int boardSizeY = 16;
+
     public GridGameScreen(GameManager gameManager){
         super(gameManager);
 
-        gridSpace = (float)(67.5 * gameManager.getScreenWidth() /1080);
+        gridSpace = (float)((16/(float)boardSizeX) * 67.3 * gameManager.getScreenWidth() /1080);
         xGrid = 0;
         yGrid = 1080/5;
 
         Bitmap.Config conf = Bitmap.Config.ARGB_4444;
 
-        bitmapGrid = Bitmap.createBitmap((int)(16 * gridSpace), (int) (16 * gridSpace), conf);
+        bitmapGrid = Bitmap.createBitmap((int)(boardSizeX * gridSpace), (int) (boardSizeY * gridSpace), conf);
         canvasGrid = new Canvas(bitmapGrid);
         currentRenderManager = gameManager.getRenderManager();
 
@@ -265,7 +268,7 @@ public class GridGameScreen extends GameScreen {
 
         if(imageLoaded)
         {
-            gameManager.getRenderManager().drawImage(xGrid, yGrid, (int)(16*gridSpace) + xGrid, (int)(16*gridSpace) + yGrid,  imageGridID);
+            gameManager.getRenderManager().drawImage(xGrid, yGrid, (int)(boardSizeX*gridSpace) + xGrid, (int)(boardSizeY*gridSpace) + yGrid,  imageGridID);
         }
         super.draw(renderManager);
         this.gmi.draw(renderManager);
@@ -397,8 +400,7 @@ public class GridGameScreen extends GameScreen {
         createGrid();
     }
 
-    public void setRandomGame(boolean random)
-    {
+    public void setRandomGame(boolean random) {
 
         this.mapPath = "";  //La carte étant générée, elle n'a pas de chemin d'accès
         MapGenerator generatedMap = new MapGenerator();
@@ -409,8 +411,7 @@ public class GridGameScreen extends GameScreen {
         createGrid();
     }
 
-    public void createGrid()
-    {
+    public void createGrid() {
         if(solverBFS) {
             // set to BFS (slower)
             this.solver = new SolverRR();
@@ -428,6 +429,7 @@ public class GridGameScreen extends GameScreen {
         currentRenderManager.setTarget(canvasGrid);
 
         drawables.put("grid", currentRenderManager.getResources().getDrawable(R.drawable.grid)); // white background
+        drawables.put("grid_tiles", currentRenderManager.getResources().getDrawable(R.drawable.grid_tiles)); // white background for other than 16x16 boards
         drawables.put("mh", currentRenderManager.getResources().getDrawable(R.drawable.mh)); // horizontal lines
         drawables.put("mv", currentRenderManager.getResources().getDrawable(R.drawable.mv)); // vertical lines
 
@@ -442,10 +444,14 @@ public class GridGameScreen extends GameScreen {
         drawables.put("cb", currentRenderManager.getResources().getDrawable(R.drawable.cb)); //
         drawables.put("cm", currentRenderManager.getResources().getDrawable(R.drawable.cm)); // multicolor goal
 
-
         // white background of grid
-        drawables.get("grid").setBounds(0, 0,(int)( 16 * gridSpace),(int)( 16 * gridSpace));
-        drawables.get("grid").draw(canvasGrid);
+        if(boardSizeX==16){
+            drawables.get("grid").setBounds(0, 0,(int)( boardSizeX * gridSpace),(int)( boardSizeY * gridSpace));
+            drawables.get("grid").draw(canvasGrid);
+        }else{
+            drawables.get("grid_tiles").setBounds(0, 0,(int)( boardSizeX * gridSpace),(int)( boardSizeY * gridSpace));
+            drawables.get("grid_tiles").draw(canvasGrid);
+        }
 
         // draw targets
         for (Object element : gridElements) {
@@ -462,14 +468,14 @@ public class GridGameScreen extends GameScreen {
             GridElement myp = (GridElement) element;
 
             if (myp.getType().equals("mh")) {
-                drawables.get("mh").setBounds((int)(myp.getX() * gridSpace), (int)(myp.getY() * gridSpace -2), (int)((myp.getX() + 1) * gridSpace), (int)(myp.getY() * gridSpace + gridLineThickness));
+                drawables.get("mh").setBounds((int)(myp.getX() * gridSpace), (int)(myp.getY() * gridSpace -2), (int)((myp.getX() + 1) * gridSpace), (int)(myp.getY() * gridSpace + wallThickness));
                 drawables.get("mh").setColorFilter(wallColor);
                 drawables.get("mh").draw(canvasGrid);
             }
 
             if (myp.getType().equals("mv")) {
                 // vertical lines
-                drawables.get("mv").setBounds((int)(myp.getX() * gridSpace - 2), (int)(myp.getY() * gridSpace), (int)(myp.getX() * gridSpace + gridLineThickness), (int)((myp.getY() + 1) * gridSpace));
+                drawables.get("mv").setBounds((int)(myp.getX() * gridSpace - 5), (int)(myp.getY() * gridSpace), (int)(myp.getX() * gridSpace + wallThickness - 3), (int)((myp.getY() + 1) * gridSpace));
                 drawables.get("mv").setColorFilter(wallColor);
                 drawables.get("mv").draw(canvasGrid);
             }

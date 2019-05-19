@@ -36,7 +36,7 @@ public class SolverDD implements ISolver{
 
     public void init(ArrayList<GridElement> elements){
         Board board = null;
-        board = RRGetMap.createWorld(elements, pieces);
+        board = RRGetMap.createDDWorld(elements, pieces);
         solver = Solver.createInstance(board);
     }
 

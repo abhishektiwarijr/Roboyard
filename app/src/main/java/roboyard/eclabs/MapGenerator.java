@@ -10,7 +10,7 @@ import java.util.Random;
 public class MapGenerator {
 
     Random rand;
-    int boardSize=16; // TODO: still crashes on other than 16
+    int boardSize=16; // TODO: has to be the same value as GridGameScreen boardSizeX and Y and crashes on larger>16
     int boardXSize=16; // TODO
     int boardYSize=16; // TODO
 
