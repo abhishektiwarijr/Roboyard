@@ -5,7 +5,7 @@ These are all relevant changes since Version 1.0:
 
 ### Version 5.1
 
-- rename to Robotoyard
+- rename to Roboyard
 - carré always in the middle again (fixes robot posistions due to keeping the initial playingfield)
 - increased movement speed of robots
 
