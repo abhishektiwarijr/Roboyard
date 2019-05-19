@@ -29,7 +29,9 @@ public class MapGenerator {
     public MapGenerator(){
         rand = new Random();
 
-        if(GridGameScreen.getLevel()!="Beginner"){
+        if(GridGameScreen.getLevel()=="Beginner"){
+            generateNewMapEachTime=true;
+        } else {
             if (generateNewMapEachTime) {
                 // random position of carré in the middle
                 // TODO: doesn't work if not generateNewMapEachTime because the position is not remembered above restarts with the same map
