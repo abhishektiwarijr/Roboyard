@@ -462,14 +462,14 @@ public class GridGameScreen extends GameScreen {
             GridElement myp = (GridElement) element;
 
             if (myp.getType().equals("mh")) {
-                drawables.get("mh").setBounds((int)(myp.getX() * gridSpace), (int)(myp.getY() * gridSpace -1), (int)((myp.getX() + 1) * gridSpace), (int)(myp.getY() * gridSpace + 1 + gridLineThickness));
+                drawables.get("mh").setBounds((int)(myp.getX() * gridSpace), (int)(myp.getY() * gridSpace -2), (int)((myp.getX() + 1) * gridSpace), (int)(myp.getY() * gridSpace + gridLineThickness));
                 drawables.get("mh").setColorFilter(wallColor);
                 drawables.get("mh").draw(canvasGrid);
             }
 
             if (myp.getType().equals("mv")) {
                 // vertical lines
-                drawables.get("mv").setBounds((int)(myp.getX() * gridSpace-1), (int)(myp.getY() * gridSpace), (int)(myp.getX() * gridSpace + 1 + gridLineThickness), (int)((myp.getY() + 1) * gridSpace));
+                drawables.get("mv").setBounds((int)(myp.getX() * gridSpace - 2), (int)(myp.getY() * gridSpace), (int)(myp.getX() * gridSpace + gridLineThickness), (int)((myp.getY() + 1) * gridSpace));
                 drawables.get("mv").setColorFilter(wallColor);
                 drawables.get("mv").draw(canvasGrid);
             }
@@ -503,7 +503,7 @@ public class GridGameScreen extends GameScreen {
         colors.put("rb", Color.BLUE);
         colors.put("rv", Color.GREEN);
         colors.put("rj", Color.YELLOW);
-
+        
         colors.put("cr", Color.RED);
         colors.put("cb", Color.BLUE);
         colors.put("cv", Color.GREEN);
