@@ -26,6 +26,10 @@ public class MainActivity extends Activity
     private RenderManager renderManager;
     private GameManager gameManager;
 
+    // used in GridGameScreen, MapGenerator and both solvers:
+    public static int boardSizeX=16; // TODO: crashes on size <12, solver doesn't work on size larger >16
+    public static int boardSizeY=16; // TODO: BFS Solver crashes on different sizes of x an y
+
     public void init() {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();

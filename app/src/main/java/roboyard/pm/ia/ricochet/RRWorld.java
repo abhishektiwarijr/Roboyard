@@ -1,22 +1,24 @@
 package roboyard.pm.ia.ricochet;
 
+import roboyard.eclabs.MainActivity;
 import roboyard.pm.ia.AWorld;
 
 /**
+ * slow Solver (BFS)
  *
  * @author Pierre Michel
  */
 public class RRWorld extends AWorld {
   
   public RRWorld(){
-    this.grid = new RRGridCell[16][16];
-    for(int i=0; i<16; i++){
-      for(int j=0; j<16; j++){
+    this.grid = new RRGridCell[MainActivity.boardSizeX][MainActivity.boardSizeY];
+    for(int i = 0; i< MainActivity.boardSizeX; i++){
+      for(int j=0; j<MainActivity.boardSizeY; j++){
         RRGridCell nc = new RRGridCell();
         if(i==0){ nc.setWall(ERRGameMove.LEFT, false); }
         if(j==0){ nc.setWall(ERRGameMove.UP, false); }
-        if(i==15){ nc.setWall(ERRGameMove.RIGHT, false); }
-        if(j==15){ nc.setWall(ERRGameMove.DOWN, false); }
+        if(i==MainActivity.boardSizeX-1){ nc.setWall(ERRGameMove.RIGHT, false); }
+        if(j==MainActivity.boardSizeX-1){ nc.setWall(ERRGameMove.DOWN, false); }
         this.grid[i][j] = nc;
       }
     }
@@ -36,9 +38,9 @@ public class RRWorld extends AWorld {
   }
   
   public void setVerticalWall(int x, int y){
-    if(y < 16)
+    if(y < MainActivity.boardSizeY)
     {
-      if(x < 16)
+      if(x < MainActivity.boardSizeX)
         this.grid[x][y].setWall(ERRGameMove.LEFT, false);
       if((x-1)>0)
         this.grid[x-1][y].setWall(ERRGameMove.RIGHT, false);
@@ -46,9 +48,9 @@ public class RRWorld extends AWorld {
   }
   
   public void setHorizontalWall(int x, int y){
-    if(x < 16)
+    if(x < MainActivity.boardSizeX)
     {
-      if(y < 16)
+      if(y < MainActivity.boardSizeY)
         this.grid[x][y].setWall(ERRGameMove.UP, false);
       if((y-1)>0)
         this.grid[x][y-1].setWall(ERRGameMove.DOWN, false);
@@ -78,12 +80,12 @@ public class RRWorld extends AWorld {
           }
           break;
         case 2: //RIGHT
-          if(x!=15 && this.grid[x+1][y].hasPiece()){
+          if(x!=MainActivity.boardSizeX-1 && this.grid[x+1][y].hasPiece()){
             keepMoving = false;
           }
           break;
         case 4: //DOWN
-          if(y!=15 && this.grid[x][y+1].hasPiece()){
+          if(y!=MainActivity.boardSizeY-1 && this.grid[x][y+1].hasPiece()){
             keepMoving = false;
           }
           break;
@@ -167,9 +169,9 @@ public class RRWorld extends AWorld {
     int number = 0;
     Boolean isFinished = false;
     
-    for(i = 0; i < 16; i++)
+    for(i = 0; i < MainActivity.boardSizeX; i++)
     {
-        for(j = 0; j < 16; j++)
+        for(j = 0; j < MainActivity.boardSizeY; j++)
         {
             grid[i][j].setPrecomutedNumber(-1);
         }
@@ -186,9 +188,9 @@ public class RRWorld extends AWorld {
     while(!isFinished)
     {
         
-        for(i = 0; i < 16; i++)
+        for(i = 0; i < MainActivity.boardSizeX; i++)
         {
-            for(j = 0; j < 16; j++)
+            for(j = 0; j < MainActivity.boardSizeY; j++)
             {
                 if(grid[i][j].getPrecomutedNumber() == number)
                 {
@@ -209,7 +211,7 @@ public class RRWorld extends AWorld {
                     
                     stop = false;
                     k = i;
-                    while(k < 15 && !stop)
+                    while(k < MainActivity.boardSizeX-1 && !stop)
                     {
                         if((grid[k][j].getWall(ERRGameMove.RIGHT)) && grid[k+1][j].getPrecomutedNumber() == -1)
                         {
@@ -238,7 +240,7 @@ public class RRWorld extends AWorld {
                     
                     stop = false;
                     k = j;
-                    while(k < 15 && !stop)
+                    while(k < MainActivity.boardSizeX-1 && !stop)
                     {
                         if((grid[i][k].getWall(ERRGameMove.DOWN)) && grid[i][k+1].getPrecomutedNumber() == -1)
                         {
@@ -260,9 +262,9 @@ public class RRWorld extends AWorld {
   
   private Boolean checkIfFinished()
   {
-    for(int i = 0; i < 16; i++)
+    for(int i = 0; i < MainActivity.boardSizeX; i++)
     {
-        for(int j = 0; j < 16; j++)
+        for(int j = 0; j < MainActivity.boardSizeY; j++)
         {
             if(grid[i][j].getPrecomutedNumber() == -1)
                 return false;

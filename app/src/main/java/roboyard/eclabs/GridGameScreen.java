@@ -79,8 +79,8 @@ public class GridGameScreen extends GameScreen {
     private GameButtonGeneral buttonSolve;
     private GameButtonGoto buttonSave;
 
-    private int boardSizeX = 16; // TODO: has to be the same value as MapGenerator boardSize. crashes on >16
-    private int boardSizeY = 16;
+    private int boardSizeX = MainActivity.boardSizeX;
+    private int boardSizeY = MainActivity.boardSizeY;
 
     public GridGameScreen(GameManager gameManager){
         super(gameManager);
@@ -445,10 +445,11 @@ public class GridGameScreen extends GameScreen {
         drawables.put("cm", currentRenderManager.getResources().getDrawable(R.drawable.cm)); // multicolor goal
 
         // white background of grid
-        if(boardSizeX==16){
+        if(boardSizeX == 16){
             drawables.get("grid").setBounds(0, 0,(int)( boardSizeX * gridSpace),(int)( boardSizeY * gridSpace));
             drawables.get("grid").draw(canvasGrid);
         }else{
+            // grid with fine lines that gibes other sizes some orientation
             drawables.get("grid_tiles").setBounds(0, 0,(int)( boardSizeX * gridSpace),(int)( boardSizeY * gridSpace));
             drawables.get("grid_tiles").draw(canvasGrid);
         }

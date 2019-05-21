@@ -32,16 +32,20 @@ import java.util.zip.CRC32;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+import roboyard.eclabs.MainActivity;
+
 //import javax.xml.bind.DatatypeConverter;
 
 
-
+/**
+ * create virtual Boards for the main solver (IDDFS)
+ */
 public class Board {
     
-    public static final int WIDTH_STANDARD = 16;
+    public static final int WIDTH_STANDARD = MainActivity.boardSizeX;
     public static final int WIDTH_MIN = 3;
     public static final int WIDTH_MAX = 100;
-    public static final int HEIGHT_STANDARD = 16;
+    public static final int HEIGHT_STANDARD = MainActivity.boardSizeY;
     public static final int HEIGHT_MIN = 3;
     public static final int HEIGHT_MAX = 100;
     public static final int SIZE_MAX = 4096; // 12 bits
