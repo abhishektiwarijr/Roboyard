@@ -25,6 +25,8 @@ public class GamePiece implements IGameObject {
     private int deltaX              = 0;
     private int deltaY              = 0;
     private int initialSpeed        = 16;
+    private int extraSizeForRobotsAndTargets = 1; // robots and targets are 1px larger than the grid and may overlap 1 px
+    private int toleranceForInputManagerTouch = 1000; // virtual circle around robot to touch
 
     private boolean testIfWon       = true;
 
@@ -108,8 +110,7 @@ public class GamePiece implements IGameObject {
         this.xGrid = xGrid;
         this.yGrid = yGrid;
         this.widthCell = this.heightCell = cellSize;
-        this.radius = (int) (cellSize / 2);
-
+        this.radius = (int) (cellSize / 2) + extraSizeForRobotsAndTargets;
     }
 
     @Override
@@ -160,9 +161,10 @@ public class GamePiece implements IGameObject {
                 yTouch = (int)inputManager.getTouchY();
                 dx = xTouch - this.xDraw;
                 dy = yTouch - this.yDraw;
-                //si l'utilisateur a touché le pion, ...
-                if(dx*dx + dy*dy <= this.radius*this.radius && inputManager.downOccurred()){
 
+                // TODO: if two robots touch, set tolerance to 0
+                //si l'utilisateur a touché le pion, ...
+                if(dx*dx + dy*dy - toleranceForInputManagerTouch <= this.radius*this.radius && inputManager.downOccurred()){
                     //afficher l'interface de mouvement
                     ((GridGameScreen)(gameManager.getCurrentScreen())).activateInterface(this, xDraw, yDraw);
                 }

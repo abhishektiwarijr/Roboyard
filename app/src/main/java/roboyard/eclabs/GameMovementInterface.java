@@ -77,6 +77,7 @@ public class GameMovementInterface implements IGameObject {
                     this.display = false;
                     //si il y a une décision, ...
                     if(this.decision >=0){
+                        // the decision of direction to move is made - start moving now
                         //acquérir & transmettre destination du pion
                         ((GridGameScreen)(gameManager.getCurrentScreen())).editDestination(target, this.decision, false);
                     }
