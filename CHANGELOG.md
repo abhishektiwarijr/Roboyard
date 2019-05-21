@@ -3,6 +3,10 @@ CHANGELOG
 
 These are all relevant changes since Version 1.0:
 
+### Version 5.4
+
+- added more tolerance to touch a robot
+
 ### Version 5.3
 
 - Add ambient background sound
