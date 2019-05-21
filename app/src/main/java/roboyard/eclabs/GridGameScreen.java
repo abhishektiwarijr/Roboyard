@@ -288,8 +288,8 @@ public class GridGameScreen extends GameScreen {
 
             numSolutionClicks = 0;
 
-            // show solution as the 3rd to 5th hint
-            showSolutionAtHint = 3 + (int)(Math.random() * ((5 - 3) + 1));
+            // show solution as the 2rd to 5th hint
+            showSolutionAtHint = 2 + (int)(Math.random() * ((5 - 2) + 1));
 
             allMoves.clear();
             autoSaved = false;
