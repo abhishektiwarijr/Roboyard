@@ -29,7 +29,7 @@ public class GameButtonGotoSavedGame extends GameButtonGoto {
             ArrayList gridElements = ((GridGameScreen)gameManager.getScreens().get(gameManager.getPreviousScreenKey())).getGridElements();
 
             FileReadWrite.clearPrivateData(gameManager.getActivity(), mapPath);
-            FileReadWrite.writePrivateData((gameManager.getActivity()), mapPath, MapObjects.createStringFromList(gridElements));
+            FileReadWrite.writePrivateData(gameManager.getActivity(), mapPath, MapObjects.createStringFromList(gridElements));
 
             addMapsSaved(gameManager);
 

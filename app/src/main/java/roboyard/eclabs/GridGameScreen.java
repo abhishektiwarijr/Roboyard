@@ -250,12 +250,12 @@ public class GridGameScreen extends GameScreen {
         }
         renderManager.drawText(10, textPosYTime, "Time: " + timeCpt / 60 + ":" + secondsS);
 
-        if(timeCpt>=40 && autoSaved == false){
+        if(timeCpt>=40 && autoSaved == false && mustStartNext==false){
             // save autosave in slot 0
             ArrayList gridElements = getGridElements();
             String autosaveMapPath=SaveGameScreen.getMapPath(0);
             FileReadWrite.clearPrivateData(gameManager.getActivity(), autosaveMapPath);
-            FileReadWrite.writePrivateData((gameManager.getActivity()), autosaveMapPath, MapObjects.createStringFromList(gridElements));
+            FileReadWrite.writePrivateData(gameManager.getActivity(), autosaveMapPath, MapObjects.createStringFromList(gridElements));
             gameManager.requestToast("Autosaving...", true);
             autoSaved = true;
         }
