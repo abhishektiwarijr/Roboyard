@@ -11,7 +11,6 @@ import driftingdroids.model.Board;
 import driftingdroids.model.Solver;
 import driftingdroids.model.Solution;
 import roboyard.pm.ia.GameSolution;
-import roboyard.pm.ia.IGameMove;
 import roboyard.pm.ia.ricochet.ERRGameMove;
 import roboyard.pm.ia.ricochet.RRGameMove;
 import roboyard.pm.ia.ricochet.RRGetMap;

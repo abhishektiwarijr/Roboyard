@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import roboyard.eclabs.solver.ISolver;
-import roboyard.eclabs.solver.SolverRR;
 import roboyard.eclabs.solver.SolverDD;
 import roboyard.pm.ia.GameSolution;
 import roboyard.pm.ia.IGameMove;
@@ -57,7 +56,6 @@ public class GridGameScreen extends GameScreen {
     private int nbCoups = 0;
     private long prevTime;
 
-    private static boolean solverBFS = false; // default IDDFS (faster)
     private static String UserLevel="Advanced";
     private static ArrayList<GridElement> currentMap;
 
@@ -129,10 +127,6 @@ public class GridGameScreen extends GameScreen {
 
     public static void setMap(ArrayList<GridElement> data){
         GridGameScreen.currentMap = data;
-    }
-
-    public static void setSolverBFS(boolean solverBFS) {
-        GridGameScreen.solverBFS = solverBFS;
     }
 
     @Override
@@ -237,7 +231,7 @@ public class GridGameScreen extends GameScreen {
             renderManager.drawText(10, textPosYSmall, "... restarting!");
             if(timeCpt>2 || solutionMoves>14){
                 // show a popup on restart if it took very long or on very big puzzles
-                requestToast = "Solved in " + solutionMoves + " moves " + (solverBFS?"with BFS (which is slower than IDDFS. this can be changed in Settings)":"") + ". Restarting...";
+                requestToast = "Solved in " + solutionMoves + " moves. Restarting...";
             }
             mustStartNext = true;
         } else if(nbCoups==0 && isSolved && solutionMoves < goodPuzzleMinMoves){
@@ -247,7 +241,7 @@ public class GridGameScreen extends GameScreen {
             renderManager.drawText(10, textPosY, "Number of moves < " + goodPuzzleMinMoves);
             showSolutionAtHint = goodPuzzleMinMoves - solutionMoves;
         } else if(!isSolved){
-            renderManager.drawText(10, textPosY, "AI solving with " + (solverBFS?"BFS (slower)":"IDDFS") + "...");
+            renderManager.drawText(10, textPosY, "AI solving...");
         }
         int seconds = timeCpt%60;
         String secondsS = Integer.toString(seconds);
@@ -395,8 +389,6 @@ public class GridGameScreen extends GameScreen {
         // TODO: this doesn't work here:
         //  GridGameScreen.setMap(gridElements);
 
-        // this.solver = new SolverRR();
-
         createGrid();
     }
 
@@ -412,13 +404,8 @@ public class GridGameScreen extends GameScreen {
     }
 
     public void createGrid() {
-        if(solverBFS) {
-            // set to BFS (slower)
-            this.solver = new SolverRR();
-        } else {
-            // IDFSS
-            this.solver = new SolverDD();
-        }
+        this.solver = new SolverDD();
+
         IAMovesNumber = 0;
         isSolved = false;
 
