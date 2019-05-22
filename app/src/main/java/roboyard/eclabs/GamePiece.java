@@ -165,6 +165,7 @@ public class GamePiece implements IGameObject {
                 // TODO: if two robots touch, set tolerance to 0
                 //si l'utilisateur a touché le pion, ...
                 if(dx*dx + dy*dy - toleranceForInputManagerTouch <= this.radius*this.radius && inputManager.downOccurred()){
+                    // TODO: enlarge and put in front with this.radius+=1;
                     //afficher l'interface de mouvement
                     ((GridGameScreen)(gameManager.getCurrentScreen())).activateInterface(this, xDraw, yDraw);
                 }
@@ -172,7 +173,7 @@ public class GamePiece implements IGameObject {
 
 
         }else{ //sinon (si le pion doit bouger),
-
+            // TODO: reset if enlarging worked this.radius=32;
             inMovement = true;
             testIfWon = true;
 
@@ -201,7 +202,7 @@ public class GamePiece implements IGameObject {
                 deltaY -= deltaValue;
             }
 
-
+            // TODO: enable faster than speed 9
             if(deltaX > 9) {
                 this.x += 1;
                 deltaX = 0;
