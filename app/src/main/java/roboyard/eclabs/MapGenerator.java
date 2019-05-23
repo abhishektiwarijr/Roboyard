@@ -27,8 +27,7 @@ public class MapGenerator {
 
     public MapGenerator(){
         rand = new Random();
-
-        if(GridGameScreen.getLevel()=="Beginner"){
+        if(GridGameScreen.getLevel().equals("Beginner")){
             generateNewMapEachTime=true;
         } else {
             if (generateNewMapEachTime) {
@@ -45,7 +44,7 @@ public class MapGenerator {
             loneWallsAllowed = true;
         }
 
-        if(GridGameScreen.getLevel()=="Insane") {
+        if(GridGameScreen.getLevel().equals("Insane")) {
             targetMustBeInCorner = false;
 
             maxWallsInOneVerticalCol = 5;

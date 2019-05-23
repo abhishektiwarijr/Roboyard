@@ -13,8 +13,7 @@ public class SettingsGameScreen extends GameScreen {
     private int hs2;
     private int ws2;
     private String UserLevel="Advanced";
-
-
+    private Preferences preferences = new Preferences();
 
     public SettingsGameScreen(GameManager gameManager){
         super(gameManager);
@@ -24,9 +23,6 @@ public class SettingsGameScreen extends GameScreen {
     public void create() {
         ws2 = this.gameManager.getScreenWidth()/2;
         hs2 = this.gameManager.getScreenHeight()/2;
-
-        int width = this.gameManager.getScreenWidth();
-        int height = this.gameManager.getScreenHeight();
 
         float ratioW = ((float)gameManager.getScreenWidth()) /((float)1080);
         float ratioH = ((float)gameManager.getScreenHeight()) /((float)1920);
@@ -63,6 +59,7 @@ public class SettingsGameScreen extends GameScreen {
         renderManager.setTextSize(ts);
 
         renderManager.drawText(10, 1*ts, "Difficulty:");
+        UserLevel=preferences.getPreferenceValue(gameManager.getActivity(), "difficulty");
         if(UserLevel!=""){
             renderManager.drawText(10, 3*ts, UserLevel);
         }
@@ -87,18 +84,20 @@ public class SettingsGameScreen extends GameScreen {
 
     private class setBeginnner implements IExecutor{
         public void execute() {
-            GridGameScreen.setLevel("Beginner");
+            preferences.setPreferences(gameManager.getActivity(), "difficulty", "Beginner");
             UserLevel="Beginner";
         }
     }
     private class setAdvanced implements IExecutor{
         public void execute() {
+            preferences.setPreferences(gameManager.getActivity(),"difficulty", "Advanced");
             GridGameScreen.setLevel("Advanced");
             UserLevel="Advanced";
         }
     }
     private class setInsane implements IExecutor{
         public void execute() {
+            preferences.setPreferences(gameManager.getActivity(),"difficulty", "Insane");
             GridGameScreen.setLevel("Insane");
             UserLevel="Insane";
         }

@@ -2,6 +2,7 @@ package roboyard.eclabs;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.SurfaceTexture;

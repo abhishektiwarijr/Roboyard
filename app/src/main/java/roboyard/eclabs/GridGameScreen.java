@@ -19,6 +19,8 @@ import roboyard.pm.ia.GameSolution;
 import roboyard.pm.ia.IGameMove;
 import roboyard.pm.ia.ricochet.RRGameMove;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by Alain on 25/02/2015.
  */
@@ -79,10 +81,11 @@ public class GridGameScreen extends GameScreen {
 
     private int boardSizeX = MainActivity.boardSizeX;
     private int boardSizeY = MainActivity.boardSizeY;
+    private Preferences preferences = new Preferences();
 
     public GridGameScreen(GameManager gameManager){
         super(gameManager);
-
+        setLevel(preferences.getPreferenceValue(gameManager.getActivity(), "difficulty"));
         gridSpace = (float)((16/(float)boardSizeX) * 67.3 * gameManager.getScreenWidth() /1080);
         xGrid = 0;
         yGrid = 1080/5;
@@ -108,13 +111,13 @@ public class GridGameScreen extends GameScreen {
 
     public static void setLevel(String UserLevel) {
         GridGameScreen.UserLevel = UserLevel;
-        if(UserLevel=="Beginner") {
+        if(UserLevel.equals("Beginner")) {
             GridGameScreen.goodPuzzleMinMoves = 6;
             GridGameScreen.simplePuzzleMinMoves = 4;
-        } else if(UserLevel=="Advanced") {
+        } else if(UserLevel.equals("Advanced")) {
             GridGameScreen.goodPuzzleMinMoves = 8;
             GridGameScreen.simplePuzzleMinMoves = 6;
-        } else if(UserLevel=="Insane") {
+        } else if(UserLevel.equals("Insane")) {
             GridGameScreen.goodPuzzleMinMoves = 10;
             GridGameScreen.simplePuzzleMinMoves = 10;
             GridGameScreen.requestToast = "Insane level will generate a fitting puzzle. This can take a while. In case the solver gets stuck, press >>";
