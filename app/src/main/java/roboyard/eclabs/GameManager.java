@@ -57,6 +57,10 @@ public class GameManager {
         this.activity.closeApp();
     }
 
+    public void requestRestart(){
+        this.activity.restartApp();
+    }
+
     public void requestToast(CharSequence str, boolean big){
         this.activity.doToast(str, big);
     }

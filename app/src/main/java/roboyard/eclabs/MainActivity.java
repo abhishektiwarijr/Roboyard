@@ -1,8 +1,10 @@
 package roboyard.eclabs;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.SurfaceTexture;
@@ -26,6 +28,8 @@ public class MainActivity extends Activity
     private InputManager inputManager;
     private RenderManager renderManager;
     private GameManager gameManager;
+    private Preferences preferences = new Preferences();
+
 
     // used in GridGameScreen, MapGenerator and both solvers:
     public static int boardSizeX=16; // TODO: crashes on size <12, solver doesn't work on size larger >16
@@ -51,6 +55,22 @@ public class MainActivity extends Activity
         this.gameManager.destroy();
         this.finish();
         System.exit(0);
+    }
+
+    /**
+     * relaunches the task, but it does not restart the process, or even the Application object.
+     * Therefore any static data, data initialized during creation of the Application, or jni
+     * classes remain in their current state and are not reinitialized
+     */
+    public void restartApp(){
+        Context context=getApplicationContext();
+        PackageManager packageManager = context.getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
+        ComponentName componentName = intent.getComponent();
+        Intent mainIntent = Intent.makeRestartActivityTask(componentName);
+        context.startActivity(mainIntent);
+        System.out.println("The app must restart to change the sound settings...");
+        Runtime.getRuntime().exit(0);
     }
 
     public void doToast(final CharSequence str, final boolean big){
@@ -122,8 +142,11 @@ public class MainActivity extends Activity
     }
 
     public void startSound(){
-        //start service and play music
-        startService(new Intent(MainActivity.this, SoundService.class));
+        String soundSetting=preferences.getPreferenceValue(gameManager.getActivity(), "sound");
+        if(soundSetting.equals("on")) {
+            //start service and play music
+            startService(new Intent(MainActivity.this, SoundService.class));
+        }
     }
     public void stopSound(){
         //stop service and stop music

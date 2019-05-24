@@ -10,6 +10,8 @@ public class SettingsGameScreen extends GameScreen {
     private GameButtonGeneral buttonBeginner = null;
     private GameButtonGeneral buttonAdvanced = null;
     private GameButtonGeneral buttonInsane = null;
+    private GameButtonGeneral buttonSoundOff = null;
+    private GameButtonGeneral buttonSoundOn = null;
     private int hs2;
     private int ws2;
     private String UserLevel="Advanced";
@@ -32,10 +34,15 @@ public class SettingsGameScreen extends GameScreen {
         buttonAdvanced = new GameButtonGeneral((int)(390*ratioW), (int)((380)*ratioH),(int) (120*2*ratioW),(int) (128*ratioH), R.drawable.bt_up, R.drawable.bt_down, new setAdvanced());
         buttonInsane   = new GameButtonGeneral((int)(740*ratioW), (int)((380)*ratioH),(int) (120*2*ratioW),(int) (128*ratioH), R.drawable.bt_up, R.drawable.bt_down, new setInsane());
 
+        buttonSoundOn = new GameButtonGeneral((int)(240*ratioW), (int)((780)*ratioH),(int) (222*ratioW),(int) (222*ratioH), R.drawable.bt_sound_on_up, R.drawable.bt_sound_on_down, new setSoundon());
+        buttonSoundOff = new GameButtonGeneral((int)(540*ratioW), (int)((780)*ratioH),(int) (222*ratioW),(int) (222*ratioH), R.drawable.bt_sound_off_up, R.drawable.bt_sound_off_down, new setSoundoff());
+
         // Add Button to set Beginner/Advanced/Insane
         this.instances.add(buttonBeginner);
         this.instances.add(buttonAdvanced);
         this.instances.add(buttonInsane);
+        this.instances.add(buttonSoundOff);
+        this.instances.add(buttonSoundOn);
 
         // Add Button back to main screen
         this.instances.add(new GameButtonGoto(7*ws2/4-128, 9*hs2/5-128, 128, 128, R.drawable.bt_back_up, R.drawable.bt_back_down, 0));
@@ -102,4 +109,20 @@ public class SettingsGameScreen extends GameScreen {
             UserLevel="Insane";
         }
     }
+
+    private class setSoundoff implements IExecutor{
+        public void execute() {
+            preferences.setPreferences(gameManager.getActivity(),"sound", "off");
+            gameManager.requestRestart();
+        }
+    }
+
+
+    private class setSoundon implements IExecutor{
+        public void execute() {
+            preferences.setPreferences(gameManager.getActivity(),"sound", "on");
+            gameManager.requestRestart();
+        }
+    }
+
 }
