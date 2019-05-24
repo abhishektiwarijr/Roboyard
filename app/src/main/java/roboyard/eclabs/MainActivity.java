@@ -69,7 +69,7 @@ public class MainActivity extends Activity
         ComponentName componentName = intent.getComponent();
         Intent mainIntent = Intent.makeRestartActivityTask(componentName);
         context.startActivity(mainIntent);
-        System.out.println("The app must restart to change the sound settings...");
+        System.out.println("The app restarts by trigger");
         Runtime.getRuntime().exit(0);
     }
 
@@ -143,7 +143,7 @@ public class MainActivity extends Activity
 
     public void startSound(){
         String soundSetting=preferences.getPreferenceValue(gameManager.getActivity(), "sound");
-        if(soundSetting.equals("on")) {
+        if(soundSetting.equals("off") == false) {
             //start service and play music
             startService(new Intent(MainActivity.this, SoundService.class));
         }

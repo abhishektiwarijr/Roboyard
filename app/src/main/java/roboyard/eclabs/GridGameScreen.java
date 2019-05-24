@@ -58,7 +58,7 @@ public class GridGameScreen extends GameScreen {
     private int nbCoups = 0;
     private long prevTime;
 
-    private static String UserLevel="Advanced";
+    private static String levelDifficulty="Advanced";
     private static ArrayList<GridElement> currentMap;
 
     private int IAMovesNumber = 0;
@@ -85,7 +85,13 @@ public class GridGameScreen extends GameScreen {
 
     public GridGameScreen(GameManager gameManager){
         super(gameManager);
-        setLevel(preferences.getPreferenceValue(gameManager.getActivity(), "difficulty"));
+        String ld=preferences.getPreferenceValue(gameManager.getActivity(), "difficulty");
+        if(ld.equals("")){
+            // default difficulty
+            ld="Advanced";
+            preferences.setPreferences(gameManager.getActivity(),"difficulty", ld);
+        }
+        setDifficulty(ld);
         gridSpace = (float)((16/(float)boardSizeX) * 67.3 * gameManager.getScreenWidth() /1080);
         xGrid = 0;
         yGrid = 1080/5;
@@ -106,18 +112,18 @@ public class GridGameScreen extends GameScreen {
     }
 
     public static String getLevel() {
-        return GridGameScreen.UserLevel;
+        return GridGameScreen.levelDifficulty;
     }
 
-    public static void setLevel(String UserLevel) {
-        GridGameScreen.UserLevel = UserLevel;
-        if(UserLevel.equals("Beginner")) {
+    public static void setDifficulty(String levelDifficulty) {
+        GridGameScreen.levelDifficulty = levelDifficulty;
+        if(levelDifficulty.equals("Beginner")) {
             GridGameScreen.goodPuzzleMinMoves = 6;
             GridGameScreen.simplePuzzleMinMoves = 4;
-        } else if(UserLevel.equals("Advanced")) {
+        } else if(levelDifficulty.equals("Advanced")) {
             GridGameScreen.goodPuzzleMinMoves = 8;
             GridGameScreen.simplePuzzleMinMoves = 6;
-        } else if(UserLevel.equals("Insane")) {
+        } else if(levelDifficulty.equals("Insane")) {
             GridGameScreen.goodPuzzleMinMoves = 10;
             GridGameScreen.simplePuzzleMinMoves = 10;
             GridGameScreen.requestToast = "Insane level will generate a fitting puzzle. This can take a while. In case the solver gets stuck, press >>";
@@ -420,6 +426,7 @@ public class GridGameScreen extends GameScreen {
 
         drawables.put("grid", currentRenderManager.getResources().getDrawable(R.drawable.grid)); // white background
         drawables.put("grid_tiles", currentRenderManager.getResources().getDrawable(R.drawable.grid_tiles)); // white background for other than 16x16 boards
+        drawables.put("roboyard", currentRenderManager.getResources().getDrawable(R.drawable.roboyard)); // center roboyard in carré
         drawables.put("mh", currentRenderManager.getResources().getDrawable(R.drawable.mh)); // horizontal lines
         drawables.put("mv", currentRenderManager.getResources().getDrawable(R.drawable.mv)); // vertical lines
 
@@ -443,6 +450,10 @@ public class GridGameScreen extends GameScreen {
             drawables.get("grid_tiles").setBounds(0, 0,(int)( boardSizeX * gridSpace),(int)( boardSizeY * gridSpace));
             drawables.get("grid_tiles").draw(canvasGrid);
         }
+
+        // grid with fine lines that gibes other sizes some orientation
+        drawables.get("roboyard").setBounds((int)((boardSizeX/2 - 1)*gridSpace),(int)((boardSizeY/2 - 1)*gridSpace),(int)((boardSizeX/2 + 1)*gridSpace),(int)((boardSizeY/2 + 1)*gridSpace));
+        drawables.get("roboyard").draw(canvasGrid);
 
         // draw targets
         for (Object element : gridElements) {
