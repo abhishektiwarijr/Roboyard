@@ -1,18 +1,18 @@
 Roboyard
 ==========
 
-An Android-based application to play the board game "Ricochet Robots ©". It includes an artificial intelligence capable of playing the game.
+An Android-based application like the board game "Ricochet Robots ©". It includes an artificial intelligence capable of playing the game.
 
-Roboyard allows to record up to 15 diferent maps. So if during your games you encounter an interesting map, memorize the order to play again!
+Roboyard allows to record up to 35 different maps. So if during your games you encounter an interesting map, save it to play it later again!
 
 # Download App
 You can either clone this Repository and open it with android-studio to build the app
-or use the direct link to a compliled version here: https://github.com/rubo77/Roboyard/releases/
+or download a compliled version from the releases: https://github.com/rubo77/Roboyard/releases/
 
 # Screenshot
-![](http://perso-laris.univ-angers.fr/~projetsei4/1415/P2/img/screenshots/app-1.png)
+![](download/Roboyard_screenshot.png)
 
-# Build
+# Build in Android Studio
 - ensure you have at least 2GB of free space in your home partition
 - Install Android Studio (easy with `sudo snap install --classic android-studio`)
 - choose all standard and next at the end of the setup choose to import project (Gradle)

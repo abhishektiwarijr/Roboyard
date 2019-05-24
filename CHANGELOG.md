@@ -3,7 +3,7 @@ CHANGELOG
 
 These are all relevant changes since Version 1.0:
 
-### Version 6.2
+### Version 7.0
 
 - Adapted resolution to Android 4.1.1 with 480px width
 
@@ -54,7 +54,7 @@ New in Advanced:
   - The square must not be in the middle
   - three lines allowed in the same row/column
   - no multi-color target
-  
+
 New in Insane:
 
   - solutions with 10 moves are enough
