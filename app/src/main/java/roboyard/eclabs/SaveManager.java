@@ -3,6 +3,7 @@ package roboyard.eclabs;
 import android.app.Activity;
 
 /**
+ * screen 9: save games
  * Created by Alain on 28/03/2015.
  */
 public class SaveManager {

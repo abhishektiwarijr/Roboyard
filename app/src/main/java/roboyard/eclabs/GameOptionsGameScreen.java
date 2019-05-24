@@ -14,11 +14,18 @@ public class GameOptionsGameScreen extends GameScreen {
 
     @Override
     public void create() {
-        int ws2 = this.gameManager.getScreenWidth()/2;
-        int hs2 = this.gameManager.getScreenHeight()/2;
-        this.instances.add(new GameButtonGotoRandomGame(ws2 - 128, hs2 - 512, 256, 256, R.drawable.bt_start_up_random, R.drawable.bt_start_down_random, 4));
-        this.instances.add(new GameButtonGoto(ws2-128, hs2-128, 256, 256, R.drawable.bt_start_up, R.drawable.bt_start_down, 5));
-        this.instances.add(new GameButtonGoto(ws2-128, hs2+256, 256, 256, R.drawable.bt_start_up_saved, R.drawable.bt_start_down_saved, 9));
+        int buttonSize=440;
+        float ratioW = ((float)gameManager.getScreenWidth()) /((float)1080);
+        float ratioH = ((float)gameManager.getScreenHeight()) /((float)1920);
+        int relativeButtonWidth=(int)(ratioW*(float)buttonSize);
+        int ws2 = (int)(((float)this.gameManager.getScreenWidth()-relativeButtonWidth)/2);
+
+        // screen 4: start random game
+        this.instances.add(new GameButtonGotoRandomGame(ws2, (int) (ratioH * 200), relativeButtonWidth, (int)(ratioH * buttonSize), R.drawable.bt_start_up_random, R.drawable.bt_start_down_random, 4));
+        // screen 5: start level game
+        this.instances.add(new GameButtonGoto(ws2, (int)(ratioH * 750), relativeButtonWidth, (int)(ratioH * buttonSize), R.drawable.bt_start_up, R.drawable.bt_start_down, 5));
+        // screen 9: save games
+        this.instances.add(new GameButtonGoto(ws2, (int)(ratioH * 1300), relativeButtonWidth, (int)(ratioH * buttonSize), R.drawable.bt_start_up_saved, R.drawable.bt_start_down_saved, 9));
     }
 
     @Override

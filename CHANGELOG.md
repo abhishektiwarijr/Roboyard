@@ -3,7 +3,12 @@ CHANGELOG
 
 These are all relevant changes since Version 1.0:
 
+### Version 6.2
+
+- Adapted resolution to Android 4.1.1 with 480px width
+
 ### Version 6.1
+
 - added Sound on/off in Game settings (icons from freeiconspng [1](https://www.freeiconspng.com/img/40963), [2](https://www.freeiconspng.com/img/40944))
 - Add roboyard in the middle of the play field
 

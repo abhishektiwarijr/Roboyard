@@ -37,6 +37,13 @@ public class GameManager {
         this.screens = new SparseArray<GameScreen>();
         this.activity = activity;
         //list of all screens
+        /* screen 1: second start screen
+         * screen 2: settings
+         * screen 3: credits
+         * screen 4: start random game
+         * screen 5-8: start level game
+         * screen 9: save games
+         */
         this.screens.append(0, new MainMenuGameScreen(this));
         this.screens.append(1, new GameOptionsGameScreen(this));
         this.screens.append(2, new SettingsGameScreen(this));

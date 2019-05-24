@@ -12,8 +12,8 @@ public class GameButtonGotoRandomGame extends GameButtonGoto{
     @Override
     public void onClick(GameManager gameManager) {
         super.onClick(gameManager);
-
-        ((GridGameScreen)(gameManager.getScreens().get(4))).setRandomGame(true);
+        // target 4: start game
+        ((GridGameScreen)(gameManager.getScreens().get(4))).setRandomGame();
 
 
     }

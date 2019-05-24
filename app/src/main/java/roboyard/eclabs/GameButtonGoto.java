@@ -6,6 +6,22 @@ package roboyard.eclabs;
 public class GameButtonGoto extends GameButton {
     private int targetScreen;
 
+    /**
+     * big button to start another screen
+     * @param x x-position
+     * @param y y-position
+     * @param w width
+     * @param h height
+     * @param imageUp   image, visible without touch
+     * @param imageDown image, visible when touched
+     * @param target    number of the screen defined in GameManager
+     * screen 1: goto GameOptionsGameScreen
+     * screen 2: settings
+     * screen 3: credits
+     * screen 4: start random game
+     * screen 5-8: start a level game
+     * screen 9: save games
+     */
     public GameButtonGoto(int x, int y, int w, int h, int imageUp, int imageDown, int target){
         super(x, y, w, h, imageUp, imageDown);
         this.targetScreen = target;
@@ -13,7 +29,6 @@ public class GameButtonGoto extends GameButton {
 
     @Override
     public void onClick(GameManager gameManager) {
-
         gameManager.setGameScreen(this.targetScreen);
     }
 }

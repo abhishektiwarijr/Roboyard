@@ -222,7 +222,9 @@ public class GridGameScreen extends GameScreen {
         int textPosYSmall = 2*lineHeight-4;
         int textPosYTime = yGrid/2+lineHeight;
         renderManager.setTextSize(lineHeight);
-
+        if(gameManager.getScreenWidth() <=480){
+            renderManager.setTextSize(lineHeightSmall);
+        }
         if(nbCoups>0){
             // at least one move was made by hand or by AI
             renderManager.drawText(10, textPosY, "Number of moves: " + nbCoups);
@@ -325,10 +327,9 @@ public class GridGameScreen extends GameScreen {
             {
                 mapPath = "Maps/generatedMap_"+(integer+1)+".txt";
                 setLevelGame(mapPath);
-            }
-            else
-            {
-                setRandomGame(true);
+            } else {
+                // start a game in screen 4
+                setRandomGame();
             }
             System.out.println("C");
 
@@ -401,13 +402,13 @@ public class GridGameScreen extends GameScreen {
         createGrid();
     }
 
-    public void setRandomGame(boolean random) {
-
+    /**
+     * creates the grid in screen 4 (game screen)
+     */
+    public void setRandomGame() {
         this.mapPath = "";  //La carte étant générée, elle n'a pas de chemin d'accès
         MapGenerator generatedMap = new MapGenerator();
         gridElements = generatedMap.getGeneratedGameMap();
-
-        // this.solver = new SolverDD();
 
         createGrid();
     }
