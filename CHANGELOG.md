@@ -3,6 +3,14 @@ CHANGELOG
 
 These are all relevant changes since Version 1.0:
 
+### Version 6.0
+
+- show solution as the 2nd to 5th hint
+- added Sound on/off in Game settings
+- persistently store Settings
+- remove (slower) BFS Solver algorithm
+- fix bug, that was extra autosaving when starting a new level
+
 ### Version 5.4
 
 - added more tolerance to touch a robot
