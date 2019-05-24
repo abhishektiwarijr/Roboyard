@@ -12,6 +12,20 @@ or download a compliled version from the releases: https://github.com/rubo77/Rob
 # Screenshot
 ![](download/Roboyard_screenshot.png)
 
+# Difficulty
+- Beginner
+  - show only puzzles with at least 4-6 moves
+- Advanced
+  - show only puzzles with at least 6-8 moves
+  - keep initial playing field when starting the next game
+  - keep playing field when loading a saved game
+  - three lines allowed in the same row/column
+  - no multi-color target
+- Insane mode
+  - solutions with at least 10 moves
+  - five lines allowed in the same row/column
+
+
 # Build in Android Studio
 - ensure you have at least 2GB of free space in your home partition
 - Install Android Studio (easy with `sudo snap install --classic android-studio`)

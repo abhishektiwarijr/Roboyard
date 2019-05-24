@@ -1,7 +1,9 @@
 CHANGELOG
 =========
 
-These are all relevant changes since Version 1.0:
+### Version 7.1
+
+- New Launcher Icon
 
 ### Version 7.0
 
@@ -97,3 +99,31 @@ New in Insane:
 ### Version 1.0
 
 - last french version
+
+# These are all relevant changes since Version 1.0:
+
+- New Launcher Icon
+- Adapted resolution to Android 4.1.1 with 480px width
+- added Sound on/off in Game settings
+- show solution as the 2nd to 5th hint
+- persistently store Settings
+- remove (slower) BFS Solver algorithm
+- added more tolerance to touch a robot
+- Add ambient background sound
+- Walls are green hedges (better visible)
+- increase the initial movement speed of robots with linear slow-down
+- Beginner mode
+  - show only puzzles with at least 4-6 moves
+- Advanced mode
+  - show only puzzles with at least 6-8 moves
+  - keep initial playing field when starting the next game
+  - keep playing field when loading a saved game
+  - three lines allowed in the same row/column
+  - no multi-color target
+- Insane Mode
+  - solutions with 10 moves
+  - five lines allowed in the same row/column
+- Spheres are now Robots
+- 35 savegames and levels per page
+- Autosave the current game after 40s in save slot 0
+- fix bug: no save button when playing a saved game (was crashing the game)
