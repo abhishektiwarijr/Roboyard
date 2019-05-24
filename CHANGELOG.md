@@ -4,7 +4,7 @@ CHANGELOG
 These are all relevant changes since Version 1.0:
 
 ### Version 6.1
-- added Sound on/off in Game settings
+- added Sound on/off in Game settings (icons from freeiconspng [1](https://www.freeiconspng.com/img/40963), [2](https://www.freeiconspng.com/img/40944))
 - Add roboyard in the middle of the play field
 
 ### Version 6.0

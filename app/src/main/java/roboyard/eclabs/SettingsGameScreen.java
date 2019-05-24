@@ -39,6 +39,7 @@ public class SettingsGameScreen extends GameScreen {
         buttonAdvanced = new GameButtonGeneral((int)(390*ratioW), (int)((380)*ratioH),(int) (120*2*ratioW),(int) (128*ratioH), R.drawable.bt_up, R.drawable.bt_down, new setAdvanced());
         buttonInsane   = new GameButtonGeneral((int)(740*ratioW), (int)((380)*ratioH),(int) (120*2*ratioW),(int) (128*ratioH), R.drawable.bt_up, R.drawable.bt_down, new setInsane());
 
+        // icons from freeiconspng [1](https://www.freeiconspng.com/img/40963), [2](https://www.freeiconspng.com/img/40944)
         buttonSoundOn = new GameButtonGeneral((int)(240*ratioW), (int)((780)*ratioH),(int) (222*ratioW),(int) (222*ratioH), R.drawable.bt_sound_on_up, R.drawable.bt_sound_on_down, new setSoundon());
         buttonSoundOff = new GameButtonGeneral((int)(540*ratioW), (int)((780)*ratioH),(int) (222*ratioW),(int) (222*ratioH), R.drawable.bt_sound_off_up, R.drawable.bt_sound_off_down, new setSoundoff());
 
