@@ -273,7 +273,7 @@ public class GridGameScreen extends GameScreen {
             String autosaveMapPath=SaveGameScreen.getMapPath(0);
             FileReadWrite.clearPrivateData(gameManager.getActivity(), autosaveMapPath);
             FileReadWrite.writePrivateData(gameManager.getActivity(), autosaveMapPath, MapObjects.createStringFromList(gridElements));
-            gameManager.requestToast("Autosaving...", true);
+            gameManager.requestToast("Autosaving...", false);
             autoSaved = true;
         }
 
@@ -752,9 +752,9 @@ public class GridGameScreen extends GameScreen {
             }else{
                 numSolutionClicks++;
                 if(numSolutionClicks < showSolutionAtHint) {
-                    gameManager.requestToast("Press again to see the next hint.", true);
+                    gameManager.requestToast("Press again to see the next hint.", false);
                 } else {
-                    gameManager.requestToast("Press again to see the solution.", true);
+                    gameManager.requestToast("Press again to see the solution.", false);
                 }
             }
         }

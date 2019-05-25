@@ -1,7 +1,11 @@
 Roboyard
 ==========
 
-An Android-based application like the board game "Ricochet Robots ©". It includes an artificial intelligence capable of playing the game.
+A simple but challenging Android puzzle game inspired by the board game "Ricochet Robots ©". It includes an artificial intelligence capable of solving the puzzles.
+
+You control four robots in a yard full of hedges, that block their way. The goal is to guide a particular robot to its destination. The robots move until they either hit a hedge or another robot.
+
+The special feature of this app is the automatic solution finding algorithm, which can show you hints and also the optimal solution.
 
 Roboyard allows to record up to 35 different maps. So if during your games you encounter an interesting map, save it to play it later again!
 
