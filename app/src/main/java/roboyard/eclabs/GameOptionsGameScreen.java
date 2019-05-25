@@ -15,6 +15,7 @@ public class GameOptionsGameScreen extends GameScreen {
     @Override
     public void create() {
         int buttonSize=440;
+        // TODO: take the maximum out of a 1080x1920 square, lower ratio if the screen is not as long
         float ratio = ((float)gameManager.getScreenWidth()) /((float)1080);
         int relativeButtonWidth=(int)(ratio*(float)buttonSize);
         int ws2 = (int)(((float)this.gameManager.getScreenWidth()-relativeButtonWidth)/2);

@@ -4,24 +4,29 @@ package roboyard.eclabs;
  * Created by Alain on 25/03/2015.
  */
 public class Move {
+    public GamePiece _p;
+    public int _x;
+    public int _y;
+    private int squaresMoved;
 
-
-    private GamePiece _p;
-    private int _x;
-    private int _y;
-
-    public Move(GamePiece p, int x, int y)
-    {
+    public Move(GamePiece p, int x, int y){
         _p = p;
         _x = x;
         _y = y;
     }
 
-    public void goBack()
-    {
+    public void goBack(){
         _p.setX(_x);
         _p.setY(_y);
         _p.setxObjective(_x);
         _p.setyObjective(_y);
+    }
+
+    public int getSquaresMoved(){
+        return this.squaresMoved;
+    }
+
+    public void setSquaresMoved(int moved){
+        this.squaresMoved=moved;
     }
 }

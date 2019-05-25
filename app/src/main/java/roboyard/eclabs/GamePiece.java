@@ -6,9 +6,6 @@ import android.graphics.Color;
  * Created by Pierre on 25/02/2015.
  */
 public class GamePiece implements IGameObject {
-
-
-
     private int x                   = 0;
     private int y                   = 0;
     private int xObjective          = 0;
@@ -24,6 +21,8 @@ public class GamePiece implements IGameObject {
     private boolean inMovement      = false;
     private int deltaX              = 0;
     private int deltaY              = 0;
+    private int curMoveSquares      = 0;
+    private int numSquaresMoved     = 0;
     private int initialSpeed        = 16;
     private int extraSizeForRobotsAndTargets = 1; // robots and targets are 1px larger than the grid and may overlap 1 px
     private int toleranceForInputManagerTouch = 1000; // virtual circle around robot to touch
@@ -84,6 +83,8 @@ public class GamePiece implements IGameObject {
         this.xObjective = x;
         this.yObjective = y;
         this.color = color;
+        this.curMoveSquares=0;
+        this.numSquaresMoved=0;
 
         switch(color)
         {
@@ -104,6 +105,10 @@ public class GamePiece implements IGameObject {
                 break;
         }
 
+    }
+
+    public int getCurMoveSquares(){
+        return this.curMoveSquares;
     }
 
     public void setGridDimensions(int xGrid, int yGrid, float cellSize){
@@ -174,6 +179,13 @@ public class GamePiece implements IGameObject {
 
         }else{ //sinon (si le pion doit bouger),
             // TODO: reset if enlarging worked this.radius=32;
+            if(inMovement==false){
+                // before move
+                this.curMoveSquares=Math.abs(this.xObjective-this.x)+Math.abs(this.yObjective-this.y);
+                this.numSquaresMoved+=this.curMoveSquares;
+                System.out.println(" start move with "+this.curMoveSquares+" squares");
+                ((GridGameScreen)(gameManager.getCurrentScreen())).setCurrentMovedSquares(this.curMoveSquares);
+            }
             inMovement = true;
             testIfWon = true;
 
@@ -181,7 +193,7 @@ public class GamePiece implements IGameObject {
 
             if(this.x < this.xObjective) {
                 for(int i=deltaValue-1; i>0; i--){
-                    if(this.x > this.xObjective-(i+1)) deltaValue=i; // slow down
+                    if(this.x > this.xObjective - (i+1)) deltaValue = i; // slow down
                 }
                 deltaX += deltaValue;
             } else if(this.x > this.xObjective) {

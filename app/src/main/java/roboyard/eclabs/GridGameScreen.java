@@ -56,6 +56,8 @@ public class GridGameScreen extends GameScreen {
 
     private int timeCpt = 0;
     private int nbCoups = 0;
+    private int numSquares = 0;
+    private int currentMovedSquares = 0;
     private long prevTime;
 
     private static String levelDifficulty="Advanced";
@@ -92,7 +94,7 @@ public class GridGameScreen extends GameScreen {
             preferences.setPreferences(gameManager.getActivity(),"difficulty", ld);
         }
         setDifficulty(ld);
-        gridSpace = (float)((16/(float)boardSizeX) * 67.3 * gameManager.getScreenWidth() /1080);
+        gridSpace = (float)gameManager.getScreenWidth() / (float)boardSizeX;
         xGrid = 0;
         yGrid = 1080/5;
 
@@ -216,18 +218,21 @@ public class GridGameScreen extends GameScreen {
 
         //renderManager.setColor(Color.BLACK);
         renderManager.setColor(Color.GRAY);
-        int lineHeight = yGrid/2-60; // 58
-        int lineHeightSmall = lineHeight-15;
+        float ratio = ((float)gameManager.getScreenWidth()) /((float)1080); // bei 720x1280:0.6667 bei 1440x2580:1.333
+        int lineHeight = (int)(ratio*55);
+        int lineHeightSmall = (int)(lineHeight*0.8);
         int textPosY = lineHeight;
-        int textPosYSmall = 2*lineHeight-4;
-        int textPosYTime = yGrid/2+lineHeight;
+        int textPosYSmall = 2*lineHeight-(int)(ratio*4);
+        int textPosYTime = 2*lineHeight+lineHeightSmall+(int)(8/ratio);
         renderManager.setTextSize(lineHeight);
         if(gameManager.getScreenWidth() <=480){
             renderManager.setTextSize(lineHeightSmall);
         }
         if(nbCoups>0){
             // at least one move was made by hand or by AI
-            renderManager.drawText(10, textPosY, "Number of moves: " + nbCoups);
+            renderManager.drawText(10, textPosY, "Moves: " + nbCoups);
+            renderManager.setTextSize(lineHeightSmall);
+            renderManager.drawText(10, textPosYSmall, "Squares: " + numSquares);
         } else if(isSolved && numSolutionClicks>0){
             // show solution
             if(numSolutionClicks-showSolutionAtHint >= 0) {
@@ -259,6 +264,7 @@ public class GridGameScreen extends GameScreen {
         if(seconds < 10){
             secondsS="0" + secondsS;
         }
+        renderManager.setTextSize(lineHeightSmall);
         renderManager.drawText(10, textPosYTime, "Time: " + timeCpt / 60 + ":" + secondsS);
 
         if(timeCpt>=40 && autoSaved == false && mustStartNext==false){
@@ -292,6 +298,7 @@ public class GridGameScreen extends GameScreen {
         if(mustStartNext) {
 
             numSolutionClicks = 0;
+            currentMovedSquares = 0;
 
             // show solution as the 2rd to 5th hint
             showSolutionAtHint = 2 + (int)(Math.random() * ((5 - 2) + 1));
@@ -378,6 +385,12 @@ public class GridGameScreen extends GameScreen {
         return gridElements;
     }
 
+    public void setCurrentMovedSquares(int movedSquares){
+        currentMovedSquares=movedSquares;
+        System.out.println("store "+currentMovedSquares+" moved squares in last Move");
+        allMoves.get(allMoves.size()-1).setSquaresMoved(currentMovedSquares);
+    }
+
     public void setSavedGame(String mapPath)
     {
         this.mapPath = "";
@@ -420,6 +433,7 @@ public class GridGameScreen extends GameScreen {
         isSolved = false;
 
         nbCoups = 0;
+        numSquares = 0;
         timeCpt = 0;
         prevTime = System.currentTimeMillis();
 
@@ -601,8 +615,7 @@ public class GridGameScreen extends GameScreen {
             }
         }
 
-        if(canMove)
-        {
+        if(canMove){
             switch(direction){
                 case 0:     // haut
                     yDestination -= 1;
@@ -621,17 +634,13 @@ public class GridGameScreen extends GameScreen {
             p.setyObjective(yDestination);
 
             editDestination(p, direction, true);
+            numSquares++;
         }else{
-            if(moved)
-            {
+            if(moved){
                 nbCoups++;
                 //boolean b = gagne(p);
-
-            }
-            else
-            {
+            } else {
                 allMoves.remove(allMoves.size()-1);
-
             }
         }
     }
@@ -669,7 +678,7 @@ public class GridGameScreen extends GameScreen {
         }
         else
         {
-            gameManager.requestToast("You won in "+nbCoups+" moves.", true);
+            gameManager.requestToast("You won in "+nbCoups+" moves, "+numSquares+" squares", true);
         }
         updatePlayedMaps();
     }
@@ -706,10 +715,11 @@ public class GridGameScreen extends GameScreen {
 
     public Boolean collision(GamePiece p, int x, int y, boolean canMove)
     {
-        if(p.getxObjective() == x && p.getyObjective() == y && canMove == true)
+        if(p.getxObjective() == x && p.getyObjective() == y && canMove == true) {
             return false;
-        else if(canMove == false)
+        } else if(canMove == false) {
             return false;
+        }
         return true;
     }
 
@@ -722,6 +732,7 @@ public class GridGameScreen extends GameScreen {
                 bb.execute();
             }
             nbCoups = 0;
+            numSquares = 0;
         }
     }
 
@@ -810,9 +821,13 @@ public class GridGameScreen extends GameScreen {
         public void execute(){
             if(allMoves.size() > 0)
             {
-                allMoves.get(allMoves.size()-1).goBack();
-
-                allMoves.remove(allMoves.size()-1);
+                int last=allMoves.size()-1;
+                Move lastMove=allMoves.get(last);
+                numSquares-=lastMove.getSquaresMoved();
+                System.out.println("substract "+lastMove.getSquaresMoved());
+                lastMove.goBack();
+                System.out.println("remove move nr. "+(allMoves.size()-1)+" "+lastMove._x+"/"+lastMove._y);
+                allMoves.remove(last);
                 nbCoups--;
             }
         }

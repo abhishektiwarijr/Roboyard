@@ -2,6 +2,7 @@ package roboyard.eclabs;
 
 /**
  * Created by Pierre on 17/01/2015.
+ * TODO: add the possibility to send a chain of commands in one touch-and move event
  */
 public class InputManager {
 
