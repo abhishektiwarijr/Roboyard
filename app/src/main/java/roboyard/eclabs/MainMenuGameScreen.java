@@ -18,17 +18,16 @@ public class MainMenuGameScreen extends GameScreen {
         this.prevBack = System.currentTimeMillis();
 
         int buttonSize=440;
-        float ratioW = ((float)gameManager.getScreenWidth()) /((float)1080);
-        float ratioH = ((float)gameManager.getScreenHeight()) /((float)1920);
-        int relativeButtonWidth=(int)(ratioW*(float)buttonSize);
+        float ratio = ((float)gameManager.getScreenWidth()) /((float)1080);
+        int relativeButtonWidth=(int)(ratio*(float)buttonSize);
         int ws2 = (int)(((float)this.gameManager.getScreenWidth()-relativeButtonWidth)/2);
 
         // screen 1: goto GameOptionsGameScreen
-        this.instances.add(new GameButtonGoto(ws2, (int)(ratioH*200), relativeButtonWidth, (int)(ratioH*buttonSize), R.drawable.bt_start_up, R.drawable.bt_start_down, 1));
+        this.instances.add(new GameButtonGoto(ws2, (int)(ratio*200), relativeButtonWidth, (int)(ratio*buttonSize), R.drawable.bt_start_up, R.drawable.bt_start_down, 1));
         // screen 2: settings
-        this.instances.add(new GameButtonGoto(ws2, (int)(ratioH*750), relativeButtonWidth, (int)(ratioH*buttonSize), R.drawable.bt_settings_up, R.drawable.bt_settings_down, 2));
+        this.instances.add(new GameButtonGoto(ws2, (int)(ratio*750), relativeButtonWidth, (int)(ratio*buttonSize), R.drawable.bt_settings_up, R.drawable.bt_settings_down, 2));
         // screen 3: credits
-        this.instances.add(new GameButtonGoto(ws2, (int)(ratioH*1300), relativeButtonWidth, (int)(ratioH*buttonSize), R.drawable.bt_credits_up, R.drawable.bt_credits_down, 3));
+        this.instances.add(new GameButtonGoto(ws2, (int)(ratio*1300), relativeButtonWidth, (int)(ratio*buttonSize), R.drawable.bt_credits_up, R.drawable.bt_credits_down, 3));
     }
 
     @Override
