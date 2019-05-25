@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+### Version 8.0
+
+- show number of squares moved next to number of moves
+- direction intention arrows half transparent
+
+
 ### Version 7.1
 
 - New Launcher Icon
