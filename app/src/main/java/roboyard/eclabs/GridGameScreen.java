@@ -257,7 +257,11 @@ public class GridGameScreen extends GameScreen {
             renderManager.drawText(10, textPosY, "Number of moves < " + goodPuzzleMinMoves);
             showSolutionAtHint = goodPuzzleMinMoves - solutionMoves;
         } else if(!isSolved){
-            renderManager.drawText(10, textPosY, "AI solving...");
+            if (timeCpt<1){
+                renderManager.drawText(10, textPosY, "Generating map...");
+            }else{
+                renderManager.drawText(10, textPosY, "AI solving...");
+            }
         }
         int seconds = timeCpt%60;
         String secondsS = Integer.toString(seconds);
