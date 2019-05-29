@@ -10,8 +10,9 @@ The special feature of this app is the automatic solution finding algorithm, whi
 Roboyard allows to record up to 35 different maps. So if during your games you encounter an interesting map, save it to play it later again!
 
 # Download App
-You can either clone this Repository and open it with android-studio to build the app
-or download a compliled version from the releases: https://github.com/rubo77/Roboyard/releases/
+- clone this Repository and open it with android-studio to build the app
+- download a compiled version from the releases: https://github.com/rubo77/Roboyard/releases/
+- [download from Play Store](https://play.google.com/store/apps/details?id=de.z11.roboyard)
 
 # Screenshot
 ![](download/Roboyard_screenshot.png)

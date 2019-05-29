@@ -4,6 +4,7 @@ CHANGELOG
 ### Version 8.1
 
 - Popup messages in the bottom area
+- New Launcher icon
 
 ### Version 8.0
 
