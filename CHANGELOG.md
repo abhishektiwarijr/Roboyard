@@ -3,8 +3,9 @@ CHANGELOG
 
 ### Version 8.1
 
-- Popup messages in the bottom area
+- Popup messages moved to the bottom area
 - New Launcher icon
+- fixed puzzles with target in direct line of robot
 
 ### Version 8.0
 
