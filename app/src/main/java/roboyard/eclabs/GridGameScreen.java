@@ -245,9 +245,9 @@ public class GridGameScreen extends GameScreen {
             renderManager.drawText(10, textPosY, "AI solution: " + solutionMoves + " moves");
             renderManager.setTextSize(lineHeightSmall);
             renderManager.drawText(10, textPosYSmall, "... restarting!");
-            if(timeCpt>2 || solutionMoves>14){
-                // show a popup on restart if it took very long or on very big puzzles
-                requestToast = "Solved in " + solutionMoves + " moves. Restarting...";
+            if(timeCpt>5){
+                // show a popup on restart if it took very long to solve
+                requestToast = "Finally solved in " + solutionMoves + " moves. Restarting...";
             }
             mustStartNext = true;
         } else if(nbCoups==0 && isSolved && solutionMoves < goodPuzzleMinMoves){
