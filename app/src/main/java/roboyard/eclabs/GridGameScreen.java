@@ -128,7 +128,13 @@ public class GridGameScreen extends GameScreen {
         } else if(levelDifficulty.equals("Insane")) {
             GridGameScreen.goodPuzzleMinMoves = 10;
             GridGameScreen.simplePuzzleMinMoves = 10;
-            GridGameScreen.requestToast = "Insane level will generate a fitting puzzle. This can take a while. In case the solver gets stuck, press >>";
+        } else if(levelDifficulty.equals("Impossible")) {
+            GridGameScreen.goodPuzzleMinMoves = 17;
+            GridGameScreen.simplePuzzleMinMoves = 17;
+            for (int i = 0; i < 3; i++) {
+                // repeat three times to get a long toast
+                GridGameScreen.requestToast = "Level Impossible will generate a fitting puzzle. This can take a while. In case the solver gets stuck, press >>";
+            }
         }
     }
 

@@ -44,7 +44,7 @@ public class MapGenerator {
             loneWallsAllowed = true;
         }
 
-        if(GridGameScreen.getLevel().equals("Insane")) {
+        if(GridGameScreen.getLevel().equals("Insane") || GridGameScreen.getLevel().equals("Impossible")) {
             targetMustBeInCorner = false;
 
             maxWallsInOneVerticalCol = 5;

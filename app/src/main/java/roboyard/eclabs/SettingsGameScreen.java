@@ -12,6 +12,7 @@ public class SettingsGameScreen extends GameScreen {
     private GameButtonGeneral buttonBeginner = null;
     private GameButtonGeneral buttonAdvanced = null;
     private GameButtonGeneral buttonInsane = null;
+    private GameButtonGeneral buttonImpossible = null;
     private GameButtonGeneral buttonSoundOff = null;
     private GameButtonGeneral buttonSoundOn = null;
     private int hs2;
@@ -35,9 +36,10 @@ public class SettingsGameScreen extends GameScreen {
         float ratioH = ((float)gameManager.getScreenHeight()) /((float)1920);
 
         // set levelDifficulty
-        buttonBeginner = new GameButtonGeneral((int)(40*ratioW), (int)((380)*ratioH),(int) (120*2*ratioW),(int) (128*ratioH), R.drawable.bt_up, R.drawable.bt_down, new setBeginnner());
-        buttonAdvanced = new GameButtonGeneral((int)(390*ratioW), (int)((380)*ratioH),(int) (120*2*ratioW),(int) (128*ratioH), R.drawable.bt_up, R.drawable.bt_down, new setAdvanced());
-        buttonInsane   = new GameButtonGeneral((int)(740*ratioW), (int)((380)*ratioH),(int) (120*2*ratioW),(int) (128*ratioH), R.drawable.bt_up, R.drawable.bt_down, new setInsane());
+        buttonBeginner = new GameButtonGeneral((int)(40*ratioW), (int)(380*ratioH),(int) (160*ratioW),(int) (128*ratioH), R.drawable.bt_up, R.drawable.bt_down, new setBeginnner());
+        buttonAdvanced = new GameButtonGeneral((int)(300*ratioW), (int)(380*ratioH),(int) (160*ratioW),(int) (128*ratioH), R.drawable.bt_up, R.drawable.bt_down, new setAdvanced());
+        buttonInsane   = new GameButtonGeneral((int)(560*ratioW), (int)(380*ratioH),(int) (160*ratioW),(int) (128*ratioH), R.drawable.bt_up, R.drawable.bt_down, new setInsane());
+        buttonImpossible   = new GameButtonGeneral((int)(820*ratioW), (int)(380*ratioH),(int) (160*ratioW),(int) (128*ratioH), R.drawable.bt_up, R.drawable.bt_down, new setImpossible());
 
         // icons from freeiconspng [1](https://www.freeiconspng.com/img/40963), [2](https://www.freeiconspng.com/img/40944)
         buttonSoundOn = new GameButtonGeneral((int)(240*ratioW), (int)((780)*ratioH),(int) (222*ratioW),(int) (222*ratioH), R.drawable.bt_sound_on_up, R.drawable.bt_sound_on_down, new setSoundon());
@@ -47,6 +49,7 @@ public class SettingsGameScreen extends GameScreen {
         this.instances.add(buttonBeginner);
         this.instances.add(buttonAdvanced);
         this.instances.add(buttonInsane);
+        this.instances.add(buttonImpossible);
         this.instances.add(buttonSoundOff);
         this.instances.add(buttonSoundOn);
 
@@ -81,9 +84,10 @@ public class SettingsGameScreen extends GameScreen {
         renderManager.drawText((int)(440*ratioW), (int)((1100)*ratioH), soundSetting);
 
         renderManager.setTextSize(ts/2);
-        renderManager.drawText((int)(70*ratioW), (int)((560)*ratioH), "Beginner");
-        renderManager.drawText((int)(409*ratioW), (int)((560)*ratioH), "Advanced");
-        renderManager.drawText((int)(785*ratioW), (int)((560)*ratioH), "Insane");
+        renderManager.drawText((int)(45*ratioW), (int)((560)*ratioH), "Beginner");
+        renderManager.drawText((int)(290*ratioW), (int)((560)*ratioH), "Advanced");
+        renderManager.drawText((int)(575*ratioW), (int)((560)*ratioH), "Insane");
+        renderManager.drawText((int)(795*ratioW), (int)((560)*ratioH), "Impossible");
 
         super.draw(renderManager);
     }
@@ -121,6 +125,13 @@ public class SettingsGameScreen extends GameScreen {
             preferences.setPreferences(gameManager.getActivity(),"difficulty", "Insane");
             GridGameScreen.setDifficulty("Insane");
             levelDifficulty="Insane";
+        }
+    }
+    private class setImpossible implements IExecutor{
+        public void execute() {
+            preferences.setPreferences(gameManager.getActivity(),"difficulty", "Impossible");
+            GridGameScreen.setDifficulty("Impossible");
+            levelDifficulty="Impossible";
         }
     }
 
