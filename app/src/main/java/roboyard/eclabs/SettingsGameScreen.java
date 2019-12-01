@@ -17,7 +17,7 @@ public class SettingsGameScreen extends GameScreen {
     private GameButtonGeneral buttonSoundOn = null;
     private int hs2;
     private int ws2;
-    private String levelDifficulty="Advanced";
+    private String levelDifficulty="Beginner";
     private Preferences preferences = new Preferences();
 
     private float ratioW = ((float)gameManager.getScreenWidth()) /((float)1080);

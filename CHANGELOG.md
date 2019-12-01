@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+### Version 9.0
+
+- Add Impossible Mode with at least 17 moves
+- Beginner Levels may only take max one second to compute
+- fix: Level setting was not saved, if "Beginner" was selected
+- fix: LevelGame selection are not re-generated anymore, so they can be solved now
+- Default Level is now "Beginner"
+
 ### Version 8.1
 
 - Popup messages moved to the bottom area

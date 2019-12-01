@@ -60,7 +60,7 @@ public class GridGameScreen extends GameScreen {
     private int currentMovedSquares = 0;
     private long prevTime;
 
-    private static String levelDifficulty="Advanced";
+    private static String levelDifficulty="Beginner";
     private static ArrayList<GridElement> currentMap;
 
     private int IAMovesNumber = 0;
@@ -90,7 +90,7 @@ public class GridGameScreen extends GameScreen {
         String ld=preferences.getPreferenceValue(gameManager.getActivity(), "difficulty");
         if(ld.equals("")){
             // default difficulty
-            ld="Advanced";
+            ld="Beginner";
             preferences.setPreferences(gameManager.getActivity(),"difficulty", ld);
         }
         setDifficulty(ld);
