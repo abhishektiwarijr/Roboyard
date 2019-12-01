@@ -110,6 +110,7 @@ public class SettingsGameScreen extends GameScreen {
     private class setBeginnner implements IExecutor{
         public void execute() {
             preferences.setPreferences(gameManager.getActivity(), "difficulty", "Beginner");
+            GridGameScreen.setDifficulty("Beginner");
             levelDifficulty="Beginner";
         }
     }
