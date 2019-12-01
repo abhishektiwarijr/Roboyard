@@ -20,7 +20,7 @@ public class GameButtonGotoLevelGame extends GameButtonGoto {
         super.onClick(gameManager);
 
         LevelChoiceGameScreen.setLastButtonUsed(this);
-
+        GridGameScreen.setDifficulty("Beginner");
         ((GridGameScreen)(gameManager.getScreens().get(4))).setLevelGame(mapPath);
 
 
