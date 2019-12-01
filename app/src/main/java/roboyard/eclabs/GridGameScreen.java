@@ -252,7 +252,7 @@ public class GridGameScreen extends GameScreen {
             renderManager.setTextSize(lineHeightSmall);
             renderManager.drawText(10, textPosYSmall, "... restarting!");
             if(timeCpt>5){
-                // show a popup on restart if it took very long to solve
+                // show a popup on restart if it took very long to solve but found a too simple solution
                 requestToast = "Finally solved in " + solutionMoves + " moves. Restarting...";
             }
             mustStartNext = true;
@@ -264,9 +264,18 @@ public class GridGameScreen extends GameScreen {
             showSolutionAtHint = goodPuzzleMinMoves - solutionMoves;
         } else if(!isSolved){
             if (timeCpt<1){
+                // the first second it pretends to generate the map :)
+                // in real it is still calculating the solution
                 renderManager.drawText(10, textPosY, "Generating map...");
             }else{
-                renderManager.drawText(10, textPosY, "AI solving...");
+                // in Beginner mode it will create a new puzzle, if it is not solvable within one second
+                if(timeCpt>=1 && getLevel().equals("Beginner")){
+                    renderManager.drawText(10, textPosY, "Too complicated");
+                    renderManager.drawText(10, textPosYSmall, "... restarting!");
+                    mustStartNext = true;
+                }else {
+                    renderManager.drawText(10, textPosY, "AI solving...");
+                }
             }
         }
         int seconds = timeCpt%60;
