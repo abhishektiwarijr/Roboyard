@@ -18,8 +18,9 @@ public class MapObjects {
 
     }
 
-
     /*
+     * Extract the data from the _data string
+     * Returns a list of all extracted elements
      * Extrait les données de la chaine de caratère _data
      * Retourne une liste de tous les éléments extraits
      * @return ArrayList GridElement
@@ -31,14 +32,19 @@ public class MapObjects {
 
         ArrayList<GridElement> elements = new ArrayList<GridElement>();
 
+        // r=robot (vert, jeune, rouge, bleu)
+        // c=target
+        // m=wall (horizontal, vertival)
         List<String> objectTypes = Arrays.asList("mh", "mv", "rv", "rj", "rr", "rb", "cv", "cj", "cr", "cb", "cm");
 
         //On boucle pour chaque type d'objets
+        //We loop for each type of object
         for(final String objectType: objectTypes) {
 
             List<String> allMatches = new ArrayList<String>();
 
             //On récupère toutes les lignes correspondant au type d'objet recherché
+            //We retrieve all the lines corresponding to the type of object sought
             Matcher m = Pattern.compile(objectType+"\\d+,\\d+;").matcher(data);
             while (m.find()) {
                 allMatches.add(m.group());

@@ -133,7 +133,7 @@ public class GamePiece implements IGameObject {
 
         xDraw = (int)(this.xGrid+((this.x+((float)deltaX)/10)+0.5f)*this.widthCell);
         yDraw = (int)(this.yGrid+((this.y+((float)deltaY)/10)+0.5f)*this.heightCell);
-        renderManager.drawCircle(xDraw, yDraw, this.radius);
+        // renderManager.drawCircle(xDraw, yDraw, this.radius);
 
 
         renderManager.drawImage(xDraw-this.radius, yDraw-this.radius, xDraw+this.radius, yDraw+this.radius, this.image);

@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+### Version 9.1
+
+- remove white circles in the background of robots
+- shrink green robot, so it doesn't cover walls anymore
+
 ### Version 9.0
 
 - Add Impossible Mode with at least 17 moves
