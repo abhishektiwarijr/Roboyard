@@ -114,7 +114,7 @@ public class MapGenerator {
 
         }while(abandon);
 
-        String typesOfCibles[] = {"cj","cr","cb", "cv", "cm"};
+        String[] typesOfCibles = {"cj","cr","cb", "cv", "cm"};
 
         if(allowMulticolorTarget) {
             data.add(new GridElement(cibleX, cibleY, typesOfCibles[getRandom(0,4)]));
@@ -122,7 +122,7 @@ public class MapGenerator {
             data.add(new GridElement(cibleX, cibleY, typesOfCibles[getRandom(0,3)]));
         }
 
-        String typesOfRobots[] = {"rr", "rb", "rj", "rv"};
+        String[] typesOfRobots = {"rr", "rb", "rj", "rv"};
 
         ArrayList<GridElement> robotsTemp = new ArrayList<>();
 

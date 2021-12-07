@@ -7,7 +7,10 @@ import android.graphics.Color;
  */
 public abstract class GameButton implements IGameObject {
 
-    private int x, y, w, h;
+    private final int x;
+    private final int y;
+    private final int w;
+    private final int h;
 
     public void setImageUp(int imageUp) {
         this.imageUp = imageUp;

@@ -5,5 +5,5 @@ package roboyard.pm.ia;
  * @author Pierre Michel
  */
 public interface IEndCondition {
-  public boolean checkEnd(AWorld world, AGameState state);
+  boolean checkEnd(AWorld world, AGameState state);
 }

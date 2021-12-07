@@ -24,6 +24,6 @@ public class GameSolution {
     return this.moves;
   }
   
-  private ArrayList<IGameMove> moves;
+  private final ArrayList<IGameMove> moves;
   
 }

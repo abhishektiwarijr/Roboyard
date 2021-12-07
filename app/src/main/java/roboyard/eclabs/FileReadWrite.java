@@ -149,7 +149,7 @@ public class FileReadWrite {
             int c;
             String temp="";
             while( (c = fin.read()) != -1){
-                temp = temp + Character.toString((char)c);
+                temp = temp + (char) c;
             }
 
             aBuffer = temp;

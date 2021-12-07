@@ -13,8 +13,8 @@ import roboyard.pm.ia.ricochet.RRGetMap;
  */
 public interface ISolver extends Runnable {
 
-    public void init(ArrayList<GridElement> elements);
-    public void run();
-    public SolverStatus getSolverStatus();
-    public GameSolution getSolution();
+    void init(ArrayList<GridElement> elements);
+    void run();
+    SolverStatus getSolverStatus();
+    GameSolution getSolution();
 }

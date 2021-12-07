@@ -18,10 +18,10 @@ public class SettingsGameScreen extends GameScreen {
     private int hs2;
     private int ws2;
     private String levelDifficulty="Beginner";
-    private Preferences preferences = new Preferences();
+    private final Preferences preferences = new Preferences();
 
-    private float ratioW = ((float)gameManager.getScreenWidth()) /((float)1080);
-    private float ratioH = ((float)gameManager.getScreenHeight()) /((float)1920);
+    private final float ratioW = ((float)gameManager.getScreenWidth()) /((float)1080);
+    private final float ratioH = ((float)gameManager.getScreenHeight()) /((float)1920);
 
     public SettingsGameScreen(GameManager gameManager){
         super(gameManager);

@@ -86,6 +86,9 @@ public class RRPiece implements Comparable<RRPiece>{
       }
   }
   
-  private int x, y, color, id;
+  private int x;
+  private int y;
+  private int color;
+  private final int id;
   
 }

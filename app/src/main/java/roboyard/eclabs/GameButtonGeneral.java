@@ -4,7 +4,7 @@ package roboyard.eclabs;
  * Created by Pierre on 21/01/2015.
  */
 public class GameButtonGeneral extends GameButton {
-    private IExecutor executor;
+    private final IExecutor executor;
 
     public GameButtonGeneral(int x, int y, int w, int h, int imageUp, int imageDown, IExecutor executor){
         super(x, y, w, h, imageUp, imageDown);

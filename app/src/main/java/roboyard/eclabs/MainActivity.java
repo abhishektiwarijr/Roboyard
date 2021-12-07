@@ -28,7 +28,7 @@ public class MainActivity extends Activity
     private InputManager inputManager;
     private RenderManager renderManager;
     private GameManager gameManager;
-    private Preferences preferences = new Preferences();
+    private final Preferences preferences = new Preferences();
 
 
     // used in GridGameScreen, MapGenerator and both solvers:

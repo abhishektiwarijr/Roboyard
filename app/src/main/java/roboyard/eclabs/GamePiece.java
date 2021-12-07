@@ -23,9 +23,9 @@ public class GamePiece implements IGameObject {
     private int deltaY              = 0;
     private int curMoveSquares      = 0;
     private int numSquaresMoved     = 0;
-    private int initialSpeed        = 16;
-    private int extraSizeForRobotsAndTargets = 1; // robots and targets are 1px larger than the grid and may overlap 1 px
-    private int toleranceForInputManagerTouch = 1000; // virtual circle around robot to touch
+    private final int initialSpeed        = 16;
+    private final int extraSizeForRobotsAndTargets = 1; // robots and targets are 1px larger than the grid and may overlap 1 px
+    private final int toleranceForInputManagerTouch = 1000; // virtual circle around robot to touch
 
     private boolean testIfWon       = true;
 

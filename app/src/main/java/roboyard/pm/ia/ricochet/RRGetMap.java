@@ -78,7 +78,7 @@ public class RRGetMap {
         ArrayList<RRPiece> mainL = new ArrayList<RRPiece>();
         ArrayList<RRPiece> secondL = new ArrayList<RRPiece>();
 
-        String types[] = {"cr","cb","cv","cj"};
+        String[] types = {"cr","cb","cv","cj"};
 
         int cpt = 0;
 

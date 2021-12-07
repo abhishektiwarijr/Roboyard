@@ -13,7 +13,7 @@ public enum SolverStatus{
     private final boolean status;
     private final int code;
 
-    private SolverStatus(boolean status, int code){
+    SolverStatus(boolean status, int code){
         this.status = status;
         this.code  = code;
     }

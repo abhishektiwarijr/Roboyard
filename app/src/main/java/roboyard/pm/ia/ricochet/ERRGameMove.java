@@ -32,7 +32,7 @@ public enum ERRGameMove {
     }
   }
   
-  private ERRGameMove(int direction){
+  ERRGameMove(int direction){
     this.direction = direction;
   }
   

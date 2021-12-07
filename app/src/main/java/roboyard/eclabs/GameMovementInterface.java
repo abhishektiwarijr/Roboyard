@@ -5,16 +5,16 @@ package roboyard.eclabs;
  */
 public class GameMovementInterface implements IGameObject {
 
-    private float[] scales;
-    private int img_up          = R.drawable.img_int_up;
-    private int img_down        = R.drawable.img_int_down;
-    private int img_right       = R.drawable.img_int_right;
-    private int img_left        = R.drawable.img_int_left;
+    private final float[] scales;
+    private final int img_up          = R.drawable.img_int_up;
+    private final int img_down        = R.drawable.img_int_down;
+    private final int img_right       = R.drawable.img_int_right;
+    private final int img_left        = R.drawable.img_int_left;
     private boolean display     = false;
     private int x               = 0;
     private int y               = 0;
-    private int minRadius       = 32;
-    private int radius          = 150;
+    private final int minRadius       = 32;
+    private final int radius          = 150;
     private int decision        = -1;
     private GamePiece target;
 

@@ -31,6 +31,6 @@ public class RRGameMove implements IGameMove{
     return String.format("%d -> %s", this.actor.getId(), this.move.toString());
   }
   
-  private RRPiece actor;
-  private ERRGameMove move;
+  private final RRPiece actor;
+  private final ERRGameMove move;
 }

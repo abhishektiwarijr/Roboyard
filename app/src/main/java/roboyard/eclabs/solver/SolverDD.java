@@ -24,7 +24,7 @@ public class SolverDD implements ISolver{
     private SolverStatus solverStatus;
     private Solver solver;
     private Solution solution;
-    private RRPiece[] pieces;
+    private final RRPiece[] pieces;
 
     public SolverDD(){
         solver = null;
@@ -95,7 +95,7 @@ public class SolverDD implements ISolver{
             s.addMove(new RRGameMove(pieces[m.robotNumber], mv));
             m = solution.getNextMove();
         }
-        System.out.println("");
+        System.out.println();
         return s;
     }
 

@@ -277,7 +277,7 @@ public class RRWorld extends AWorld {
     return grid[piece.getX()][piece.getY()].getPrecomutedNumber();
   }
   
-  private RRGridCell[][] grid;
+  private final RRGridCell[][] grid;
   private int xObj = 0, yObj = 0, objColor = 0;
   
 }

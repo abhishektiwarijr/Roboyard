@@ -12,11 +12,12 @@ public class GameManager {
 
 
     private GameScreen previousScreen;
-    private SparseArray<GameScreen> screens;
-    private InputManager inputManager;
-    private RenderManager renderManager;
-    private int sWidth, sHeight;
-    private MainActivity activity;
+    private final SparseArray<GameScreen> screens;
+    private final InputManager inputManager;
+    private final RenderManager renderManager;
+    private final int sWidth;
+    private final int sHeight;
+    private final MainActivity activity;
 
     public MainActivity getActivity() {
         return activity;

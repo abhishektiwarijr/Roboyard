@@ -25,10 +25,10 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by Alain on 25/02/2015.
  */
 public class GridGameScreen extends GameScreen {
-    private Canvas canvasGrid;
+    private final Canvas canvasGrid;
 
-    private int wallThickness = 6; // thickness of walls
-    private ColorFilter wallColor = new PorterDuffColorFilter(Color.rgb(44, 96, 0), PorterDuff.Mode.SRC_ATOP); // green
+    private final int wallThickness = 6; // thickness of walls
+    private final ColorFilter wallColor = new PorterDuffColorFilter(Color.rgb(44, 96, 0), PorterDuff.Mode.SRC_ATOP); // green
     private boolean isSolved = false;
     private int solutionMoves = 0; // store the current optimal solution globally
     private int numSolutionClicks = 0; // count how often you clicked on the solution button, each time the shown count goes down by one
@@ -72,18 +72,18 @@ public class GridGameScreen extends GameScreen {
     private Thread t = null;
 
     private GameMovementInterface gmi;
-    private Bitmap bitmapGrid;
+    private final Bitmap bitmapGrid;
     RenderManager currentRenderManager;
     Map<String, Drawable> drawables = new HashMap<String, Drawable>();
     Map<String, Integer> colors = new HashMap<String, Integer>();
-    private ArrayList<Move> allMoves= new ArrayList<>();
+    private final ArrayList<Move> allMoves= new ArrayList<>();
 
     private GameButtonGeneral buttonSolve;
     private GameButtonGoto buttonSave;
 
-    private int boardSizeX = MainActivity.boardSizeX;
-    private int boardSizeY = MainActivity.boardSizeY;
-    private Preferences preferences = new Preferences();
+    private final int boardSizeX = MainActivity.boardSizeX;
+    private final int boardSizeY = MainActivity.boardSizeY;
+    private final Preferences preferences = new Preferences();
 
     public GridGameScreen(GameManager gameManager){
         super(gameManager);
@@ -736,10 +736,7 @@ public class GridGameScreen extends GameScreen {
     {
         if(p.getxObjective() == x && p.getyObjective() == y && canMove == true) {
             return false;
-        } else if(canMove == false) {
-            return false;
-        }
-        return true;
+        } else return canMove != false;
     }
 
     private class ButtonRestart implements IExecutor{

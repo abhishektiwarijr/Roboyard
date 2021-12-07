@@ -5,9 +5,9 @@ package roboyard.eclabs;
  */
 public interface IGameObject {
 
-    public void create();
-    public void load(RenderManager renderManager);
-    public void draw(RenderManager renderManager);
-    public void update(GameManager gameManager);
-    public void destroy();
+    void create();
+    void load(RenderManager renderManager);
+    void draw(RenderManager renderManager);
+    void update(GameManager gameManager);
+    void destroy();
 }

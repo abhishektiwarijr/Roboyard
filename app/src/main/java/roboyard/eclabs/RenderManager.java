@@ -19,10 +19,10 @@ import java.util.Random;
  */
 public class RenderManager {
     private Canvas target, mainTarget;
-    private Paint brush;
-    private Resources resources;
-    private SparseArray<Drawable> resourceMap;
-    private Random random;
+    private final Paint brush;
+    private final Resources resources;
+    private final SparseArray<Drawable> resourceMap;
+    private final Random random;
 
     /*
      * Constructeur de la classe RenderManager.

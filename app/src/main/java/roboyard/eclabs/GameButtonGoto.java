@@ -4,7 +4,7 @@ package roboyard.eclabs;
  * Created by Pierre on 21/01/2015.
  */
 public class GameButtonGoto extends GameButton {
-    private int targetScreen;
+    private final int targetScreen;
 
     /**
      * big button to start another screen
