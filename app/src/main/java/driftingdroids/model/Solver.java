@@ -28,7 +28,7 @@ public abstract class Solver {
     public enum SOLUTION_MODE {
         MINIMUM("minimum", "solver.Minimum.text"), MAXIMUM("maximum", "solver.Maximum.text");
         private final String name, l10nKey;
-        private SOLUTION_MODE(String name, String l10nKey) { this.name = name;  this.l10nKey = l10nKey; }
+        SOLUTION_MODE(String name, String l10nKey) { this.name = name;  this.l10nKey = l10nKey; }
         public String getName() { return this.name; }
     }
     

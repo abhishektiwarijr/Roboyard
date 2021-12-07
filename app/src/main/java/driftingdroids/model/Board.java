@@ -20,6 +20,7 @@ package driftingdroids.model;
 import android.util.Base64;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -536,7 +537,7 @@ public class Board {
         // 4. walls
         for (int dir = 0;  dir < board.walls.length;  ++dir) {
             for (int pos = 0;  pos < board.walls[dir].length;  ++pos) {
-                board.walls[dir][pos] = (0 != data[didx++] ? true : false);
+                board.walls[dir][pos] = (0 != data[didx++]);
             }
         }
         // 5. list of goals
@@ -651,9 +652,7 @@ public class Board {
         final String b64Output = new String(Base64.encode(b64Input, 0));
         //compute CRC of encoded data
         final CRC32 crc32 = new CRC32();
-        try {
-            crc32.update(b64Output.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException ignored) { }
+        crc32.update(b64Output.getBytes(StandardCharsets.UTF_8));
         final long crc32Value = crc32.getValue();
         final String crc32String = new Formatter().format("%08X", Long.valueOf(crc32Value)).toString();
         //build output string:  starts and ends with "!", to be split at "!"
@@ -674,7 +673,7 @@ public class Board {
             //validate data
             final long b64crc = Long.parseLong(inputSplit[2], 16);      //throws NumberFormatException
             final CRC32 crc32 = new CRC32();
-            crc32.update(inputSplit[3].getBytes("UTF-8"));
+            crc32.update(inputSplit[3].getBytes(StandardCharsets.UTF_8));
             if (crc32.getValue() != b64crc) {
                 throw new IllegalArgumentException("data CRC mismatch");
             }
