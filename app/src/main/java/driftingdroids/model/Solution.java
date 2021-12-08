@@ -56,7 +56,7 @@ public class Solution implements Comparable<Solution> {
     public Set<Integer> getRobotsMoved() {
         final TreeSet<Integer> result = new TreeSet<Integer>(); //sorted set
         for (Move move : this.movesList) {
-            result.add(Integer.valueOf(move.robotNumber));
+            result.add(move.robotNumber);
         }
         return result;
     }
@@ -135,13 +135,13 @@ public class Solution implements Comparable<Solution> {
         StringBuilder s = new StringBuilder();
         // 1. number of moves
         final Formatter f = new Formatter(s);
-        f.format("%02d", Integer.valueOf(this.size()));
+        f.format("%02d", this.size());
         // 2. number of robots moved
         final Set<Integer> thisRobotsMoved = this.getRobotsMoved();
         s.append('/').append(thisRobotsMoved.size()).append('/');
         // 3. list of robots moved
         for (int i = 0;  i < this.board.getRobotPositions().length;  ++i) {
-            if (thisRobotsMoved.contains(Integer.valueOf(i))) {
+            if (thisRobotsMoved.contains(i)) {
                 s.append(Board.ROBOT_COLOR_NAMES_SHORT[i]);
             } else {
                 s.append('#');
@@ -244,8 +244,8 @@ try_swap_loop:
                 // check if the lists of moves can be swapped
                 for (final Move move1 : thisMoves) {
                     for (final Move move2 : nextMoves) {
-                        if (move1.pathMap.containsKey(Integer.valueOf(move2.newPosition)) ||
-                            move2.pathMap.containsKey(Integer.valueOf(move1.oldPosition))) {
+                        if (move1.pathMap.containsKey(move2.newPosition) ||
+                            move2.pathMap.containsKey(move1.oldPosition)) {
                             System.out.println("minimizeColorChanges: blocked path  " + move1.toString() + "  " + move2.toString());
                             continue try_swap_loop; // no swap - blocked path
                         }

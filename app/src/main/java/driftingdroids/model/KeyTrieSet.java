@@ -335,10 +335,10 @@ public final class KeyTrieSet {
     public final long getBytesAllocated() {
         long result = 0;
         for (int i = 0;  i < this.numNodeArrays;  ++i) {
-            result += this.nodeArrays[i].length << 2;
+            result += (long) this.nodeArrays[i].length << 2;
         }
         for (int i = 0;  i < this.numLeafArrays;  ++i) {
-            result += this.leafArrays[i].length << 2;
+            result += (long) this.leafArrays[i].length << 2;
         }
         return result;
     }

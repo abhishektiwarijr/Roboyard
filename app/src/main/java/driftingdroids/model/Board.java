@@ -414,19 +414,19 @@ public class Board {
 
     public static Board createBoardRandom(int numRobots) {
         final ArrayList<Integer> indexList = new ArrayList<Integer>();
-        for (int i = 0;  i < 4;  ++i) { indexList.add(Integer.valueOf(i)); }
+        for (int i = 0;  i < 4;  ++i) { indexList.add(i); }
         Collections.shuffle(indexList, RANDOM);
         return createBoardQuadrants(
-                indexList.get(0).intValue() + RANDOM.nextInt(3 + 1) * 4,
-                indexList.get(1).intValue() + RANDOM.nextInt(3 + 1) * 4,
-                indexList.get(2).intValue() + RANDOM.nextInt(3 + 1) * 4,
-                indexList.get(3).intValue() + RANDOM.nextInt(3 + 1) * 4,
+                indexList.get(0) + RANDOM.nextInt(3 + 1) * 4,
+                indexList.get(1) + RANDOM.nextInt(3 + 1) * 4,
+                indexList.get(2) + RANDOM.nextInt(3 + 1) * 4,
+                indexList.get(3) + RANDOM.nextInt(3 + 1) * 4,
                 numRobots);
     }
 
 
     public static Board createBoardGameID(final String idStr) {
-        Board result = null;
+        Board result;
         int index = 0;
         try {
             //example game ID: 0765+41+2E21BD0F+1C
@@ -492,13 +492,13 @@ public class Board {
         final Formatter fmt = new Formatter();
         final int quad01 = (this.getQuadrantNum(0) << 4) | this.getQuadrantNum(1);
         final int quad23 = (this.getQuadrantNum(2) << 4) | this.getQuadrantNum(3);
-        fmt.format("%02X%02X+", Integer.valueOf(quad01), Integer.valueOf(quad23));
+        fmt.format("%02X%02X+", quad01, quad23);
         final int robos = (this.robots.length << 4) | (this.goal.robotNumber >= 0 ? this.goal.robotNumber : 0x0f);
-        fmt.format("%02X+", Integer.valueOf(robos));
+        fmt.format("%02X+", robos);
         for (int robot : this.robots) {
-            fmt.format("%02X", Integer.valueOf(robot));
+            fmt.format("%02X", robot);
         }
-        fmt.format("+%02X", Integer.valueOf(this.goal.position));
+        fmt.format("+%02X", this.goal.position);
         return fmt.toString();
     }
 
@@ -575,43 +575,43 @@ public class Board {
     public String getGameDump() {
         final List<Byte> data = new ArrayList<Byte>();
         // 0. data structure version
-        data.add(Byte.valueOf((byte)0));
+        data.add((byte) 0);
         // 1. board size
         putInteger(this.width, data);
         putInteger(this.height, data);
         // 2. robots
-        data.add(Byte.valueOf((byte)this.robots.length));
+        data.add((byte) this.robots.length);
         for (int robot : this.robots) {
             putInteger(robot, data);
         }
         // 3. quadrants
         for (int quadrant : this.quadrants) {
-            data.add(Byte.valueOf((byte)quadrant));
+            data.add((byte) quadrant);
         }
         // 4. walls
         for (int dir = 0;  dir < this.walls.length;  ++dir) {
             for (int pos = 0;  pos < this.walls[dir].length;  ++pos) {
-                data.add(Byte.valueOf(this.walls[dir][pos] ? (byte)1 : (byte)0));
+                data.add(this.walls[dir][pos] ? (byte) 1 : (byte) 0);
             }
         }
         // 5. list of goals
         putInteger(this.goals.size(), data);
         for (Goal goal : this.goals) {  //6 bytes
             putInteger(goal.position, data);
-            data.add(Byte.valueOf((byte)goal.robotNumber));
-            data.add(Byte.valueOf((byte)goal.shape));
+            data.add((byte) goal.robotNumber);
+            data.add((byte) goal.shape);
         }
         // 6. active goal
         putInteger((null == this.goal ? -1 : this.goal.position), data);
-        data.add(Byte.valueOf((byte)(null == this.goal ? 0 : this.goal.robotNumber)));
-        data.add(Byte.valueOf((byte)(null == this.goal ? 0 : this.goal.shape)));
+        data.add((byte) (null == this.goal ? 0 : this.goal.robotNumber));
+        data.add((byte) (null == this.goal ? 0 : this.goal.shape));
         // 7. isFreestyleBoard
-        data.add(Byte.valueOf(this.isFreestyleBoard() ? (byte)1 : (byte)0));
+        data.add(this.isFreestyleBoard() ? (byte) 1 : (byte) 0);
         //convert data to String
         final byte[] dataArray = new byte[data.size()];
         int i = 0;
         for (Byte dat : data) {
-            dataArray[i++] = dat.byteValue();
+            dataArray[i++] = dat;
         }
         final String str = zipb64(dataArray);
         return str;
@@ -619,10 +619,10 @@ public class Board {
 
 
     private static void putInteger(final int value, final List<Byte> data) {
-        data.add(Byte.valueOf((byte)(0xff & (value >> 24))));
-        data.add(Byte.valueOf((byte)(0xff & (value >> 16))));
-        data.add(Byte.valueOf((byte)(0xff & (value >> 8))));
-        data.add(Byte.valueOf((byte)(0xff & value)));
+        data.add((byte) (0xff & (value >> 24)));
+        data.add((byte) (0xff & (value >> 16)));
+        data.add((byte) (0xff & (value >> 8)));
+        data.add((byte) (0xff & value));
     }
 
 
@@ -653,7 +653,7 @@ public class Board {
         final CRC32 crc32 = new CRC32();
         crc32.update(b64Output.getBytes(StandardCharsets.UTF_8));
         final long crc32Value = crc32.getValue();
-        final String crc32String = new Formatter().format("%08X", Long.valueOf(crc32Value)).toString();
+        final String crc32String = new Formatter().format("%08X", crc32Value).toString();
         //build output string:  starts and ends with "!", to be split at "!"
         final String result = "!DriftingDroids_game!" + crc32String + "!" + b64Output + "!";
         return result;
@@ -661,7 +661,7 @@ public class Board {
 
 
     private static byte[] unb64unzip(final String input) {
-        byte[] result = null;
+        byte[] result;
         try {
             //split input string and first validation
             final String[] inputSplit = input.split("!");

@@ -59,11 +59,11 @@ public class Move {
         final int pathEnd = 1 << board.getDirection(-diffPos);
         final int posIncr = board.directionIncrement[this.direction];
         int i = oldPosition;
-        this.pathMap.put(Integer.valueOf(i), Integer.valueOf(pathStart));
+        this.pathMap.put(i, pathStart);
         for (i += posIncr ; i != newPosition; i += posIncr) {
-            this.pathMap.put(Integer.valueOf(i), Integer.valueOf(pathStart + pathEnd));
+            this.pathMap.put(i, pathStart + pathEnd);
         }
-        this.pathMap.put(Integer.valueOf(i), Integer.valueOf(pathEnd));
+        this.pathMap.put(i, pathEnd);
     }
     
     /* (non-Javadoc)
@@ -104,7 +104,7 @@ public class Move {
     
     public String strRobotDirection() {
         final String dir;
-        switch (this.pathMap.get(Integer.valueOf(this.oldPosition)).intValue()) {
+        switch (this.pathMap.get(this.oldPosition)) {
         case PATH_NORTH : dir = "N"; break; //up    / NORTH
         case PATH_EAST  : dir = "E"; break; //right / EAST
         case PATH_SOUTH : dir = "S"; break; //down  / SOUTH
