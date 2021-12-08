@@ -113,18 +113,18 @@ public class RRGameState extends AGameState {
   
   @Override
   public String toString(){
-    String str = "";
-    str += this.hashCode();
-    str += "\nMain Piece:\n";
+    StringBuilder str = new StringBuilder();
+    str.append(this.hashCode());
+    str.append("\nMain Piece:\n");
     for(RRPiece p : this.mainPieces){
-      str += String.format("%d -> x:%d, y:%d, color:%d\n", p.hashCode(), p.getX(), p.getY(), p.getColor());
+      str.append(String.format("%d -> x:%d, y:%d, color:%d\n", p.hashCode(), p.getX(), p.getY(), p.getColor()));
     }
-    str += "Secondary Pieces:\n";
+    str.append("Secondary Pieces:\n");
     for(RRPiece p : this.secondaryPieces){
-      str += String.format("%d -> x:%d, y:%d, color:%d\n", p.hashCode(), p.getX(), p.getY(), p.getColor());
+      str.append(String.format("%d -> x:%d, y:%d, color:%d\n", p.hashCode(), p.getX(), p.getY(), p.getColor()));
     }
     
-    return str;
+    return str.toString();
   }
   
   private ArrayList<RRPiece> allPieces;

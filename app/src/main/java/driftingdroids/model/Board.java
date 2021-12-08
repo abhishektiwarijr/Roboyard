@@ -293,8 +293,7 @@ public class Board {
 
 
     public static List<Goal> getStaticQuadrantGoals(final int quadrant) {
-        final List<Goal> result = new ArrayList<Goal>();
-        result.addAll(QUADRANTS[quadrant].goals);
+        final List<Goal> result = new ArrayList<Goal>(QUADRANTS[quadrant].goals);
         Collections.sort(result);
         return result;
     }
@@ -461,7 +460,7 @@ public class Board {
                 throw new IllegalArgumentException("missing '+' at index=" + (index-1));
             }
             String str = String.valueOf(idStr.charAt(index++));
-            str += String.valueOf(idStr.charAt(index++));
+            str += String.valueOf(idStr.charAt(index));
             final int goalPosition = Integer.parseInt(str, 16);
             result = createBoardQuadrants(q0, q1, q2, q3, numRobots);
             final boolean successRobots = result.setRobots(robotPositions);
@@ -507,7 +506,7 @@ public class Board {
     /**
      * Creates a new Board object based on the state information contained in the input string.
      *
-     * @param a String that represents the state of a Board object.
+     * @param dump a String that represents the state of a Board object.
      * @return a new Board object.
      */
     public static Board createBoardGameDump(final String dump) {
@@ -562,7 +561,7 @@ public class Board {
             }
         }
         // 7. isFreestyleBoard
-        board.isFreestyleBoard = (0 != data[didx++]);
+        board.isFreestyleBoard = (0 != data[didx]);
         return board;
     }
 
@@ -876,9 +875,8 @@ public class Board {
         Arrays.fill(this.robots, -1);
         for (int i = 0; i < newRobots.length; ++i) {
             if ( ! this.setRobot(i, newRobots[i], false)) {    //failed to set a robot
-                for (int j = 0; j < backup.length; ++j) {
-                    this.robots[j] = backup[j];         //undo all changes
-                }
+                //undo all changes
+                System.arraycopy(backup, 0, this.robots, 0, backup.length);
                 return false;
             }
         }
