@@ -4,9 +4,9 @@ package roboyard.eclabs;
  * Created by Alain on 25/03/2015.
  */
 public class Move {
-    public GamePiece _p;
-    public int _x;
-    public int _y;
+    public final GamePiece _p;
+    public final int _x;
+    public final int _y;
     private int squaresMoved;
 
     public Move(GamePiece p, int x, int y){

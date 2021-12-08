@@ -56,13 +56,13 @@ public class MapObjects {
                 if(values.length>=2) {
                     String valueX = values[0].replaceAll("[^0-9]", "");
 
-                    if (valueX != "") {
+                    if (!valueX.equals("")) {
                         x = Integer.decode(valueX);
                     }
 
                     String valueY = values[1].replaceAll("[^0-9]", "");
 
-                    if (valueY != "") {
+                    if (!valueY.equals("")) {
                         y = Integer.decode(valueY);
                     }
 
@@ -82,14 +82,14 @@ public class MapObjects {
      */
     public static String createStringFromList( ArrayList<GridElement> data)
     {
-        String content = "";
+        StringBuilder content = new StringBuilder();
 
         //Pour chaque éléments, on ajoute une ligne contenant le type ainsi que la position x et y
         for(GridElement currentElement : data)
         {
-            content += currentElement.getType() + currentElement.getX()+","+currentElement.getY()+";\n";
+            content.append(currentElement.getType()).append(currentElement.getX()).append(",").append(currentElement.getY()).append(";\n");
         }
 
-        return content;
+        return content.toString();
     }
 }

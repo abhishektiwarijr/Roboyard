@@ -32,8 +32,8 @@ public class MainActivity extends Activity
 
 
     // used in GridGameScreen, MapGenerator and both solvers:
-    public static int boardSizeX=16; // TODO: crashes on size <12, solver doesn't work on size larger >16
-    public static int boardSizeY=16;
+    public static final int boardSizeX=16; // TODO: crashes on size <12, solver doesn't work on size larger >16
+    public static final int boardSizeY=16;
 
     public void init() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -74,17 +74,15 @@ public class MainActivity extends Activity
     }
 
     public void doToast(final CharSequence str, final boolean big){
-        this.runOnUiThread(new Runnable() {
-            public void run() {
-                Toast t = Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT);
-                if(big) {
-                    LinearLayout l = (LinearLayout) t.getView();
-                    TextView mtv = (TextView) l.getChildAt(0);
-                    mtv.setTextSize(18);
-                    t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                }
-                t.show();
+        this.runOnUiThread(() -> {
+            Toast t = Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT);
+            if(big) {
+                LinearLayout l = (LinearLayout) t.getView();
+                TextView mtv = (TextView) l.getChildAt(0);
+                mtv.setTextSize(18);
+                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             }
+            t.show();
         });
     }
 

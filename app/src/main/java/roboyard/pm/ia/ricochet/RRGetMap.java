@@ -82,6 +82,7 @@ public class RRGetMap {
 
         int cpt = 0;
 
+        assert cible != null;
         if(cible.getType().equals("cm"))
         {
             for(GridElement robot : robots)

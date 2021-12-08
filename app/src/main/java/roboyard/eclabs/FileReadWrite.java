@@ -26,7 +26,7 @@ public class FileReadWrite {
 
     public static String readAssets(Activity activity, String fileLocation)
     {
-        String aBuffer = "";
+        StringBuilder aBuffer = new StringBuilder();
 
         try {
             Resources resources;
@@ -36,7 +36,7 @@ public class FileReadWrite {
             BufferedReader myReader = new BufferedReader(new InputStreamReader(iS));
             String aDataRow = "";
             while ((aDataRow = myReader.readLine()) != null) {
-                aBuffer += aDataRow + "\n";
+                aBuffer.append(aDataRow).append("\n");
             }
 
             myReader.close();
@@ -47,13 +47,13 @@ public class FileReadWrite {
             return null;
 
         }
-        return aBuffer;
+        return aBuffer.toString();
     }
 
     public static String read(String fileLocation)
     {
         String txtData = null;
-        String aBuffer = "";
+        StringBuilder aBuffer = new StringBuilder();
 
         try {
             File myFile = new File(fileLocation);
@@ -62,7 +62,7 @@ public class FileReadWrite {
                     new InputStreamReader(fIn));
             String aDataRow = "";
             while ((aDataRow = myReader.readLine()) != null) {
-                aBuffer += aDataRow + "\n";
+                aBuffer.append(aDataRow).append("\n");
             }
 
             myReader.close();
@@ -72,7 +72,7 @@ public class FileReadWrite {
             return null;
 
         }
-        return aBuffer;
+        return aBuffer.toString();
     }
 
     /*
@@ -147,12 +147,12 @@ public class FileReadWrite {
 //            FileInputStream fin = new FileInputStream (new File(fileLocation));
 
             int c;
-            String temp="";
+            StringBuilder temp= new StringBuilder();
             while( (c = fin.read()) != -1){
-                temp = temp + (char) c;
+                temp.append((char) c);
             }
 
-            aBuffer = temp;
+            aBuffer = temp.toString();
 
         } catch (Exception e) {
             System.out.println("Exception readPrivateData");

@@ -167,7 +167,7 @@ public class RRWorld extends AWorld {
     int k = 0;
     
     int number = 0;
-    Boolean isFinished = false;
+    boolean isFinished = false;
     
     for(i = 0; i < MainActivity.boardSizeX; i++)
     {
@@ -194,7 +194,7 @@ public class RRWorld extends AWorld {
             {
                 if(grid[i][j].getPrecomutedNumber() == number)
                 {
-                    Boolean stop = false;
+                    boolean stop = false;
                     k = i;
                     while(k > 0 && !stop)
                     {

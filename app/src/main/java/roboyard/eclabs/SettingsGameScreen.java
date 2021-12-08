@@ -77,7 +77,7 @@ public class SettingsGameScreen extends GameScreen {
 
         renderManager.drawText(10, 1*ts, "Difficulty:");
         levelDifficulty=preferences.getPreferenceValue(gameManager.getActivity(), "difficulty");
-        if(levelDifficulty!=""){
+        if(!levelDifficulty.equals("")){
             renderManager.drawText(10, 3*ts, levelDifficulty);
         }
         String soundSetting=preferences.getPreferenceValue(gameManager.getActivity(), "sound");

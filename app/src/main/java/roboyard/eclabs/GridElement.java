@@ -5,7 +5,7 @@ package roboyard.eclabs;
  */
 public class GridElement {
 
-    public static int dimension = 2 ;
+    public static final int dimension = 2 ;
     //Variable de classe
 
     private int x ;

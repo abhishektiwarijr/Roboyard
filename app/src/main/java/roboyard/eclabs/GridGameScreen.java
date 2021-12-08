@@ -73,9 +73,9 @@ public class GridGameScreen extends GameScreen {
 
     private GameMovementInterface gmi;
     private final Bitmap bitmapGrid;
-    RenderManager currentRenderManager;
-    Map<String, Drawable> drawables = new HashMap<String, Drawable>();
-    Map<String, Integer> colors = new HashMap<String, Integer>();
+    final RenderManager currentRenderManager;
+    final Map<String, Drawable> drawables = new HashMap<String, Drawable>();
+    final Map<String, Integer> colors = new HashMap<String, Integer>();
     private final ArrayList<Move> allMoves= new ArrayList<>();
 
     private GameButtonGeneral buttonSolve;
@@ -269,7 +269,7 @@ public class GridGameScreen extends GameScreen {
                 renderManager.drawText(10, textPosY, "Generating map...");
             }else{
                 // in Beginner mode it will create a new puzzle, if it is not solvable within one second
-                if(timeCpt>=1 && getLevel().equals("Beginner")){
+                if(getLevel().equals("Beginner")){
                     renderManager.drawText(10, textPosY, "Too complicated");
                     renderManager.drawText(10, textPosYSmall, "... restarting!");
                     mustStartNext = true;
@@ -303,7 +303,7 @@ public class GridGameScreen extends GameScreen {
         super.draw(renderManager);
         this.gmi.draw(renderManager);
 
-        if(requestToast!=""){
+        if(!Objects.equals(requestToast, "")){
             // show double toast to last longer
             gameManager.requestToast(requestToast, true);
             gameManager.requestToast(requestToast, true);

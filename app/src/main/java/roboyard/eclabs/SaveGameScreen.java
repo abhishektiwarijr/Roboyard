@@ -63,7 +63,7 @@ public class SaveGameScreen extends GameScreen{
             mapPath = getMapPath(i);
             if(i == 0){
                 // autosave Button with a different image
-                this.instances.add(new GameButtonGotoSavedGame((55+(stepX*col))*ratioW, (45+ts+(stepY*row))*ratioH, iconsize*ratioH, iconsize*ratioW, saver.getButtonAutoSaved(mapPath, true), saver.getButtonAutoSaved(mapPath, false), 4, mapPath));
+                this.instances.add(new GameButtonGotoSavedGame((55)*ratioW, (45+ts)*ratioH, iconsize*ratioH, iconsize*ratioW, saver.getButtonAutoSaved(mapPath, true), saver.getButtonAutoSaved(mapPath, false), 4, mapPath));
             } else {
                 this.instances.add(new GameButtonGotoSavedGame((55+(stepX*col))*ratioW, (45+ts+(stepY*row))*ratioH, iconsize*ratioH, iconsize*ratioW, saver.getButtonSaved(mapPath, true), saver.getButtonSaved(mapPath, false), 4, mapPath));
             }
@@ -108,7 +108,7 @@ public class SaveGameScreen extends GameScreen{
             col = i % cols;
             row = (i / cols) % rows;
             if(i == 0){
-                renderManager.drawText((int)((20+(stepX*col))*ratioW), (int)((42+ts+(stepY*row))*ratioH), "Autosave");
+                renderManager.drawText((int)((20)*ratioW), (int)((42+ts)*ratioH), "Autosave");
             } else {
                 renderManager.drawText((int)((40+(stepX*col))*ratioW), (int)((45+ts+(stepY*row))*ratioH), i + ".");
             }

@@ -9,9 +9,9 @@ import java.util.Random;
  */
 public class MapGenerator {
 
-    Random rand;
-    int boardSizeX=MainActivity.boardSizeX;
-    int boardSizeY=MainActivity.boardSizeY;
+    final Random rand;
+    final int boardSizeX=MainActivity.boardSizeX;
+    final int boardSizeY=MainActivity.boardSizeY;
 
     int carrePosX = boardSizeX/2-1; // horizontal position of the top wall of carré, starting with 0
     int carrePosY = boardSizeY/2-1; // vertical position the left wall of the carré
@@ -86,7 +86,7 @@ public class MapGenerator {
 
     public ArrayList<GridElement> addGameElementsToGameMap(ArrayList<GridElement> data ,int[][] horizontalWalls, int[][]verticalWalls){
 
-        Boolean abandon;
+        boolean abandon;
         int cibleX;
         int cibleY;
         Boolean tempTargetMustBeInCorner;
@@ -137,8 +137,10 @@ public class MapGenerator {
                 cY = getRandom(0, boardSizeY-1);
 
                 for(GridElement robot:robotsTemp) {
-                    if (robot.getX() == cX && robot.getY() == cY)
+                    if (robot.getX() == cX && robot.getY() == cY) {
                         abandon = true;
+                        break;
+                    }
                 }
 
                 if((cX == carrePosX && cY == carrePosY) || (cX == carrePosX && cY == carrePosY+1) || (cX == carrePosX+1 && cY == carrePosY) || (cX == carrePosX+1 && cY == carrePosY+1))
@@ -166,7 +168,7 @@ public class MapGenerator {
         int countX = 0;
         int countY = 0;
 
-        Boolean restart;
+        boolean restart;
 
         do {
             restart = false;
@@ -225,7 +227,7 @@ public class MapGenerator {
             verticalWalls[carrePosX+2][carrePosY] = verticalWalls[carrePosX+2][carrePosY + 1] = 1;
 
             for (int k = 0; k <= boardSizeX; k++) {
-                Boolean abandon = false;
+                boolean abandon = false;
                 int tempX;
                 int tempY;
                 int tempXv = 0;

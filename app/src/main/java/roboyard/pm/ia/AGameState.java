@@ -36,9 +36,9 @@ public abstract class AGameState {
     this.depth = depth;
   }
   
-  protected ArrayList<AGameState> derivedStates;
-  protected AGameState parentState;
-  protected IGameMove previousMove;
+  protected final ArrayList<AGameState> derivedStates;
+  protected final AGameState parentState;
+  protected final IGameMove previousMove;
   protected int depth=1;
   
 }
