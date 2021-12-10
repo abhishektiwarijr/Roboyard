@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-### Version 9.1
+### Version 10
 
 - remove white circles in the background of robots
 - shrink green robot, so it doesn't cover walls anymore

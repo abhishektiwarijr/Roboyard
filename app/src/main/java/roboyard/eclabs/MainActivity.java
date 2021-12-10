@@ -74,16 +74,22 @@ public class MainActivity extends Activity
     }
 
     public void doToast(final CharSequence str, final boolean big){
+
         this.runOnUiThread(() -> {
             Toast t = Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT);
             if(big) {
+               /*
+                //* disabled
+                // TODO: search for a solution that works with API 30
                 LinearLayout l = (LinearLayout) t.getView();
                 TextView mtv = (TextView) l.getChildAt(0);
                 mtv.setTextSize(18);
-                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                */
+               t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             }
             t.show();
         });
+        //*/
     }
 
     @Override
