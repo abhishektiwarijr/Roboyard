@@ -63,7 +63,7 @@ public class MapGenerator {
     }
 
     public ArrayList<GridElement> translateArraysToMap(int[][] horizontalWalls, int[][] verticalWalls) {
-        ArrayList<GridElement> data = new ArrayList<GridElement>();
+        ArrayList<GridElement> data = new ArrayList<>();
 
         for(int x=0; x<=boardSizeX; x++)
             for(int y=0; y <= boardSizeY; y++)

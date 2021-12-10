@@ -74,8 +74,8 @@ public class GridGameScreen extends GameScreen {
     private GameMovementInterface gmi;
     private final Bitmap bitmapGrid;
     final RenderManager currentRenderManager;
-    final Map<String, Drawable> drawables = new HashMap<String, Drawable>();
-    final Map<String, Integer> colors = new HashMap<String, Integer>();
+    final Map<String, Drawable> drawables = new HashMap<>();
+    final Map<String, Integer> colors = new HashMap<>();
     private final ArrayList<Move> allMoves= new ArrayList<>();
 
     private GameButtonGeneral buttonSolve;

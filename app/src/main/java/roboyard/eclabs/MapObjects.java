@@ -30,7 +30,7 @@ public class MapObjects {
         int x = 0;
         int y = 0;
 
-        ArrayList<GridElement> elements = new ArrayList<GridElement>();
+        ArrayList<GridElement> elements = new ArrayList<>();
 
         // r=robot (vert, jeune, rouge, bleu)
         // c=target
@@ -41,7 +41,7 @@ public class MapObjects {
         //We loop for each type of object
         for(final String objectType: objectTypes) {
 
-            List<String> allMatches = new ArrayList<String>();
+            List<String> allMatches = new ArrayList<>();
 
             //On récupère toutes les lignes correspondant au type d'objet recherché
             //We retrieve all the lines corresponding to the type of object sought

@@ -25,10 +25,10 @@ public class RRGetMap {
     public static RRWorld createRRWorld(ArrayList<GridElement> gridElements, RRGameState baseState) {
         RRWorld currentWorld = new RRWorld();
 
-        ArrayList<GridElement> robots = new ArrayList<GridElement>();
+        ArrayList<GridElement> robots = new ArrayList<>();
         GridElement cible = null;
 
-        Map<String, Integer> colors = new HashMap<String, Integer>();
+        Map<String, Integer> colors = new HashMap<>();
 
 
 
@@ -75,8 +75,8 @@ public class RRGetMap {
         }
 
 
-        ArrayList<RRPiece> mainL = new ArrayList<RRPiece>();
-        ArrayList<RRPiece> secondL = new ArrayList<RRPiece>();
+        ArrayList<RRPiece> mainL = new ArrayList<>();
+        ArrayList<RRPiece> secondL = new ArrayList<>();
 
         String[] types = {"cr","cb","cv","cj"};
 

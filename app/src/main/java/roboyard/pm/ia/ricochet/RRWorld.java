@@ -108,13 +108,13 @@ public class RRWorld extends AWorld {
   public void show(RRGameState state){
   
     for(int j=0; j<this.grid[0].length; j++){
-      for(int i=0; i<this.grid.length; i++){
-        if(grid[i][j].getWall(ERRGameMove.UP)){
-          System.out.print("   ");
-        }else{
-          System.out.print("___");
+        for (RRGridCell[] rrGridCells : this.grid) {
+            if (rrGridCells[j].getWall(ERRGameMove.UP)) {
+                System.out.print("   ");
+            } else {
+                System.out.print("___");
+            }
         }
-      }
       System.out.print('\n');
       for(int i=0; i<this.grid.length; i++){
         if(grid[i][j].getWall(ERRGameMove.LEFT)){
@@ -148,13 +148,13 @@ public class RRWorld extends AWorld {
         }
       }
       System.out.print('\n');
-      for(int i=0; i<this.grid.length; i++){
-        if(grid[i][j].getWall(ERRGameMove.DOWN)){
-          System.out.print("   ");
-        }else{
-          System.out.print("---");
+        for (RRGridCell[] rrGridCells : this.grid) {
+            if (rrGridCells[j].getWall(ERRGameMove.DOWN)) {
+                System.out.print("   ");
+            } else {
+                System.out.print("---");
+            }
         }
-      }
       System.out.print('\n');
     }
     

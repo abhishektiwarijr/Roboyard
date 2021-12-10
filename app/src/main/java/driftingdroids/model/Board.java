@@ -293,7 +293,7 @@ public class Board {
 
 
     public static List<Goal> getStaticQuadrantGoals(final int quadrant) {
-        final List<Goal> result = new ArrayList<Goal>(QUADRANTS[quadrant].goals);
+        final List<Goal> result = new ArrayList<>(QUADRANTS[quadrant].goals);
         Collections.sort(result);
         return result;
     }
@@ -413,7 +413,7 @@ public class Board {
 
 
     public static Board createBoardRandom(int numRobots) {
-        final ArrayList<Integer> indexList = new ArrayList<Integer>();
+        final ArrayList<Integer> indexList = new ArrayList<>();
         for (int i = 0;  i < 4;  ++i) { indexList.add(i); }
         Collections.shuffle(indexList, RANDOM);
         return createBoardQuadrants(
@@ -573,7 +573,7 @@ public class Board {
      * @return a String that represents the state of this Board object.
      */
     public String getGameDump() {
-        final List<Byte> data = new ArrayList<Byte>();
+        final List<Byte> data = new ArrayList<>();
         // 0. data structure version
         data.add((byte) 0);
         // 1. board size
@@ -589,9 +589,9 @@ public class Board {
             data.add((byte) quadrant);
         }
         // 4. walls
-        for (int dir = 0;  dir < this.walls.length;  ++dir) {
-            for (int pos = 0;  pos < this.walls[dir].length;  ++pos) {
-                data.add(this.walls[dir][pos] ? (byte) 1 : (byte) 0);
+        for (boolean[] wall : this.walls) {
+            for (int pos = 0; pos < wall.length; ++pos) {
+                data.add(wall[pos] ? (byte) 1 : (byte) 0);
             }
         }
         // 5. list of goals
