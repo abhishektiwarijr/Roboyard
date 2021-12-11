@@ -17,12 +17,10 @@
 
 package driftingdroids.model;
 
-import android.util.Base64;
-
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Formatter;
 import java.util.Iterator;
@@ -33,183 +31,178 @@ import java.util.zip.CRC32;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-import roboyard.eclabs.MainActivity;
-
-//import javax.xml.bind.DatatypeConverter;
 
 
-/**
- * create virtual Boards for the main solver (IDDFS)
- */
 public class Board {
-
-    public static final int WIDTH_STANDARD = MainActivity.boardSizeX;
+    static final ResourceBundle L10N = ResourceBundle.getBundle("driftingdroids-localization-model");   //L10N = Localization
+    
+    public static final int WIDTH_STANDARD = 16;
     public static final int WIDTH_MIN = 3;
     public static final int WIDTH_MAX = 100;
-    public static final int HEIGHT_STANDARD = MainActivity.boardSizeY;
+    public static final int HEIGHT_STANDARD = 16;
     public static final int HEIGHT_MIN = 3;
     public static final int HEIGHT_MAX = 100;
     public static final int SIZE_MAX = 4096; // 12 bits
     public static final int NUMROBOTS_STANDARD = 4;
-
+    
     public static final String[] ROBOT_COLOR_NAMES_SHORT = {    //also used as part of L10N-keys
-            "r", "g", "b", "y", "s"
+        "r", "g", "b", "y", "s"
     };
     public static final String[] ROBOT_COLOR_NAMES_LONG = {     //also used as part of L10N-keys
-            "red", "green", "blue", "yellow", "silver"
+        "red", "green", "blue", "yellow", "silver"
     };
-
+    
     public static final int GOAL_CIRCLE   = 0;
     public static final int GOAL_TRIANGLE = 1;
     public static final int GOAL_SQUARE   = 2;
     public static final int GOAL_HEXAGON  = 3;
     public static final int GOAL_VORTEX   = 4;
     public static final String[] GOAL_SHAPE_NAMES = {
-            "circle", "triangle", "square", "hexagon", "vortex"
+        "circle", "triangle", "square", "hexagon", "vortex"
     };
-
+    
     public static final String[] QUADRANT_NAMES = {
-            "1A", "2A", "3A", "4A",
-            "1B", "2B", "3B", "4B",
-            "1C", "2C", "3C", "4C",
-            "1D", "2D", "3D", "4D"
+        "1A", "2A", "3A", "4A",
+        "1B", "2B", "3B", "4B",
+        "1C", "2C", "3C", "4C",
+        "1D", "2D", "3D", "4D"
     };
     private static final Board[] QUADRANTS = new Board[16];
     static {
         QUADRANTS[0] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //1A
-                .addWall(1, 0, "E")
-                .addWall(4, 1, "NW")  .addGoal(4, 1, 0, GOAL_CIRCLE)      //R
-                .addWall(1, 2, "NE")  .addGoal(1, 2, 1, GOAL_TRIANGLE)    //G
-                .addWall(6, 3, "SE")  .addGoal(6, 3, 3, GOAL_HEXAGON)     //Y
-                .addWall(0, 5, "S")
-                .addWall(3, 6, "SW")  .addGoal(3, 6, 2, GOAL_SQUARE)      //B
-                .addWall(7, 7, "NESW");
+            .addWall(1, 0, "E")
+            .addWall(4, 1, "NW")  .addGoal(4, 1, 0, GOAL_CIRCLE)      //R
+            .addWall(1, 2, "NE")  .addGoal(1, 2, 1, GOAL_TRIANGLE)    //G
+            .addWall(6, 3, "SE")  .addGoal(6, 3, 3, GOAL_HEXAGON)     //Y
+            .addWall(0, 5, "S")
+            .addWall(3, 6, "SW")  .addGoal(3, 6, 2, GOAL_SQUARE)      //B
+            .addWall(7, 7, "NESW");
         QUADRANTS[1] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //2A
-                .addWall(3, 0, "E")
-                .addWall(5, 1, "SE")  .addGoal(5, 1, 1, GOAL_HEXAGON)     //G
-                .addWall(1, 2, "SW")  .addGoal(1, 2, 0, GOAL_SQUARE)      //R
-                .addWall(0, 3, "S")
-                .addWall(6, 4, "NW")  .addGoal(6, 4, 3, GOAL_CIRCLE)      //Y
-                .addWall(2, 6, "NE")  .addGoal(2, 6, 2, GOAL_TRIANGLE)    //B
-                .addWall(7, 7, "NESW");
+            .addWall(3, 0, "E")
+            .addWall(5, 1, "SE")  .addGoal(5, 1, 1, GOAL_HEXAGON)     //G
+            .addWall(1, 2, "SW")  .addGoal(1, 2, 0, GOAL_SQUARE)      //R
+            .addWall(0, 3, "S")
+            .addWall(6, 4, "NW")  .addGoal(6, 4, 3, GOAL_CIRCLE)      //Y
+            .addWall(2, 6, "NE")  .addGoal(2, 6, 2, GOAL_TRIANGLE)    //B
+            .addWall(7, 7, "NESW");
         QUADRANTS[2] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //3A
-                .addWall(3, 0, "E")
-                .addWall(5, 2, "SE")  .addGoal(5, 2, 2, GOAL_HEXAGON)     //B
-                .addWall(0, 4, "S")
-                .addWall(2, 4, "NE")  .addGoal(2, 4, 1, GOAL_CIRCLE)      //G
-                .addWall(7, 5, "SW")  .addGoal(7, 5, 0, GOAL_TRIANGLE)    //R
-                .addWall(1, 6, "NW")  .addGoal(1, 6, 3, GOAL_SQUARE)      //Y
-                .addWall(7, 7, "NESW");
+            .addWall(3, 0, "E")
+            .addWall(5, 2, "SE")  .addGoal(5, 2, 2, GOAL_HEXAGON)     //B
+            .addWall(0, 4, "S")
+            .addWall(2, 4, "NE")  .addGoal(2, 4, 1, GOAL_CIRCLE)      //G
+            .addWall(7, 5, "SW")  .addGoal(7, 5, 0, GOAL_TRIANGLE)    //R
+            .addWall(1, 6, "NW")  .addGoal(1, 6, 3, GOAL_SQUARE)      //Y
+            .addWall(7, 7, "NESW");
         QUADRANTS[3] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //4A
-                .addWall(3, 0, "E")
-                .addWall(6, 1, "SW")  .addGoal(6, 1, 2, GOAL_CIRCLE)      //B
-                .addWall(1, 3, "NE")  .addGoal(1, 3, 3, GOAL_TRIANGLE)    //Y
-                .addWall(5, 4, "NW")  .addGoal(5, 4, 1, GOAL_SQUARE)      //G
-                .addWall(2, 5, "SE")  .addGoal(2, 5, 0, GOAL_HEXAGON)     //R
-                .addWall(7, 5, "SE")  .addGoal(7, 5, -1, GOAL_VORTEX)     //W*
-                .addWall(0, 6, "S")
-                .addWall(7, 7, "NESW");
+            .addWall(3, 0, "E")
+            .addWall(6, 1, "SW")  .addGoal(6, 1, 2, GOAL_CIRCLE)      //B
+            .addWall(1, 3, "NE")  .addGoal(1, 3, 3, GOAL_TRIANGLE)    //Y
+            .addWall(5, 4, "NW")  .addGoal(5, 4, 1, GOAL_SQUARE)      //G
+            .addWall(2, 5, "SE")  .addGoal(2, 5, 0, GOAL_HEXAGON)     //R
+            .addWall(7, 5, "SE")  .addGoal(7, 5, -1, GOAL_VORTEX)     //W*
+            .addWall(0, 6, "S")
+            .addWall(7, 7, "NESW");
         QUADRANTS[4] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //1B
-                .addWall(4, 0, "E")
-                .addWall(6, 1, "SE")  .addGoal(6, 1, 3, GOAL_HEXAGON)     //Y
-                .addWall(1, 2, "NW")  .addGoal(1, 2, 1, GOAL_TRIANGLE)    //G
-                .addWall(0, 5, "S")
-                .addWall(6, 5, "NE")  .addGoal(6, 5, 2, GOAL_SQUARE)      //B
-                .addWall(3, 6, "SW")  .addGoal(3, 6, 0, GOAL_CIRCLE)      //R
-                .addWall(7, 7, "NESW");
+            .addWall(4, 0, "E")
+            .addWall(6, 1, "SE")  .addGoal(6, 1, 3, GOAL_HEXAGON)     //Y
+            .addWall(1, 2, "NW")  .addGoal(1, 2, 1, GOAL_TRIANGLE)    //G
+            .addWall(0, 5, "S")
+            .addWall(6, 5, "NE")  .addGoal(6, 5, 2, GOAL_SQUARE)      //B
+            .addWall(3, 6, "SW")  .addGoal(3, 6, 0, GOAL_CIRCLE)      //R
+            .addWall(7, 7, "NESW");
         QUADRANTS[5] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //2B
-                .addWall(4, 0, "E")
-                .addWall(2, 1, "NW")  .addGoal(2, 1, 3, GOAL_CIRCLE)      //Y
-                .addWall(6, 3, "SW")  .addGoal(6, 3, 2, GOAL_TRIANGLE)    //B
-                .addWall(0, 4, "S")
-                .addWall(4, 5, "NE")  .addGoal(4, 5, 0, GOAL_SQUARE)      //R
-                .addWall(1, 6, "SE")  .addGoal(1, 6, 1, GOAL_HEXAGON)     //G
-                .addWall(7, 7, "NESW");
+            .addWall(4, 0, "E")
+            .addWall(2, 1, "NW")  .addGoal(2, 1, 3, GOAL_CIRCLE)      //Y
+            .addWall(6, 3, "SW")  .addGoal(6, 3, 2, GOAL_TRIANGLE)    //B
+            .addWall(0, 4, "S")
+            .addWall(4, 5, "NE")  .addGoal(4, 5, 0, GOAL_SQUARE)      //R
+            .addWall(1, 6, "SE")  .addGoal(1, 6, 1, GOAL_HEXAGON)     //G
+            .addWall(7, 7, "NESW");
         QUADRANTS[6] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //3B
-                .addWall(3, 0, "E")
-                .addWall(1, 1, "SW")  .addGoal(1, 1, 0, GOAL_TRIANGLE)    //R
-                .addWall(6, 2, "NE")  .addGoal(6, 2, 1, GOAL_CIRCLE)      //G
-                .addWall(2, 4, "SE")  .addGoal(2, 4, 2, GOAL_HEXAGON)     //B
-                .addWall(0, 5, "S")
-                .addWall(7, 5, "NW")  .addGoal(7, 5, 3, GOAL_SQUARE)      //Y
-                .addWall(7, 7, "NESW");
+            .addWall(3, 0, "E")
+            .addWall(1, 1, "SW")  .addGoal(1, 1, 0, GOAL_TRIANGLE)    //R
+            .addWall(6, 2, "NE")  .addGoal(6, 2, 1, GOAL_CIRCLE)      //G
+            .addWall(2, 4, "SE")  .addGoal(2, 4, 2, GOAL_HEXAGON)     //B
+            .addWall(0, 5, "S")
+            .addWall(7, 5, "NW")  .addGoal(7, 5, 3, GOAL_SQUARE)      //Y
+            .addWall(7, 7, "NESW");
         QUADRANTS[7] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //4B
-                .addWall(4, 0, "E")
-                .addWall(2, 1, "SE")  .addGoal(2, 1, 0, GOAL_HEXAGON)     //R
-                .addWall(1, 3, "SW")  .addGoal(1, 3, 1, GOAL_SQUARE)      //G
-                .addWall(0, 4, "S")
-                .addWall(6, 4, "NW")  .addGoal(6, 4, 3, GOAL_TRIANGLE)    //Y
-                .addWall(5, 6, "NE")  .addGoal(5, 6, 2, GOAL_CIRCLE)      //B
-                .addWall(3, 7, "SE")  .addGoal(3, 7, -1, GOAL_VORTEX)     //W*
-                .addWall(7, 7, "NESW");
+            .addWall(4, 0, "E")
+            .addWall(2, 1, "SE")  .addGoal(2, 1, 0, GOAL_HEXAGON)     //R
+            .addWall(1, 3, "SW")  .addGoal(1, 3, 1, GOAL_SQUARE)      //G
+            .addWall(0, 4, "S")
+            .addWall(6, 4, "NW")  .addGoal(6, 4, 3, GOAL_TRIANGLE)    //Y
+            .addWall(5, 6, "NE")  .addGoal(5, 6, 2, GOAL_CIRCLE)      //B
+            .addWall(3, 7, "SE")  .addGoal(3, 7, -1, GOAL_VORTEX)     //W*
+            .addWall(7, 7, "NESW");
         QUADRANTS[8] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //1C
-                .addWall(1, 0, "E")
-                .addWall(3, 1, "NW")  .addGoal(3, 1, 1, GOAL_TRIANGLE)    //G
-                .addWall(6, 3, "SE")  .addGoal(6, 3, 3, GOAL_HEXAGON)     //Y
-                .addWall(1, 4, "SW")  .addGoal(1, 4, 0, GOAL_CIRCLE)      //R
-                .addWall(0, 6, "S")
-                .addWall(4, 6, "NE")  .addGoal(4, 6, 2, GOAL_SQUARE)      //B
-                .addWall(7, 7, "NESW");
+            .addWall(1, 0, "E")
+            .addWall(3, 1, "NW")  .addGoal(3, 1, 1, GOAL_TRIANGLE)    //G
+            .addWall(6, 3, "SE")  .addGoal(6, 3, 3, GOAL_HEXAGON)     //Y
+            .addWall(1, 4, "SW")  .addGoal(1, 4, 0, GOAL_CIRCLE)      //R
+            .addWall(0, 6, "S")
+            .addWall(4, 6, "NE")  .addGoal(4, 6, 2, GOAL_SQUARE)      //B
+            .addWall(7, 7, "NESW");
         QUADRANTS[9] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //2C
-                .addWall(5, 0, "E")
-                .addWall(3, 2, "NW")  .addGoal(3, 2, 3, GOAL_CIRCLE)      //Y
-                .addWall(0, 3, "S")
-                .addWall(5, 3, "SW")  .addGoal(5, 3, 2, GOAL_TRIANGLE)    //B
-                .addWall(2, 4, "NE")  .addGoal(2, 4, 0, GOAL_SQUARE)      //R
-                .addWall(4, 5, "SE")  .addGoal(4, 5, 1, GOAL_HEXAGON)     //G
-                .addWall(7, 7, "NESW");
+            .addWall(5, 0, "E")
+            .addWall(3, 2, "NW")  .addGoal(3, 2, 3, GOAL_CIRCLE)      //Y
+            .addWall(0, 3, "S")
+            .addWall(5, 3, "SW")  .addGoal(5, 3, 2, GOAL_TRIANGLE)    //B
+            .addWall(2, 4, "NE")  .addGoal(2, 4, 0, GOAL_SQUARE)      //R
+            .addWall(4, 5, "SE")  .addGoal(4, 5, 1, GOAL_HEXAGON)     //G
+            .addWall(7, 7, "NESW");
         QUADRANTS[10] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //3C
-                .addWall(1, 0, "E")
-                .addWall(4, 1, "NE")  .addGoal(4, 1, 1, GOAL_CIRCLE)      //G
-                .addWall(1, 3, "SW")  .addGoal(1, 3, 0, GOAL_TRIANGLE)    //R
-                .addWall(0, 5, "S")
-                .addWall(5, 5, "NW")  .addGoal(5, 5, 3, GOAL_SQUARE)      //Y
-                .addWall(3, 6, "SE")  .addGoal(3, 6, 2, GOAL_HEXAGON)     //B
-                .addWall(7, 7, "NESW");
+            .addWall(1, 0, "E")
+            .addWall(4, 1, "NE")  .addGoal(4, 1, 1, GOAL_CIRCLE)      //G
+            .addWall(1, 3, "SW")  .addGoal(1, 3, 0, GOAL_TRIANGLE)    //R
+            .addWall(0, 5, "S")
+            .addWall(5, 5, "NW")  .addGoal(5, 5, 3, GOAL_SQUARE)      //Y
+            .addWall(3, 6, "SE")  .addGoal(3, 6, 2, GOAL_HEXAGON)     //B
+            .addWall(7, 7, "NESW");
         QUADRANTS[11] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //4C
-                .addWall(2, 0, "E")
-                .addWall(5, 1, "SW")  .addGoal(5, 1, 2, GOAL_CIRCLE)      //B
-                .addWall(7, 2, "SE")  .addGoal(7, 2, -1, GOAL_VORTEX)     //W*
-                .addWall(0, 3, "S")
-                .addWall(3, 4, "SE")  .addGoal(3, 4, 0, GOAL_HEXAGON)     //R
-                .addWall(6, 5, "NW")  .addGoal(6, 5, 1, GOAL_SQUARE)      //G
-                .addWall(1, 6, "NE")  .addGoal(1, 6, 3, GOAL_TRIANGLE)    //Y
-                .addWall(7, 7, "NESW");
+            .addWall(2, 0, "E")
+            .addWall(5, 1, "SW")  .addGoal(5, 1, 2, GOAL_CIRCLE)      //B
+            .addWall(7, 2, "SE")  .addGoal(7, 2, -1, GOAL_VORTEX)     //W*
+            .addWall(0, 3, "S")
+            .addWall(3, 4, "SE")  .addGoal(3, 4, 0, GOAL_HEXAGON)     //R
+            .addWall(6, 5, "NW")  .addGoal(6, 5, 1, GOAL_SQUARE)      //G
+            .addWall(1, 6, "NE")  .addGoal(1, 6, 3, GOAL_TRIANGLE)    //Y
+            .addWall(7, 7, "NESW");
         QUADRANTS[12] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //1D
-                .addWall(5, 0, "E")
-                .addWall(1, 3, "NW")  .addGoal(1, 3, 0, GOAL_CIRCLE)      //R
-                .addWall(6, 4, "SE")  .addGoal(6, 4, 3, GOAL_HEXAGON)     //Y
-                .addWall(0, 5, "S")
-                .addWall(2, 6, "NE")  .addGoal(2, 6, 1, GOAL_TRIANGLE)    //G
-                .addWall(3, 6, "SW")  .addGoal(3, 6, 2, GOAL_SQUARE)      //B
-                .addWall(7, 7, "NESW");
+            .addWall(5, 0, "E")
+            .addWall(1, 3, "NW")  .addGoal(1, 3, 0, GOAL_CIRCLE)      //R
+            .addWall(6, 4, "SE")  .addGoal(6, 4, 3, GOAL_HEXAGON)     //Y
+            .addWall(0, 5, "S")
+            .addWall(2, 6, "NE")  .addGoal(2, 6, 1, GOAL_TRIANGLE)    //G
+            .addWall(3, 6, "SW")  .addGoal(3, 6, 2, GOAL_SQUARE)      //B
+            .addWall(7, 7, "NESW");
         QUADRANTS[13] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //2D
-                .addWall(2, 0, "E")
-                .addWall(5, 2, "SE")  .addGoal(5, 2, 1, GOAL_HEXAGON)     //G
-                .addWall(6, 2, "NW")  .addGoal(6, 2, 3, GOAL_CIRCLE)      //Y
-                .addWall(1, 5, "SW")  .addGoal(1, 5, 0, GOAL_SQUARE)      //R
-                .addWall(0, 6, "S")
-                .addWall(4, 7, "NE")  .addGoal(4, 7, 2, GOAL_TRIANGLE)    //B
-                .addWall(7, 7, "NESW");
+            .addWall(2, 0, "E")
+            .addWall(5, 2, "SE")  .addGoal(5, 2, 1, GOAL_HEXAGON)     //G
+            .addWall(6, 2, "NW")  .addGoal(6, 2, 3, GOAL_CIRCLE)      //Y
+            .addWall(1, 5, "SW")  .addGoal(1, 5, 0, GOAL_SQUARE)      //R
+            .addWall(0, 6, "S")
+            .addWall(4, 7, "NE")  .addGoal(4, 7, 2, GOAL_TRIANGLE)    //B
+            .addWall(7, 7, "NESW");
         QUADRANTS[14] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //3D
-                .addWall(4, 0, "E")
-                .addWall(0, 2, "S")
-                .addWall(6, 2, "SE")  .addGoal(6, 2, 2, GOAL_HEXAGON)     //B
-                .addWall(2, 4, "NE")  .addGoal(2, 4, 1, GOAL_CIRCLE)      //G
-                .addWall(3, 4, "SW")  .addGoal(3, 4, 0, GOAL_TRIANGLE)    //R
-                .addWall(5, 6, "NW")  .addGoal(5, 6, 3, GOAL_SQUARE)      //Y
-                .addWall(7, 7, "NESW");
+            .addWall(4, 0, "E")
+            .addWall(0, 2, "S")
+            .addWall(6, 2, "SE")  .addGoal(6, 2, 2, GOAL_HEXAGON)     //B
+            .addWall(2, 4, "NE")  .addGoal(2, 4, 1, GOAL_CIRCLE)      //G
+            .addWall(3, 4, "SW")  .addGoal(3, 4, 0, GOAL_TRIANGLE)    //R
+            .addWall(5, 6, "NW")  .addGoal(5, 6, 3, GOAL_SQUARE)      //Y
+            .addWall(7, 7, "NESW");
         QUADRANTS[15] = new Board(WIDTH_STANDARD, HEIGHT_STANDARD, NUMROBOTS_STANDARD) //4D
-                .addWall(4, 0, "E")
-                .addWall(6, 2, "NW")  .addGoal(6, 2, 3, GOAL_TRIANGLE)    //Y
-                .addWall(2, 3, "NE")  .addGoal(2, 3, 2, GOAL_CIRCLE)      //B
-                .addWall(3, 3, "SW")  .addGoal(3, 3, 1, GOAL_SQUARE)      //G
-                .addWall(1, 5, "SE")  .addGoal(1, 5, 0, GOAL_HEXAGON)     //R
-                .addWall(0, 6, "S")
-                .addWall(5, 7, "SE")  .addGoal(5, 7, -1, GOAL_VORTEX)     //W*
-                .addWall(7, 7, "NESW");
+            .addWall(4, 0, "E")
+            .addWall(6, 2, "NW")  .addGoal(6, 2, 3, GOAL_TRIANGLE)    //Y
+            .addWall(2, 3, "NE")  .addGoal(2, 3, 2, GOAL_CIRCLE)      //B
+            .addWall(3, 3, "SW")  .addGoal(3, 3, 1, GOAL_SQUARE)      //G
+            .addWall(1, 5, "SE")  .addGoal(1, 5, 0, GOAL_HEXAGON)     //R
+            .addWall(0, 6, "S")
+            .addWall(5, 7, "SE")  .addGoal(5, 7, -1, GOAL_VORTEX)     //W*
+            .addWall(7, 7, "NESW");
     }
-
+    
     public final int width;
     public final int height;
     public final int size;      // width * height
@@ -219,17 +212,17 @@ public class Board {
     public static final int EAST  = 1;  // right
     public static final int SOUTH = 2;  // down
     public static final int WEST  = 3;  // left
-
+    
     public final int[] directionIncrement;
-
+    
     private static final Random RANDOM = new Random();
-
-    private final int[] quadrants;      // quadrants used for this board (indexes in QUADRANTS)
+    
+    private final int[] quadrants;      // quadrants used for this board (indexes in QUADRANTS) 
     private final boolean[][] walls;    // [4][width*height] 4 directions
     private final List<Goal> goals;     // all possible goals on the board
     private final List<Goal> randomGoals;
     private Goal goal;                  // the current goal
-
+    
     private int[] robots;               // index=robot, value=position
     private boolean isFreestyleBoard;
 
@@ -410,23 +403,23 @@ public class Board {
         b.setGoalRandom();
         return b;
     }
-
-
+    
+    
     public static Board createBoardRandom(int numRobots) {
-        final ArrayList<Integer> indexList = new ArrayList<>();
-        for (int i = 0;  i < 4;  ++i) { indexList.add(i); }
+        final ArrayList<Integer> indexList = new ArrayList<Integer>();
+        for (int i = 0;  i < 4;  ++i) { indexList.add(Integer.valueOf(i)); }
         Collections.shuffle(indexList, RANDOM);
         return createBoardQuadrants(
-                indexList.get(0) + RANDOM.nextInt(3 + 1) * 4,
-                indexList.get(1) + RANDOM.nextInt(3 + 1) * 4,
-                indexList.get(2) + RANDOM.nextInt(3 + 1) * 4,
-                indexList.get(3) + RANDOM.nextInt(3 + 1) * 4,
+                indexList.get(0).intValue() + RANDOM.nextInt(3 + 1) * 4,
+                indexList.get(1).intValue() + RANDOM.nextInt(3 + 1) * 4,
+                indexList.get(2).intValue() + RANDOM.nextInt(3 + 1) * 4,
+                indexList.get(3).intValue() + RANDOM.nextInt(3 + 1) * 4,
                 numRobots);
     }
-
-
+    
+    
     public static Board createBoardGameID(final String idStr) {
-        Board result;
+        Board result = null;
         int index = 0;
         try {
             //example game ID: 0765+41+2E21BD0F+1C
@@ -474,8 +467,8 @@ public class Board {
         }
         return result;
     }
-
-
+    
+    
     /**
      * The game ID string consists of this info:
      * - the 4 board quadrants (4 board pieces, front or back)
@@ -492,20 +485,20 @@ public class Board {
         final Formatter fmt = new Formatter();
         final int quad01 = (this.getQuadrantNum(0) << 4) | this.getQuadrantNum(1);
         final int quad23 = (this.getQuadrantNum(2) << 4) | this.getQuadrantNum(3);
-        fmt.format("%02X%02X+", quad01, quad23);
+        fmt.format("%02X%02X+", Integer.valueOf(quad01), Integer.valueOf(quad23));
         final int robos = (this.robots.length << 4) | (this.goal.robotNumber >= 0 ? this.goal.robotNumber : 0x0f);
-        fmt.format("%02X+", robos);
+        fmt.format("%02X+", Integer.valueOf(robos));
         for (int robot : this.robots) {
-            fmt.format("%02X", robot);
+            fmt.format("%02X", Integer.valueOf(robot));
         }
-        fmt.format("+%02X", this.goal.position);
+        fmt.format("+%02X", Integer.valueOf(this.goal.position));
         return fmt.toString();
     }
-
-
+    
+    
     /**
      * Creates a new Board object based on the state information contained in the input string.
-     *
+     * 
      * @param dump a String that represents the state of a Board object.
      * @return a new Board object.
      */
@@ -564,68 +557,68 @@ public class Board {
         board.isFreestyleBoard = (0 != data[didx]);
         return board;
     }
-
-
+    
+    
     /**
      * Creates a specific text representation of this Board object. This is printable
      * text which is suitable for copy&paste into e-mails, internet forums etc.
-     *
+     * 
      * @return a String that represents the state of this Board object.
      */
     public String getGameDump() {
-        final List<Byte> data = new ArrayList<>();
+        final List<Byte> data = new ArrayList<Byte>();
         // 0. data structure version
-        data.add((byte) 0);
+        data.add(Byte.valueOf((byte)0));
         // 1. board size
         putInteger(this.width, data);
         putInteger(this.height, data);
         // 2. robots
-        data.add((byte) this.robots.length);
+        data.add(Byte.valueOf((byte)this.robots.length));
         for (int robot : this.robots) {
             putInteger(robot, data);
         }
         // 3. quadrants
         for (int quadrant : this.quadrants) {
-            data.add((byte) quadrant);
+            data.add(Byte.valueOf((byte)quadrant));
         }
         // 4. walls
-        for (boolean[] wall : this.walls) {
-            for (int pos = 0; pos < wall.length; ++pos) {
-                data.add(wall[pos] ? (byte) 1 : (byte) 0);
+        for (int dir = 0;  dir < this.walls.length;  ++dir) {
+            for (int pos = 0;  pos < this.walls[dir].length;  ++pos) {
+                data.add(Byte.valueOf(this.walls[dir][pos] ? (byte)1 : (byte)0));
             }
         }
         // 5. list of goals
         putInteger(this.goals.size(), data);
         for (Goal goal : this.goals) {  //6 bytes
             putInteger(goal.position, data);
-            data.add((byte) goal.robotNumber);
-            data.add((byte) goal.shape);
+            data.add(Byte.valueOf((byte)goal.robotNumber));
+            data.add(Byte.valueOf((byte)goal.shape));
         }
         // 6. active goal
         putInteger((null == this.goal ? -1 : this.goal.position), data);
-        data.add((byte) (null == this.goal ? 0 : this.goal.robotNumber));
-        data.add((byte) (null == this.goal ? 0 : this.goal.shape));
+        data.add(Byte.valueOf((byte)(null == this.goal ? 0 : this.goal.robotNumber)));
+        data.add(Byte.valueOf((byte)(null == this.goal ? 0 : this.goal.shape)));
         // 7. isFreestyleBoard
-        data.add(this.isFreestyleBoard() ? (byte) 1 : (byte) 0);
+        data.add(Byte.valueOf(this.isFreestyleBoard() ? (byte)1 : (byte)0));
         //convert data to String
         final byte[] dataArray = new byte[data.size()];
         int i = 0;
         for (Byte dat : data) {
-            dataArray[i++] = dat;
+            dataArray[i++] = dat.byteValue();
         }
         final String str = zipb64(dataArray);
         return str;
     }
-
-
+    
+    
     private static void putInteger(final int value, final List<Byte> data) {
-        data.add((byte) (0xff & (value >> 24)));
-        data.add((byte) (0xff & (value >> 16)));
-        data.add((byte) (0xff & (value >> 8)));
-        data.add((byte) (0xff & value));
+        data.add(Byte.valueOf((byte)(0xff & (value >> 24))));
+        data.add(Byte.valueOf((byte)(0xff & (value >> 16))));
+        data.add(Byte.valueOf((byte)(0xff & (value >> 8))));
+        data.add(Byte.valueOf((byte)(0xff & value)));
     }
-
-
+    
+    
     private static int getInteger(final byte[] data, int didx) {
         int result = data[didx++];
         result = (result << 8) | (0xff & data[didx++]);
@@ -633,8 +626,8 @@ public class Board {
         result = (result << 8) | (0xff & data[didx]);
         return result;
     }
-
-
+    
+    
     private static String zipb64(final byte[] input) {
         //store uncompressed length
         final byte[] zipOutput = new byte[input.length * 2 + 128];  //large enough?!
@@ -648,20 +641,20 @@ public class Board {
         final int zipOutLen = 4 + zip.deflate(zipOutput, 4, zipOutput.length-4);    //skip uncompressed length
         //encode base64
         final byte[] b64Input = Arrays.copyOf(zipOutput, zipOutLen);
-        final String b64Output = new String(Base64.encode(b64Input, 0));
+        final String b64Output = Base64.getEncoder().encodeToString(b64Input);
         //compute CRC of encoded data
         final CRC32 crc32 = new CRC32();
         crc32.update(b64Output.getBytes(StandardCharsets.UTF_8));
         final long crc32Value = crc32.getValue();
-        final String crc32String = new Formatter().format("%08X", crc32Value).toString();
+        final String crc32String = new Formatter().format("%08X", Long.valueOf(crc32Value)).toString();
         //build output string:  starts and ends with "!", to be split at "!"
         final String result = "!DriftingDroids_game!" + crc32String + "!" + b64Output + "!";
         return result;
     }
-
-
+    
+    
     private static byte[] unb64unzip(final String input) {
-        byte[] result;
+        byte[] result = null;
         try {
             //split input string and first validation
             final String[] inputSplit = input.split("!");
@@ -677,7 +670,7 @@ public class Board {
                 throw new IllegalArgumentException("data CRC mismatch");
             }
             //parse base64 string
-            final byte[] b64Output = Base64.decode(inputSplit[3].getBytes(), 0);//throws IllegalArgumentException
+            final byte[] b64Output = Base64.getDecoder().decode(inputSplit[3]);    //throws IllegalArgumentException
             //unzip/inflate data
             int unzipLen = 0;
             for (int i = 0;  i < 4;  ++i) {
@@ -698,7 +691,7 @@ public class Board {
         return result;
     }
 
-
+    
     public Board rotate90(final boolean clockwise) {
         final Board newBoard = new Board(this.height, this.width, this.robots.length);
         //quadrants
@@ -723,8 +716,8 @@ public class Board {
         newBoard.setGoal(this.rotatePosition90(this.goal.position, clockwise));
         return newBoard;
     }
-
-
+    
+    
     private int rotatePosition90(final int pos, final boolean clockwise) {
         final int x = pos % this.width;
         final int y = pos / this.width;
@@ -738,35 +731,35 @@ public class Board {
         }
         return newx + newy * this.height;
     }
-
-
+    
+    
     private int transformQuadrantX(final int qX, final int qY, final int qPos) {
         //qPos (quadrant target position): 0==NW, 1==NE, 2==SE, 3==SW
         final int resultX;
         switch (qPos) {
-            case 1: resultX = this.width - 1 - qY;  break;
-            case 2: resultX = this.width - 1 - qX;  break;
-            case 3: resultX = qY;                   break;
-            default:resultX = qX;                   break;
+        case 1: resultX = this.width - 1 - qY;  break;
+        case 2: resultX = this.width - 1 - qX;  break;
+        case 3: resultX = qY;                   break;
+        default:resultX = qX;                   break;
         }
-        return resultX;
+        return resultX; 
     }
     private int transformQuadrantY(final int qX, final int qY, final int qPos) {
         //qPos (quadrant target position): 0==NW, 1==NE, 2==SE, 3==SW
         final int resultY;
         switch (qPos) {
-            case 1: resultY = qX;                   break;
-            case 2: resultY = this.height - 1 - qY; break;
-            case 3: resultY = this.height - 1 - qX; break;
-            default:resultY = qY;                   break;
+        case 1: resultY = qX;                   break;
+        case 2: resultY = this.height - 1 - qY; break;
+        case 3: resultY = this.height - 1 - qX; break;
+        default:resultY = qY;                   break;
         }
-        return resultY;
+        return resultY; 
     }
     private int transformQuadrantPosition(final int qX, final int qY, final int qPos) {
-        return (this.transformQuadrantX(qX, qY, qPos) + this.transformQuadrantY(qX, qY, qPos) * this.width);
+        return (this.transformQuadrantX(qX, qY, qPos) + this.transformQuadrantY(qX, qY, qPos) * this.width); 
     }
-
-
+    
+    
     private Board addQuadrant(final int qNum, final int qPos) {
         this.quadrants[qPos] = qNum;
         final Board quadrant = QUADRANTS[qNum];
@@ -777,15 +770,15 @@ public class Board {
             for (qX = 0;  qX < quadrant.width/2;  ++qX) {
                 for (int dir = 0;  dir < 4;  ++dir) {
                     this.walls[(dir + qPos) & 3][this.transformQuadrantPosition(qX, qY, qPos)] |=
-                            quadrant.walls[dir][qX + qY * quadrant.width];
+                        quadrant.walls[dir][qX + qY * quadrant.width];
                 }
             }
             this.walls[(WEST + qPos) & 3][this.transformQuadrantPosition(qX, qY, qPos)] |=
-                    quadrant.walls[EAST][qX - 1 + qY * quadrant.width];
+                quadrant.walls[EAST][qX - 1 + qY * quadrant.width];
         }
         for (qX = 0;  qX < quadrant.width/2;  ++qX) {
             this.walls[(NORTH + qPos) & 3][this.transformQuadrantPosition(qX, qY, qPos)] |=
-                    quadrant.walls[SOUTH][qX + (qY - 1) * quadrant.width];
+                quadrant.walls[SOUTH][qX + (qY - 1) * quadrant.width];
         }
         //add goals
         for (Goal g : quadrant.goals) {
@@ -793,8 +786,8 @@ public class Board {
         }
         return this;
     }
-
-
+    
+    
     public boolean isSolution01() {
         for (int robo = 0;  robo < this.robots.length;  ++robo) {
             if ((this.goal.robotNumber != robo) && (this.goal.robotNumber != -1)) {
@@ -833,7 +826,7 @@ public class Board {
         }
         return false;
     }
-
+    
     private boolean isRobotPos(final int position) {
         for (final int roboPos : this.robots) {
             if (position == roboPos) {
@@ -842,7 +835,7 @@ public class Board {
         }
         return false;
     }
-
+    
     public void setRobots(final int numRobots) {
         this.robots = new int[numRobots];
         if (this.isFreestyleBoard()) {
@@ -856,7 +849,7 @@ public class Board {
             this.setRobot(4, 15 +  7 * this.width, false); //S
         }
     }
-
+    
     public void setRobotsRandom() {
         do {
             Arrays.fill(this.robots, -1);
@@ -868,7 +861,7 @@ public class Board {
             }
         } while (true == this.isSolution01());
     }
-
+    
     public boolean setRobots(final int[] newRobots) {
         if (this.robots.length != newRobots.length) { return false; }
         final int[] backup = Arrays.copyOf(this.robots, this.robots.length);
@@ -882,7 +875,7 @@ public class Board {
         }
         return true;
     }
-
+    
     public boolean setRobot(final int robot, final int position, final boolean allowSwapRobots) {
         //invalid robot number?
         //impossible position (out of bounds or obstacle)?
@@ -890,7 +883,7 @@ public class Board {
                 (position < 0) || (position >= this.size) ||
                 this.isObstacle(position) ||
                 ((false == allowSwapRobots) && (this.getRobotNum(position) >= 0) && (this.getRobotNum(position) != robot)) )  {
-            return false;
+            return false;   
         } else {
             //position already occupied by another robot?
             final int otherRobot = this.getRobotNum(position);
@@ -903,7 +896,7 @@ public class Board {
             return true;
         }
     }
-
+    
     public void setGoalRandom() {
         if (this.goals.isEmpty()) {
             this.goal = null;
@@ -925,7 +918,7 @@ public class Board {
             this.randomGoals.add(goal01);
         }
     }
-
+    
     public boolean setGoal(final int position) {
         boolean result = false;
         for (Goal g : this.goals) {
@@ -937,12 +930,12 @@ public class Board {
         }
         return result;
     }
-
+    
     public Board addGoal(int pos, int robot, int shape) {
         this.removeGoal(pos);
         return this.addGoal(pos%this.width, pos/this.width, robot, shape);
     }
-
+    
     private Board addGoal(int x, int y, int robot, int shape) {
         final Goal g = new Goal(x, y, robot, shape);
         this.goals.add(g);
@@ -951,7 +944,7 @@ public class Board {
         }
         return this;
     }
-
+    
     public boolean removeGoal(final int position) {
         boolean result = false;
         final Iterator<Goal> iter = this.goals.iterator();
@@ -968,7 +961,7 @@ public class Board {
         }
         return result;
     }
-
+    
     public void removeGoals() {
         this.goals.clear();
         this.goal = null;
@@ -997,7 +990,7 @@ public class Board {
         this.setWalls(x, y, str, true);
         return this;
     }
-
+    
     private void setWalls(int x, int y, String str, boolean value) {
         if (str.contains("N")) {
             this.setWall(x, y,     NORTH,  value);
@@ -1022,7 +1015,7 @@ public class Board {
             this.walls[direction][x + y * this.width] = value;
         }
     }
-
+    
     public void setWall(int position, String direction, boolean doSet) {
         final int x = position % this.width;
         final int y = position / this.width;
@@ -1035,7 +1028,7 @@ public class Board {
         }
         this.setWalls(x, y, direction, doSet);
     }
-
+    
     public void removeWalls() {
         for (boolean[] w : this.walls) {
             Arrays.fill(w, false);
@@ -1046,14 +1039,14 @@ public class Board {
     public boolean isWall(int position, int direction) {
         return this.walls[direction][position];
     }
-
+    
     public boolean isObstacle(int position) {
         return (this.isWall(position, NORTH) &&
                 this.isWall(position, EAST) &&
                 this.isWall(position, SOUTH) &&
                 this.isWall(position, WEST));
     }
-
+    
     private int getRobotNum(final int position) {
         int robotNum = -1;  //default: not found
         for (int i = 0; i < this.robots.length; ++i) {
@@ -1073,7 +1066,7 @@ public class Board {
         StringBuilder s = new StringBuilder();
         //s.append("Board (").append(this.width).append(",").append(this.height)
         //        .append(",").append(this.robots.length).append(")").append('\n');
-
+        
         // print board graphically
         // horizontal wall = "---", vertical wall = "|",
         // empty cell = ".", robots = "01234", goal = "X"
@@ -1122,25 +1115,25 @@ public class Board {
         // print list of robot coordinates
         for (int i = 0; i < this.robots.length; ++i) {
             s.append("robot #").append(i)
-                    .append(" (").append(this.robots[i] % this.width)
-                    .append(", ").append(this.robots[i] / this.width)
-                    .append(")").append('\n');
+             .append(" (").append(this.robots[i] % this.width)
+             .append(", ").append(this.robots[i] / this.width)
+             .append(")").append('\n');
         }
         // print goal coordinates
         s.append("goal #").append(this.goal.robotNumber)
-                .append(" (").append(this.goal.position % this.width)
-                .append(", ").append(this.goal.position / this.width).append(")");
+         .append(" (").append(this.goal.position % this.width)
+         .append(", ").append(this.goal.position / this.width).append(")");
         return s.toString();
     }
 
     public int[] getRobotPositions() {
         return this.robots;
     }
-
+    
     public Goal getGoal() {
         return this.goal;
     }
-
+    
     public Goal getGoalAt(final int position) {
         Goal result = null;
         for (Goal g : this.goals) {
@@ -1151,15 +1144,15 @@ public class Board {
         }
         return result;
     }
-
+    
     public int getQuadrantNum(final int qPos) { //qPos: 0=NW, 1=NE, 2=SE, 3=SW
         return this.quadrants[qPos];
     }
-
+    
     public boolean[][] getWalls() {
         return this.walls;
     }
-
+    
     /**
      * determine the direction from position "old" to "new".
      * @param diffPos difference of positions (new - old)
@@ -1176,11 +1169,29 @@ public class Board {
         }
         return dir;
     }
-
+    
+    public static String getColorLongL10N(int color) {
+        if (color < 0) {    //wildcard
+            return L10N.getString("board.color.wildcard.text");
+        } else {
+            return L10N.getString("board.color." + ROBOT_COLOR_NAMES_LONG[color] +".text");
+        }
+    }
+    public static String getColorShortL10N(int color) {
+        if (color < 0) {    //wildcard
+            return L10N.getString("board.color.w.text");
+        } else {
+            return L10N.getString("board.color." + ROBOT_COLOR_NAMES_SHORT[color] +".text");
+        }
+    }
+    public static String getGoalShapeL10N(int shape) {
+        return L10N.getString("board.shape." + GOAL_SHAPE_NAMES[shape] + ".text");
+    }
+    
     public int getNumRobots() {
         return this.robots.length;
     }
-
+    
     public void setFreestyleBoard() {
         this.isFreestyleBoard = true;
     }

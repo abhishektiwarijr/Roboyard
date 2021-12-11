@@ -141,6 +141,7 @@ public class RRGetMap {
      * @return
      */
     public static Board createDDWorld(ArrayList<GridElement> gridElements, RRPiece[] pieces) {
+
         Board board = Board.createBoardFreestyle(null, 16, 16, 4);
         board.removeGoals();
 

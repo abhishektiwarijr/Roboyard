@@ -28,11 +28,20 @@ public abstract class Solver {
     public enum SOLUTION_MODE {
         MINIMUM("minimum", "solver.Minimum.text"), MAXIMUM("maximum", "solver.Maximum.text");
         private final String name, l10nKey;
-        SOLUTION_MODE(String name, String l10nKey) { this.name = name;  this.l10nKey = l10nKey; }
+        private SOLUTION_MODE(String name, String l10nKey) { this.name = name;  this.l10nKey = l10nKey; }
+        @Override public String toString() { return Board.L10N.getString(this.l10nKey); }
         public String getName() { return this.name; }
     }
-    
-    
+
+    public static final boolean USE_SLOW_SEARCH_MORE_SOLUTIONS;
+    static {
+        boolean useSlowSearchMoreSolutions = false;
+        try {
+            useSlowSearchMoreSolutions = (null != System.getProperty("UseSlowSearchMoreSolutions"));
+        } catch (Exception ignored) { }
+        USE_SLOW_SEARCH_MORE_SOLUTIONS = useSlowSearchMoreSolutions;
+    }
+
     protected final Board board;
     protected final boolean[][] boardWalls;
     protected final int boardSizeBitMask;
@@ -73,7 +82,7 @@ public abstract class Solver {
         final Formatter formatter = new Formatter();
         this.swapGoalLast(state);
         for (int i : state) {
-            formatter.format("%02x", i);
+            formatter.format("%02x", Integer.valueOf(i));
         }
         this.swapGoalLast(state);
         return "0x" + formatter.out().toString();

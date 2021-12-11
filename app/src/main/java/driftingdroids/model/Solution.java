@@ -35,6 +35,8 @@ public class Solution implements Comparable<Solution> {
     private int moveIndex;
     private int numColors;
     private int numColorChanges;
+    private int movedRobots;
+    private long finalPositions;
     
     public Solution(Board board) {
         this.board = board;
@@ -42,6 +44,8 @@ public class Solution implements Comparable<Solution> {
         this.moveIndex = 0;
         this.numColors = 0;
         this.numColorChanges = 0;
+        this.movedRobots = 0;
+        this.finalPositions = 0;
     }
     
     
@@ -56,7 +60,7 @@ public class Solution implements Comparable<Solution> {
     public Set<Integer> getRobotsMoved() {
         final TreeSet<Integer> result = new TreeSet<Integer>(); //sorted set
         for (Move move : this.movesList) {
-            result.add(move.robotNumber);
+            result.add(Integer.valueOf(move.robotNumber));
         }
         return result;
     }
@@ -135,13 +139,13 @@ public class Solution implements Comparable<Solution> {
         StringBuilder s = new StringBuilder();
         // 1. number of moves
         final Formatter f = new Formatter(s);
-        f.format("%02d", this.size());
+        f.format("%02d", Integer.valueOf(this.size()));
         // 2. number of robots moved
         final Set<Integer> thisRobotsMoved = this.getRobotsMoved();
         s.append('/').append(thisRobotsMoved.size()).append('/');
         // 3. list of robots moved
         for (int i = 0;  i < this.board.getRobotPositions().length;  ++i) {
-            if (thisRobotsMoved.contains(i)) {
+            if (thisRobotsMoved.contains(Integer.valueOf(i))) {
                 s.append(Board.ROBOT_COLOR_NAMES_SHORT[i]);
             } else {
                 s.append('#');
@@ -158,19 +162,29 @@ public class Solution implements Comparable<Solution> {
         } else if (this.size() > other.size()) {
             return 1;
         } else {    //equal number of moves
+
             // 2. compare number of robots moved
             if (this.numColors < other.numColors) {
                 return -1;
             } else if (this.numColors > other.numColors) {
                 return 1;
             } else {    //equal number of robots moved
-                // 3. compare number of color changes
-                if (this.numColorChanges < other.numColorChanges) {
+
+                // 3. compare the actual robots moved
+                if (this.movedRobots < other.movedRobots) {
                     return -1;
-                } else if (this.numColorChanges > other.numColorChanges) {
+                } else if (this.movedRobots > other.movedRobots) {
                     return 1;
-                } else {
-                    return 0;
+                } else {    //equal robots moved
+
+                    // 4. compare final robot positions
+                    if (this.finalPositions < other.finalPositions) {
+                        return -1;
+                    } else if (this.finalPositions > other.finalPositions) {
+                        return 1;
+                    } else {    // equal final positions
+                        return 0;
+                    }
                 }
             }
         }
@@ -199,7 +213,13 @@ public class Solution implements Comparable<Solution> {
         final List<List<Move>> colorSolution = this.determineColorChanges();
         // set the attributes used for sorting of solutions
         this.numColorChanges = colorSolution.size();
-        this.numColors = this.getRobotsMoved().size();
+        final Set<Integer> robotsMoved = this.getRobotsMoved();
+        this.numColors = robotsMoved.size();
+        this.movedRobots = 0;
+        for (final Integer robo : robotsMoved) {
+            this.movedRobots |= 1 << (30 - robo.intValue());
+        }
+        this.finalPositions = this.movesList.get(this.movesList.size() - 1).newPositions;
         // for solution01 the order of moves is important and should not be changed here
         if (false == this.board.isSolution01()) {
             this.minimizeColorChanges(colorSolution);
@@ -244,8 +264,8 @@ try_swap_loop:
                 // check if the lists of moves can be swapped
                 for (final Move move1 : thisMoves) {
                     for (final Move move2 : nextMoves) {
-                        if (move1.pathMap.containsKey(move2.newPosition) ||
-                            move2.pathMap.containsKey(move1.oldPosition)) {
+                        if (move1.pathMap.containsKey(Integer.valueOf(move2.newPosition)) ||
+                            move2.pathMap.containsKey(Integer.valueOf(move1.oldPosition))) {
                             System.out.println("minimizeColorChanges: blocked path  " + move1.toString() + "  " + move2.toString());
                             continue try_swap_loop; // no swap - blocked path
                         }

@@ -30,6 +30,8 @@ public class Move {
     public final int newPosition;
     public final int direction;
     public final Map<Integer,Integer> pathMap;  //key=position, value=PATH
+    public final long oldPositions;  // positions of all robots before this move
+    public final long newPositions;  // positions of all robots after this move
     
     public static final int PATH_NORTH = 1 << Board.NORTH;
     public static final int PATH_EAST  = 1 << Board.EAST;
@@ -59,11 +61,22 @@ public class Move {
         final int pathEnd = 1 << board.getDirection(-diffPos);
         final int posIncr = board.directionIncrement[this.direction];
         int i = oldPosition;
-        this.pathMap.put(i, pathStart);
+        this.pathMap.put(Integer.valueOf(i), Integer.valueOf(pathStart));
         for (i += posIncr ; i != newPosition; i += posIncr) {
-            this.pathMap.put(i, pathStart + pathEnd);
+            this.pathMap.put(Integer.valueOf(i), Integer.valueOf(pathStart + pathEnd));
         }
-        this.pathMap.put(i, pathEnd);
+        this.pathMap.put(Integer.valueOf(i), Integer.valueOf(pathEnd));
+
+        long oldPos = 0;
+        for (final int pos : oldPositions) {
+            oldPos = (oldPos << board.sizeNumBits) | pos;
+        }
+        this.oldPositions = oldPos;
+        long newPos = 0;
+        for (final int pos : newPositions) {
+            newPos = (newPos << board.sizeNumBits) | pos;
+        }
+        this.newPositions = newPos;
     }
     
     /* (non-Javadoc)
@@ -104,7 +117,7 @@ public class Move {
     
     public String strRobotDirection() {
         final String dir;
-        switch (this.pathMap.get(this.oldPosition)) {
+        switch (this.pathMap.get(Integer.valueOf(this.oldPosition)).intValue()) {
         case PATH_NORTH : dir = "N"; break; //up    / NORTH
         case PATH_EAST  : dir = "E"; break; //right / EAST
         case PATH_SOUTH : dir = "S"; break; //down  / SOUTH
@@ -112,6 +125,30 @@ public class Move {
         default         : dir = "?"; break;
         }
         return (Board.ROBOT_COLOR_NAMES_SHORT[this.robotNumber] + dir); 
+    }
+    
+    public String strDirectionL10N() {
+        final String dir;
+        switch (this.pathMap.get(Integer.valueOf(this.oldPosition)).intValue()) {
+        case PATH_NORTH : dir = Board.L10N.getString("move.direction.N.text"); break;   //up    / NORTH
+        case PATH_EAST  : dir = Board.L10N.getString("move.direction.E.text"); break;   //right / EAST
+        case PATH_SOUTH : dir = Board.L10N.getString("move.direction.S.text"); break;   //down  / SOUTH
+        case PATH_WEST  : dir = Board.L10N.getString("move.direction.W.text"); break;   //left  / WEST
+        default         : dir = "?"; break;
+        }
+        return dir;
+    }
+    
+    public String strDirectionL10Nlong() {
+        final String dir;
+        switch (this.pathMap.get(Integer.valueOf(this.oldPosition)).intValue()) {
+        case PATH_NORTH : dir = Board.L10N.getString("move.direction.North.text");  break;   //up
+        case PATH_EAST  : dir = Board.L10N.getString("move.direction.East.text");   break;   //right
+        case PATH_SOUTH : dir = Board.L10N.getString("move.direction.South.text");  break;   //down
+        case PATH_WEST  : dir = Board.L10N.getString("move.direction.West.text");   break;   //left
+        default         : dir = "???"; break;
+        }
+        return dir;
     }
     
     public String strOldNewPosition() {

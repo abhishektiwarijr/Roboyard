@@ -40,7 +40,7 @@ public interface KeyDepthMap {
      * @return true if the specified value was placed in this map. false if the map already contained
      * for this key a value that is greater than or equal to the specified value.
      */
-    boolean putIfGreater(int key, int byteValue);
+    public boolean putIfGreater(int key, int byteValue);
 
     /**
      * Associates the specified <code>unsigned byte</code> value with the specified
@@ -54,7 +54,7 @@ public interface KeyDepthMap {
      * @return true if the specified value was placed in this map. false if the map already contained
      * for this key a value that is greater than or equal to the specified value.
      */
-    boolean putIfGreater(long key, int byteValue);
+    public boolean putIfGreater(long key, int byteValue);
 
     /**
      * Returns the number of elements (key/value pairs) currently stored in this map.
@@ -62,7 +62,7 @@ public interface KeyDepthMap {
      * 
      * @return number of elements in this map
      */
-    int size();
+    public int size();
 
     /**
      * Returns the number of bytes that are allocated by this map's internal data structures.
@@ -70,6 +70,6 @@ public interface KeyDepthMap {
      * 
      * @return number of bytes allocated by this map (approximate)
      */
-    long allocatedBytes();
+    public long allocatedBytes();
 
 }

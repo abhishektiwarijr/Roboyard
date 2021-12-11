@@ -36,7 +36,7 @@ public class SolverIDDFS extends Solver {
     private final int goalPosition;
     private final int minRobotLast;
     private final int goalRobot;
-    private final boolean isSolution01;
+    private final boolean isSolution01, isSolution01NoSpeedup;
     private final int[] minimumMovesToGoal;
     private final int[] directionIncrement;
     
@@ -52,6 +52,7 @@ public class SolverIDDFS extends Solver {
         this.minRobotLast = (this.isBoardGoalWildcard ? 0 : this.states[0].length - 1); //swapGoalLast
         this.goalRobot = (this.isBoardGoalWildcard ? (null == this.board.getGoal() ? 0 : this.board.getGoal().robotNumber) : this.minRobotLast); //swapGoalLast
         this.isSolution01 = this.board.isSolution01();
+        this.isSolution01NoSpeedup = (true == this.isSolution01) && ((true == this.isBoardGoalWildcard) || (4 > this.board.getNumRobots()));
         this.minimumMovesToGoal = new int[board.size];
         this.directionIncrement = this.board.directionIncrement;
     }
@@ -87,9 +88,14 @@ public class SolverIDDFS extends Solver {
         } else {
             this.states[0] = this.board.getRobotPositions().clone();
             swapGoalLast(this.states[0]);   //goal robot is always the last one.
-            System.out.println("startState=" + this.stateString(this.states[0]));
-            
             Arrays.fill(this.directions[0], DIRECTION_NOT_MOVED_YET);
+            this.precomputeMinimumMovesToGoal();
+            this.knownStates = new KnownStates();
+            
+            System.out.println("startState=" + this.stateString(this.states[0]));
+            System.out.println("solution01=" + this.isSolution01 + "  isSolution01NoSpeedup=" + this.isSolution01NoSpeedup);
+            System.out.println("goalWildcard=" + this.isBoardGoalWildcard);
+            System.out.println(this.knownStates.getInfo());
             
             this.iddfs();
             
@@ -138,12 +144,11 @@ public class SolverIDDFS extends Solver {
     
     private void iddfs() throws InterruptedException {
         final long nanoStart = System.nanoTime();
-        this.precomputeMinimumMovesToGoal();
-        this.knownStates = null;
-        this.knownStates = new KnownStates();
+        final boolean doDfsFast = (false == this.isBoardGoalWildcard) && (false == this.isSolution01) && (true == this.optAllowRebounds);
+        System.out.println("doDfsFast=" + doDfsFast);
         for (this.depthLimit = 2;  MAX_DEPTH > this.depthLimit;  ++this.depthLimit) {
             final long nanoDfs = System.nanoTime();
-            if ((false == this.isBoardGoalWildcard) && (false == this.isSolution01) && (true == this.optAllowRebounds)) {
+            if (doDfsFast) {
                 this.dfsRecursionFast(1, -1, -1, this.states[0]);
             } else {
                 this.dfsRecursion(1, -1, -1, this.states[0], this.directions[0]);
@@ -216,7 +221,7 @@ public class SolverIDDFS extends Solver {
                         newState[robo] = newRoboPos;
                         //special case (isSolution01): we must be able to visit states more than once, so we don't add them to knownStates
                         //the new state is not already known (i.e. stored in knownStates)
-                        if ((true == this.isSolution01) || (true == this.knownStates.add(newState, height))) {
+                        if (this.isSolution01NoSpeedup || (this.isSolution01 && isGoalRobot) || (this.knownStates.add(newState, height))) {
                             final int[] newDirs = this.directions[depth];
                             System.arraycopy(oldDirs, 0, newDirs, 0, oldDirs.length);
                             newDirs[robo] = dir;
@@ -385,17 +390,20 @@ public class SolverIDDFS extends Solver {
     
     
     private void buildSolution(final int depth) {
-        final Solution tmpSolution = new Solution(this.board);
+        Solution newSolution = new Solution(this.board);
         int[] state0 = this.states[0].clone();
         swapGoalLast(state0);
         for (int i = 0;  i < depth;  ++i) {
             final int[] state1 = this.states[i + 1].clone();
             swapGoalLast(state1);
-            tmpSolution.add(new Move(this.board, state0, state1, i));
+            newSolution.add(new Move(this.board, state0, state1, i));
             state0 = state1;
         }
-        this.lastResultSolutions.add(tmpSolution.finish());
-        System.out.println(tmpSolution.toMovelistString() + " " + tmpSolution.toString() + " finalState=" + this.stateString(states[depth]));
+        newSolution = newSolution.finish();
+        System.out.println(newSolution.toMovelistString() + " " + newSolution.toString() + " finalState=" + this.stateString(states[depth]));
+        if (false == this.lastResultSolutions.contains(newSolution)) {
+            this.lastResultSolutions.add(newSolution);
+        }
     }
     
     
@@ -404,7 +412,7 @@ public class SolverIDDFS extends Solver {
         private final AllKeys allKeys;
         
         public KnownStates() {
-            this.allKeys = ((true == isBoardStateInt32) ? new AllKeysInt() : new AllKeysLong());
+            this.allKeys = (board.sizeNumBits * (board.getNumRobots() - (isSolution01 ? 1 : 0)) <= 32) ? new AllKeysInt() : new AllKeysLong();
         }
         
         //store the unique keys of all known states
@@ -420,11 +428,13 @@ public class SolverIDDFS extends Solver {
             public long getBytesAllocated() {
                 return this.theMap.allocatedBytes();
             }
+            
+            public abstract String getInfo();
         }
         //store the unique keys of all known states in 32-bit ints
         //supports up to 4 robots with a board size of 256 (16*16)
         private final class AllKeysInt extends AllKeys {
-            private final KeyMakerInt keyMaker = KeyMakerInt.createInstance(board.getNumRobots(), board.sizeNumBits, isBoardGoalWildcard);
+            private final KeyMakerInt keyMaker = KeyMakerInt.createInstance(board.getNumRobots(), board.sizeNumBits, isBoardGoalWildcard, isSolution01);
             public AllKeysInt() {
                 super();
             }
@@ -433,11 +443,15 @@ public class SolverIDDFS extends Solver {
                 final int key = this.keyMaker.run(state);
                 return this.theMap.putIfGreater(key, depth);
             }
+            @Override
+            public String getInfo() {
+                return this.getClass().getSimpleName() + "," + this.theMap.getClass().getSimpleName() + "," + (null == this.keyMaker ? "n/a" : this.keyMaker.getClass().getSimpleName());
+            }
         }
         //store the unique keys of all known states in 64-bit longs
         //supports more than 4 robots and/or board sizes larger than 256
         private final class AllKeysLong extends AllKeys {
-            private final KeyMakerLong keyMaker = KeyMakerLong.createInstance(board.getNumRobots(), board.sizeNumBits, isBoardGoalWildcard);
+            private final KeyMakerLong keyMaker = KeyMakerLong.createInstance(board.getNumRobots(), board.sizeNumBits, isBoardGoalWildcard, isSolution01);
             public AllKeysLong() {
                 super();
             }
@@ -445,6 +459,10 @@ public class SolverIDDFS extends Solver {
             public final boolean add(final int[] state, final int depth) {
                 final long key = this.keyMaker.run(state);
                 return this.theMap.putIfGreater(key, depth);
+            }
+            @Override
+            public String getInfo() {
+                return this.getClass().getSimpleName() + "," + this.theMap.getClass().getSimpleName() + "," + (null == this.keyMaker ? "n/a" : this.keyMaker.getClass().getSimpleName());
             }
         }
 
@@ -456,6 +474,9 @@ public class SolverIDDFS extends Solver {
         }
         public final int getMegaBytesAllocated() {
             return (int)((this.allKeys.getBytesAllocated() + (1 << 20) - 1) >> 20);
+        }
+        public String getInfo() {
+            return "KnownStates(" + this.allKeys.getInfo() + ")";
         }
     }
 
