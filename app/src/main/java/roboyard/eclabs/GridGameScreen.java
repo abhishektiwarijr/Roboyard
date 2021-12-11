@@ -476,11 +476,11 @@ public class GridGameScreen extends GameScreen {
         drawables.put("cm", currentRenderManager.getResources().getDrawable(R.drawable.cm)); // multicolor goal
 
         // white background of grid
-        if(boardSizeX == 16){
+        if(boardSizeX == 16 && boardSizeY == 16){
             drawables.get("grid").setBounds(0, 0,(int)( boardSizeX * gridSpace),(int)( boardSizeY * gridSpace));
             drawables.get("grid").draw(canvasGrid);
         }else{
-            // grid with fine lines that gibes other sizes some orientation
+            // grid with fine lines that gives other sizes some orientation
             drawables.get("grid_tiles").setBounds(0, 0,(int)( boardSizeX * gridSpace),(int)( boardSizeY * gridSpace));
             drawables.get("grid_tiles").draw(canvasGrid);
         }
