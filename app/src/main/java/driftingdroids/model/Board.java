@@ -26,20 +26,18 @@ import java.util.Formatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.ResourceBundle;
 import java.util.zip.CRC32;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-
+import roboyard.eclabs.MainActivity;
 
 public class Board {
-    static final ResourceBundle L10N = ResourceBundle.getBundle("driftingdroids-localization-model");   //L10N = Localization
     
-    public static final int WIDTH_STANDARD = 16;
+    public static final int WIDTH_STANDARD = MainActivity.boardSizeX;
     public static final int WIDTH_MIN = 3;
     public static final int WIDTH_MAX = 100;
-    public static final int HEIGHT_STANDARD = 16;
+    public static final int HEIGHT_STANDARD = MainActivity.boardSizeY;
     public static final int HEIGHT_MIN = 3;
     public static final int HEIGHT_MAX = 100;
     public static final int SIZE_MAX = 4096; // 12 bits
@@ -1168,24 +1166,6 @@ public class Board {
             else                        { dir = Board.SOUTH; }
         }
         return dir;
-    }
-    
-    public static String getColorLongL10N(int color) {
-        if (color < 0) {    //wildcard
-            return L10N.getString("board.color.wildcard.text");
-        } else {
-            return L10N.getString("board.color." + ROBOT_COLOR_NAMES_LONG[color] +".text");
-        }
-    }
-    public static String getColorShortL10N(int color) {
-        if (color < 0) {    //wildcard
-            return L10N.getString("board.color.w.text");
-        } else {
-            return L10N.getString("board.color." + ROBOT_COLOR_NAMES_SHORT[color] +".text");
-        }
-    }
-    public static String getGoalShapeL10N(int shape) {
-        return L10N.getString("board.shape." + GOAL_SHAPE_NAMES[shape] + ".text");
     }
     
     public int getNumRobots() {
