@@ -24,12 +24,14 @@ public class SolverDD implements ISolver{
     private SolverStatus solverStatus;
     private Solver solver;
     private Solution solution;
+    private List<Solution> solutions;
     private final RRPiece[] pieces;
 
     public SolverDD(){
         solver = null;
         solverStatus = SolverStatus.idle;
         solution = null;
+        solutions = null;
         pieces = new RRPiece[4];
     }
 
@@ -49,7 +51,7 @@ public class SolverDD implements ISolver{
         solverStatus = SolverStatus.solving;
 
         try {
-            List<Solution> solutions = solver.execute();
+            solutions = solver.execute();
             if(solutions.size() != 0){
                 solution = solutions.get(0);
                 System.out.println(solution.toString());
@@ -64,6 +66,10 @@ public class SolverDD implements ISolver{
 
     public SolverStatus getSolverStatus(){
         return this.solverStatus;
+    }
+
+    public List<Solution> getAllSolutions(){
+        return this.solutions;
     }
 
     public GameSolution getSolution(){

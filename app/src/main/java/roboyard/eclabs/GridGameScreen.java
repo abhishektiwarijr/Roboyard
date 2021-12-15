@@ -30,7 +30,8 @@ public class GridGameScreen extends GameScreen {
     private final int wallThickness = 6; // thickness of walls
     private final ColorFilter wallColor = new PorterDuffColorFilter(Color.rgb(44, 96, 0), PorterDuff.Mode.SRC_ATOP); // green
     private boolean isSolved = false;
-    private int solutionMoves = 0; // store the current optimal solution globally
+    private int solutionMoves = 0; // store the optimal number of moves for the solution globally
+    private int NumDifferentSolutionsFound = 0; // store the number of different solution globally
     private int numSolutionClicks = 0; // count how often you clicked on the solution button, each time the shown count goes down by one
     private int showSolutionAtHint = 5; // interval between the first hint and the current optimal solution (will be set to random 3..5 later
 
@@ -234,6 +235,12 @@ public class GridGameScreen extends GameScreen {
         if(gameManager.getScreenWidth() <=480){
             renderManager.setTextSize(lineHeightSmall);
         }
+        if(isSolved && nbCoups == 0 && NumDifferentSolutionsFound > 1){
+            // show number of different solutions found
+            renderManager.setTextSize(lineHeightSmall);
+            renderManager.drawText(10, textPosYSmall, NumDifferentSolutionsFound + " solutions found");
+            renderManager.setTextSize(lineHeight);
+        }
         if(nbCoups>0){
             // at least one move was made by hand or by AI
             renderManager.drawText(10, textPosY, "Moves: " + nbCoups);
@@ -303,7 +310,7 @@ public class GridGameScreen extends GameScreen {
         super.draw(renderManager);
         this.gmi.draw(renderManager);
 
-        if(!Objects.equals(requestToast, "")){
+        if(!requestToast.equals("")){
             // show double toast to last longer
             gameManager.requestToast(requestToast, true);
             gameManager.requestToast(requestToast, true);
@@ -384,6 +391,7 @@ public class GridGameScreen extends GameScreen {
             for(IGameMove m : solution.getMoves()){
                 solutionMoves++;
             }
+            NumDifferentSolutionsFound=solver.getAllSolutions().size();
             /*if(solutionMoves > simplePuzzleMinMoves && solutionMoves < goodPuzzleMinMoves) {
                 // very simple puzzle with max 6 moves
                 gameManager.requestToast("AI sais: this is a simple puzzle.", true);
@@ -476,7 +484,7 @@ public class GridGameScreen extends GameScreen {
         drawables.put("cm", currentRenderManager.getResources().getDrawable(R.drawable.cm)); // multicolor goal
 
         // white background of grid
-        if(boardSizeX == 16 && boardSizeY == 16){
+        if(boardSizeX == 16 && boardSizeY<=16){
             drawables.get("grid").setBounds(0, 0,(int)( boardSizeX * gridSpace),(int)( boardSizeY * gridSpace));
             drawables.get("grid").draw(canvasGrid);
         }else{
@@ -772,6 +780,8 @@ public class GridGameScreen extends GameScreen {
                 } else {
                     gameManager.requestToast("Press again to see the solution.", false);
                 }
+                // TODO: if solution is shown and there are more than 1 solutions found:
+                //       show toast "Press again to se an alternative solution"
             }
         }
     }
