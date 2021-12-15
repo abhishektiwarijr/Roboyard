@@ -12,6 +12,8 @@ Roboyard allows to record up to 35 different maps. So if during your games you e
 # Download App
 - clone this Repository and open it with android-studio to build the app
 - download a compiled version from the releases: https://github.com/rubo77/Roboyard/releases/
+  - minimum Android Version: 4.4 (KITKAT)
+  - The last version for Android<4.4: Roboyard version 10.1
 - [download from Play Store](https://play.google.com/store/apps/details?id=de.z11.roboyard)
 
 # Screenshot
@@ -19,15 +21,18 @@ Roboyard allows to record up to 35 different maps. So if during your games you e
 
 # Difficulty
 - Beginner
-  - show only puzzles with at least 4-6 moves
+  - show any puzzles with solutions with at least 4-6 moves
 - Advanced
-  - show only puzzles with at least 6-8 moves
+  - ssolutions with at least 6-8 moves
   - keep initial playing field when starting the next game
   - keep playing field when loading a saved game
   - three lines allowed in the same row/column
   - no multi-color target
 - Insane mode
   - solutions with at least 10 moves
+  - five lines allowed in the same row/column
+- Impossible mode
+  - solutions with at least 17 moves
   - five lines allowed in the same row/column
 
 
@@ -40,7 +45,7 @@ Roboyard allows to record up to 35 different maps. So if during your games you e
 - choose build → APK from the build menu
 
 # Licence
-The solver algorithm implementation is developed at [DriftingDroids](https://github.com/smack42/DriftingDroids), which is released under **GNU GPL**. Therefore the Bouncing Spere code is distributed under the same Licence.
+The solver algorithm implementation is developed at [DriftingDroids](https://github.com/smack42/DriftingDroids), which is released under **GNU GPL**. Therefore Roboyard is distributed under the same [Licence](LICENCE).
 
 # Development
 Roboyard was developed in the Project EI 4 AGI: http://perso-laris.univ-angers.fr/~projetsei4/1415/P2/index.html

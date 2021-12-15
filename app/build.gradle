@@ -5,7 +5,7 @@ android {
 
     defaultConfig {
         applicationId "de.z11.roboyard"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 37
         versionName "10.1"
