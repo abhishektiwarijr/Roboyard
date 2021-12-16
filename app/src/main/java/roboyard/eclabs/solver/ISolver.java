@@ -17,5 +17,5 @@ public interface ISolver extends Runnable {
     void run();
     SolverStatus getSolverStatus();
     GameSolution getSolution(int num);
-    List<Solution> getAllSolutions();
+    List<Solution> getSolutionList();
 }

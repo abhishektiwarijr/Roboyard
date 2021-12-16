@@ -16,7 +16,7 @@ public class MapGenerator {
     int carrePosX = boardSizeX/2-1; // horizontal position of the top wall of carré, starting with 0
     int carrePosY = boardSizeY/2-1; // vertical position the left wall of the carré
 
-    Boolean targetMustBeInCorner = true;
+    Boolean targetMustBeInCorner = true; // TODO: only works together with generateNewMapEachTime==true (which is set only in Beginner Mode)
     Boolean allowMulticolorTarget = true;
     Boolean generateNewMapEachTime = false; // TODO: add option in settings
 
@@ -29,6 +29,7 @@ public class MapGenerator {
         rand = new Random();
         if(GridGameScreen.getLevel().equals("Beginner")){
             generateNewMapEachTime=true;
+            // TODO: boardSizeX=12; boardSizeY=12; (still crashes)
         } else {
             if (generateNewMapEachTime) {
                 // random position of carré in the middle

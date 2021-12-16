@@ -52,6 +52,7 @@ public class SolverDD implements ISolver{
             solutions = solver.execute();
             if(solutions.size() != 0){
                 Solution solution = solutions.get(0);
+                System.out.println(solutions.size() + " solution(s) found; first solution:");
                 System.out.println(solution.toString());
                 solverStatus = SolverStatus.solved;
             }else{
@@ -66,7 +67,7 @@ public class SolverDD implements ISolver{
         return this.solverStatus;
     }
 
-    public List<Solution> getAllSolutions(){
+    public List<Solution> getSolutionList(){
         return this.solutions;
     }
 

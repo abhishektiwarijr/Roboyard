@@ -387,12 +387,12 @@ public class GridGameScreen extends GameScreen {
         {
             isSolved = true;
             buttonSolve.setEnabled(true);
+            NumDifferentSolutionsFound=solver.getSolutionList().size();
             GameSolution solution = solver.getSolution(numDifferentSolutionClicks);
             solutionMoves=0;
             for(IGameMove m : solution.getMoves()){
                 solutionMoves++;
             }
-            NumDifferentSolutionsFound=solver.getAllSolutions().size();
             /*if(solutionMoves > simplePuzzleMinMoves && solutionMoves < goodPuzzleMinMoves) {
                 // very simple puzzle with max 6 moves
                 gameManager.requestToast("AI sais: this is a simple puzzle.", true);
