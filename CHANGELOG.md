@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+
+### Version 11
+
+- cycle through different solutions if more than one solution is found
+
 ### Version 10.1
 
 - remove white circles in the background of robots
