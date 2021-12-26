@@ -7,8 +7,8 @@ android {
         applicationId "de.z11.roboyard"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 38
-        versionName "11"
+        versionCode 39
+        versionName "10.2"
     }
     buildTypes {
         release {

@@ -4,8 +4,11 @@ CHANGELOG
 
 ### Version 11
 
-- Show number of different solutions found by the AI
 - cycle through different solutions if more than one solution is found
+
+### Version 10.2
+
+- Show number of different solutions found by the AI
 
 ### Version 10.1
 

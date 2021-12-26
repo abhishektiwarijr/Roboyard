@@ -16,6 +16,6 @@ public interface ISolver extends Runnable {
     void init(ArrayList<GridElement> elements);
     void run();
     SolverStatus getSolverStatus();
-    GameSolution getSolution(int num);
+    GameSolution getSolution();
     List<Solution> getSolutionList();
 }
