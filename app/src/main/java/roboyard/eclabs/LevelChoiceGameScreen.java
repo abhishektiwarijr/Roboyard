@@ -9,7 +9,6 @@ import java.util.ArrayList;
  */
 public class LevelChoiceGameScreen extends GameScreen {
 
-    private final int test = 0;
     private int firstLevel = 0;
     private int leftScreen = -1;
     private int rightScreen = -1;

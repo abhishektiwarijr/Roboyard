@@ -162,10 +162,7 @@ public class RRWorld extends AWorld {
   
   public void precomputeGrid(){
     
-    int i = 0;
-    int j = 0;
-    int k = 0;
-    
+    int i, j, k;
     int number = 0;
     boolean isFinished = false;
     
