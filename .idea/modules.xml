@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Roboyard.iml" filepath="$PROJECT_DIR$/Roboyard.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Roboyard.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Roboyard.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Roboyard.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Roboyard.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Roboyard.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Roboyard.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Roboyard.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Roboyard.app.unitTest.iml" />
     </modules>
   </component>
 </project>
