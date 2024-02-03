@@ -18,6 +18,7 @@ android {
                     'proguard-rules.pro'
         }
     }
+    namespace 'roboyard.eclabs'
 }
 
 dependencies {
