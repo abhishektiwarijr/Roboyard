@@ -9,8 +9,6 @@ import android.widget.Toast;
 public class GameManager {
     private GameScreen currentScreen;
 
-
-
     private GameScreen previousScreen;
     private final SparseArray<GameScreen> screens;
     private final InputManager inputManager;
@@ -24,12 +22,12 @@ public class GameManager {
     }
 
     /*
-         * Constructeur de la classe GameManager.
-         * @param Référence du manager d'entrées (InputManager).
-         * @param Référence du manager de l'affichage (RenderManager).
-         * @param Largeur de l'écran.
-         * @param Hauteur de l'écran.
-         */
+     * Constructor of the GameManager class.
+     * @param Reference to the input manager (InputManager).
+     * @param Reference to the render manager (RenderManager).
+     * @param Width of the screen.
+     * @param Height of the screen.
+     */
     public GameManager(InputManager inputManager, RenderManager renderManager, int sWidth, int sHeight, MainActivity activity){
         this.inputManager = inputManager;
         this.renderManager = renderManager;
@@ -78,63 +76,63 @@ public class GameManager {
     }
 
     /*
-     * Retourne la largeur de l'écran.
-     * @return Largeur de l'écran
+     * Returns the width of the screen.
+     * @return Width of the screen
      */
     public int getScreenWidth(){
         return this.sWidth;
     }
 
     /*
-     * Retourne la hauteur de l'écran.
-     * @return Hauteur de l'écran
+     * Returns the height of the screen.
+     * @return Height of the screen
      */
     public int getScreenHeight(){
         return this.sHeight;
     }
 
     /*
-     * Retourne la référence du manager d'affichage.
-     * @return Manager d'affichage
+     * Returns the reference to the render manager.
+     * @return Render manager
      */
     public RenderManager getRenderManager(){
         return this.renderManager;
     }
 
     /*
-     * Retourne la référence du manager d'entrées
-     * @return Manager d'entrées
+     * Returns the reference to the input manager.
+     * @return Input manager
      */
     public InputManager getInputManager(){
         return this.inputManager;
     }
 
     /*
-     * Retourne la référence de l'écran de jeu en cours d'utilisation.
-     * @return Référence d'un écran de jeu
+     * Returns the reference to the currently used game screen.
+     * @return Reference to a game screen
      */
     public GameScreen getCurrentScreen(){
         return this.currentScreen;
     }
 
     /*
-     * Met à jour l'écran de jeu en cours d'utilisation.
-     * C'est-à-dire que tous les Objets appartenant à cet écran seront eux aussi mis à jour.
+     * Updates the currently used game screen.
+     * This means that all objects belonging to this screen will also be updated.
      */
     public void update(){
         this.currentScreen.update(this);
     }
 
     /*
-     * Affiche l'écran de jeu en cours d'utilisation.
-     * C'est-à-dire que tous les Objets appartenant à cet écran seront affichés.
+     * Displays the currently used game screen.
+     * This means that all objects belonging to this screen will be displayed.
      */
     public void draw(){
         this.currentScreen.draw(this.renderManager);
     }
 
     /*
-     * Détruit tous les écrans de jeu existants ainsi que tous les Objets dans ces écrans de jeu.
+     * Destroys all existing game screens and all objects in these game screens.
      */
     public void destroy() {
         for(int i=0; i<this.screens.size(); i++){
@@ -143,15 +141,15 @@ public class GameManager {
     }
 
     /*
-     * Modifie l'écran de jeu actuel. Permet donc de passer d'un écran de jeu à un autre.
-     * @param Index du nouvel écran de jeu
+     * Modifies the current game screen, allowing to switch from one game screen to another.
+     * @param Index of the new game screen
      */
     public void setGameScreen(int nextScreen){
 
-            if(screens.indexOfValue(this.previousScreen) != nextScreen)
-            {
-                this.previousScreen = this.currentScreen;
-            }
+        if(screens.indexOfValue(this.previousScreen) != nextScreen)
+        {
+            this.previousScreen = this.currentScreen;
+        }
         this.currentScreen = this.screens.get(nextScreen);
     }
 
