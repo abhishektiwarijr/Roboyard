@@ -4,11 +4,11 @@ import android.util.SparseArray;
 import android.widget.Toast;
 
 /**
+ * Manages the game screens and provides methods to interact with them.
  * Created by Pierre on 04/02/2015.
  */
 public class GameManager {
     private GameScreen currentScreen;
-
     private GameScreen previousScreen;
     private final SparseArray<GameScreen> screens;
     private final InputManager inputManager;
@@ -17,25 +17,36 @@ public class GameManager {
     private final int sHeight;
     private final MainActivity activity;
 
+    /**
+     * Returns the main activity instance associated with the game manager.
+     * It allows other classes and components to interact with the main activity,
+     * which is necessary for performing various tasks and accessing resources.
+     *
+     * @return The main activity instance.
+     */
     public MainActivity getActivity() {
-        return activity;
+        return this.activity;
     }
 
-    /*
-     * Constructor of the GameManager class.
-     * @param Reference to the input manager (InputManager).
-     * @param Reference to the render manager (RenderManager).
-     * @param Width of the screen.
-     * @param Height of the screen.
+    /**
+     * Constructor for the GameManager class.
+     * Initializes the GameManager with necessary components.
+     *
+     * @param inputManager  Reference to the input manager (InputManager).
+     * @param renderManager Reference to the render manager (RenderManager).
+     * @param sWidth        Width of the screen.
+     * @param sHeight       Height of the screen.
+     * @param activity      The main activity instance.
      */
-    public GameManager(InputManager inputManager, RenderManager renderManager, int sWidth, int sHeight, MainActivity activity){
+    public GameManager(InputManager inputManager, RenderManager renderManager, int sWidth, int sHeight, MainActivity activity) {
         this.inputManager = inputManager;
         this.renderManager = renderManager;
         this.sWidth = sWidth;
         this.sHeight = sHeight;
-        this.screens = new SparseArray<GameScreen>();
+        this.screens = new SparseArray<>();
         this.activity = activity;
-        //list of all screens
+
+        // List of all screens
         /* screen 1: second start screen
          * screen 2: settings
          * screen 3: credits
@@ -53,108 +64,133 @@ public class GameManager {
         this.screens.append(7, new LevelChoiceGameScreen(this, 30, 6, 8));
         this.screens.append(8, new LevelChoiceGameScreen(this, 45, 7, -1));
         this.screens.append(9, new SaveGameScreen(this));
+        // End of list of all screens
 
-        //end of list of all screens
         this.currentScreen = this.screens.get(0);
         this.previousScreen = this.screens.get(0);
     }
 
-    public void requestEnd(){
+    /**
+     * Requests to end the application.
+     */
+    public void requestEnd() {
         this.activity.closeApp();
     }
 
-    public void requestRestart(){
+    /**
+     * Requests to restart the application.
+     */
+    public void requestRestart() {
         this.activity.restartApp();
     }
 
-    public void requestToast(CharSequence str, boolean big){
+    /**
+     * Requests to display a toast message.
+     *
+     * @param str The message to display.
+     * @param big Flag indicating if the toast should be large.
+     */
+    public void requestToast(CharSequence str, boolean big) {
         this.activity.doToast(str, big);
     }
 
-    public SparseArray<GameScreen> getScreens(){
+    /**
+     * Returns the SparseArray containing all game screens.
+     *
+     * @return SparseArray of GameScreens.
+     */
+    public SparseArray<GameScreen> getScreens() {
         return this.screens;
     }
 
-    /*
+    /**
      * Returns the width of the screen.
-     * @return Width of the screen
+     *
+     * @return Width of the screen.
      */
-    public int getScreenWidth(){
+    public int getScreenWidth() {
         return this.sWidth;
     }
 
-    /*
+    /**
      * Returns the height of the screen.
-     * @return Height of the screen
+     *
+     * @return Height of the screen.
      */
-    public int getScreenHeight(){
+    public int getScreenHeight() {
         return this.sHeight;
     }
 
-    /*
-     * Returns the reference to the render manager.
-     * @return Render manager
+    /**
+     * Returns the render manager instance.
+     *
+     * @return RenderManager instance.
      */
-    public RenderManager getRenderManager(){
+    public RenderManager getRenderManager() {
         return this.renderManager;
     }
 
-    /*
-     * Returns the reference to the input manager.
-     * @return Input manager
+    /**
+     * Returns the input manager instance.
+     *
+     * @return InputManager instance.
      */
-    public InputManager getInputManager(){
+    public InputManager getInputManager() {
         return this.inputManager;
     }
 
-    /*
-     * Returns the reference to the currently used game screen.
-     * @return Reference to a game screen
+    /**
+     * Returns the currently active game screen.
+     *
+     * @return The current GameScreen.
      */
-    public GameScreen getCurrentScreen(){
+    public GameScreen getCurrentScreen() {
         return this.currentScreen;
     }
 
-    /*
-     * Updates the currently used game screen.
-     * This means that all objects belonging to this screen will also be updated.
+    /**
+     * Updates the currently active game screen.
+     * Updates all objects belonging to this screen.
      */
-    public void update(){
+    public void update() {
         this.currentScreen.update(this);
     }
 
-    /*
-     * Displays the currently used game screen.
-     * This means that all objects belonging to this screen will be displayed.
+    /**
+     * Draws the currently active game screen.
+     * Draws all objects belonging to this screen.
      */
-    public void draw(){
+    public void draw() {
         this.currentScreen.draw(this.renderManager);
     }
 
-    /*
-     * Destroys all existing game screens and all objects in these game screens.
+    /**
+     * Destroys all existing game screens and objects.
      */
     public void destroy() {
-        for(int i=0; i<this.screens.size(); i++){
+        for (int i = 0; i < this.screens.size(); i++) {
             this.screens.get(this.screens.keyAt(i)).destroy();
         }
     }
 
-    /*
-     * Modifies the current game screen, allowing to switch from one game screen to another.
-     * @param Index of the new game screen
+    /**
+     * Modifies the current game screen, allowing to switch to another screen.
+     *
+     * @param nextScreen Index of the new game screen.
      */
-    public void setGameScreen(int nextScreen){
-
-        if(screens.indexOfValue(this.previousScreen) != nextScreen)
-        {
+    public void setGameScreen(int nextScreen) {
+        if (screens.indexOfValue(this.previousScreen) != nextScreen) {
             this.previousScreen = this.currentScreen;
         }
         this.currentScreen = this.screens.get(nextScreen);
     }
 
-    public int getPreviousScreenKey()
-    {
+    /**
+     * Returns the key of the previous game screen.
+     *
+     * @return Key of the previous game screen.
+     */
+    public int getPreviousScreenKey() {
         return screens.indexOfValue(this.previousScreen);
     }
 }
