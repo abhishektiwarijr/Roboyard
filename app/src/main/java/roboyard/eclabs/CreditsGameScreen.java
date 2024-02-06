@@ -1,5 +1,7 @@
 package roboyard.eclabs;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.graphics.Color;
 
 /**
@@ -27,6 +29,7 @@ public class CreditsGameScreen extends GameScreen {
 
     /**
      * Loads assets for rendering.
+     *
      * @param renderManager The render manager
      */
     @Override
@@ -36,6 +39,7 @@ public class CreditsGameScreen extends GameScreen {
 
     /**
      * Renders the Credits screen.
+     *
      * @param renderManager The render manager
      */
     @Override
@@ -69,20 +73,72 @@ public class CreditsGameScreen extends GameScreen {
         renderManager.setTextSize((int) (1.2 * ts));
         renderManager.drawText(10, 10 * ts, "Imprint/privacy policy");
         renderManager.setTextSize((int) (0.7 * ts));
-        renderManager.drawText(10, 11 * ts, "https://eclabs.de/datenschutz.html");
+        drawClickableLink(renderManager, 10, 11 * ts, "https://eclabs.de/datenschutz.html");
 
+        renderManager.setColor(Color.BLACK);
         renderManager.setTextSize((int) (1.2 * ts));
         renderManager.drawText(10, 13 * ts, "Open Source");
-        renderManager.setTextSize((int) (0.7 * ts));
-        renderManager.drawText(10, 14 * ts, "https://git.io/fjs5H");
 
+        drawClickableLink(renderManager, 10, 14 * ts, "https://git.io/fjs5H");
+
+        renderManager.setColor(Color.BLACK);
         renderManager.drawText(10, 17 * ts, "Version: " + versionName + " (Build " + versionCode + ")");
 
         super.draw(renderManager);
     }
 
     /**
+     * Draws a clickable link.
+     *
+     * @param renderManager The render manager
+     * @param x             The x-coordinate of the link
+     * @param y             The y-coordinate of the link
+     * @param url           The URL of the link
+     */
+    private void drawClickableLink(RenderManager renderManager, int x, int y, String url) {
+        renderManager.drawClickableText(x, y, url, Color.BLUE, (int) (0.7 * (hs2 / 10)), new RenderManager.ClickListener() {
+            @Override
+            public void onClick() {
+                openLink(url);
+            }
+
+            @Override
+            public void setClickableBounds(float left, float top, float right, float bottom) {
+                // No need to assign values here
+                // These bounds are set internally by the RenderManager
+            }
+
+            @Override
+            public boolean isInsideClickableBounds(float x, float y) {
+                // Check if the touch coordinates (x, y) are inside the clickable bounds
+                // Not implemented in this snippet, but you would check the bounds here
+                return false; // Placeholder return value
+            }
+
+            @Override
+            public boolean isClickable() {
+                // Determine if the text is clickable
+                // Not implemented in this snippet, but you would handle the clickable state here
+                return false; // Placeholder return value
+            }
+        });
+    }
+
+    /**
+     * Opens a link in a web browser.
+     *
+     * @param url The URL to open
+     */
+    private void openLink(String url) {
+        // Create an intent to open a web browser with the specified URL
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        // Start the activity (open the web browser)
+        gameManager.getActivity().startActivity(browserIntent);
+    }
+
+    /**
      * Updates the Credits screen.
+     *
      * @param gameManager The game manager
      */
     @Override

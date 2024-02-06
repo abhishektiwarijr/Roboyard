@@ -1,17 +1,23 @@
 package roboyard.eclabs;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.SparseArray;
+import android.view.MotionEvent;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 
 /**
@@ -33,7 +39,7 @@ public class RenderManager {
         this.brush = new Paint();
         this.brush.setColor(Color.WHITE);
         this.resources = resources;
-        this.resourceMap = new SparseArray<Drawable>();
+        this.resourceMap = new SparseArray<>();
         this.random = new Random();
     }
 
@@ -189,5 +195,49 @@ public class RenderManager {
 
     public void setTextSize(int s){
         this.brush.setTextSize(s);
+    }
+
+    /**
+     * Draws clickable text on the canvas
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @param text Text to display
+     * @param color Color of the text
+     * @param textSize Size of the text
+     * @param clickListener Listener for the click event
+     */
+    public void drawClickableText(int x, int y, String text, int color, int textSize, ClickListener clickListener) {
+        Rect bounds = new Rect();
+        brush.setColor(color);
+        brush.setTextSize(textSize);
+        brush.getTextBounds(text, 0, text.length(), bounds);
+        target.drawText(text, x, y + bounds.height() - textSize, brush);
+        clickListener.setClickableBounds(x, y, x + bounds.width(), y + bounds.height());
+    }
+
+    /**
+     * Handles touch events for clickable text
+     * @param event MotionEvent
+     * @param clickListener ClickListener for the text
+     */
+    public void handleTouchEvent(MotionEvent event, ClickListener clickListener) {
+        int action = event.getAction();
+        float x = event.getX();
+        float y = event.getY();
+
+        switch (action) {
+            case MotionEvent.ACTION_UP:
+                if (clickListener != null && clickListener.isClickable() && clickListener.isInsideClickableBounds(x, y)) {
+                    clickListener.onClick();
+                }
+                break;
+        }
+    }
+
+    public interface ClickListener {
+        void onClick();
+        void setClickableBounds(float left, float top, float right, float bottom);
+        boolean isInsideClickableBounds(float x, float y);
+        boolean isClickable();
     }
 }
