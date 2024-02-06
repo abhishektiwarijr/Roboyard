@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "de.z11.roboyard"
         minSdkVersion 19
-        targetSdkVersion 30
-        versionCode 39
-        versionName "10.2"
+        targetSdkVersion 31
+        versionCode 40
+        versionName "10.3"
     }
     buildTypes {
         release {

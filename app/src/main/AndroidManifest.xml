@@ -9,16 +9,26 @@
         android:largeHeap="true"
         android:allowClearUserData="true">
 
-        <activity
-            android:name="roboyard.eclabs.MainActivity"
+        <activity android:name="roboyard.eclabs.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ShareActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
+
         <service android:name="roboyard.SoundService"  android:enabled="true"></service>
     </application>
 
