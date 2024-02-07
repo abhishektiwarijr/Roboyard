@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.Random;
 
 /**
+ * Manages rendering operations such as drawing shapes, images, and text on a canvas.
  * Created by Pierre on 21/01/2015.
  */
 public class RenderManager {
@@ -30,9 +31,9 @@ public class RenderManager {
     private final SparseArray<Drawable> resourceMap;
     private final Random random;
 
-    /*
-     * Constructeur de la classe RenderManager.
-     * @param Référence des resources du projet.
+    /**
+     * Constructor for the RenderManager class.
+     * @param resources The resources of the project.
      */
     public RenderManager(Resources resources){
         this.target = null;
@@ -43,74 +44,73 @@ public class RenderManager {
         this.random = new Random();
     }
 
-    /*
-     * Change le canvas cible principale sur laquelle le RenderManager va déssiner.
-     * @param Référence du canvas à cibler.
+    /**
+     * Sets the main target canvas for rendering.
+     * @param target The main canvas to target.
      */
     public void setMainTarget(Canvas target){
         this.mainTarget = target;
         this.target = target;
     }
 
-    /*
-     * Change le canvas cible sur laquelle le RenderManager va déssiner.
-     * @param Référence du canvas à cibler.
+    /**
+     * Sets the target canvas for rendering.
+     * @param target The canvas to target.
      */
     public void setTarget(Canvas target){
         this.target = target;
     }
 
-    /*
-     * Le canvas cible sur laquelle le RenderManager va déssiner est de nouveau la cible principale.
-     * @param Référence du canvas à cibler.
+    /**
+     * Resets the target canvas to the main canvas.
      */
     public void resetTarget(){
         this.target = this.mainTarget;
     }
 
-    /*
-     * Change la couleur par défaut du RenderManager.
-     * @param Nouvelle couleur à adopter.
+    /**
+     * Changes the color used for rendering.
+     * @param color The new color.
      */
     public void setColor(int color){
         this.brush.setColor(color);
     }
 
-    /*
-     * Paint la totalité du canvas cible à la couleur par défaut.
+    /**
+     * Fills the entire target canvas with the default color.
      */
     public void paintScreen(){
         this.target.drawColor(this.brush.getColor());
     }
 
-    /*
-     * Déssine un cercle sur le canvas cible aux coordonnées (x, y), de rayon radius et à la couleur par défaut.
-     * @param Position x du cercle
-     * @param Position y du cercle
-     * @param Rayon du cercle
+    /**
+     * Draws a circle on the target canvas.
+     * @param x The x-coordinate of the center of the circle.
+     * @param y The y-coordinate of the center of the circle.
+     * @param radius The radius of the circle.
      */
     public void drawCircle(float x, float y, int radius){
         this.target.drawCircle(x, y, radius, this.brush);
     }
 
-    /*
-     * Déssine un rectangle à la couleur par défaut sur le canvas cible entre les points (x1, y1) et (x2, y2).
-     * @param Position x du premier point du rectangle
-     * @param Position y du premier point du rectangle
-     * @param Position x du second point du rectangle
-     * @param Position y du second point du rectangle
+    /**
+     * Draws a rectangle on the target canvas.
+     * @param x1 The x-coordinate of the top-left corner of the rectangle.
+     * @param y1 The y-coordinate of the top-left corner of the rectangle.
+     * @param x2 The x-coordinate of the bottom-right corner of the rectangle.
+     * @param y2 The y-coordinate of the bottom-right corner of the rectangle.
      */
     public void drawRect(float x1, float y1, float x2, float y2){
         this.target.drawRect(x1, y1, x2, y2, this.brush);
     }
 
-    /*
-     * Déssine une image sur le canvas cible entre les points (x1, y1) et (x2, y2).
-     * @param Position x du premier point du rectangle contenant l'image
-     * @param Position y du premier point du rectangle contenant l'image
-     * @param Position x du second point du rectangle contenant l'image
-     * @param Position y du second point du rectangle contenant l'image
-     * @param Index de l'image à déssiner
+    /**
+     * Draws an image on the target canvas.
+     * @param x1 The x-coordinate of the top-left corner of the image.
+     * @param y1 The y-coordinate of the top-left corner of the image.
+     * @param x2 The x-coordinate of the bottom-right corner of the image.
+     * @param y2 The y-coordinate of the bottom-right corner of the image.
+     * @param image The index of the image to draw.
      */
     public void drawImage(int x1, int y1, int x2, int y2, int image){
         Drawable d = this.resourceMap.get(image);
@@ -121,27 +121,28 @@ public class RenderManager {
         d.draw(this.target);
     }
 
-    /*
-     * Charge en mémoire une image donnée.
-     * @param index de l'image à charger en mémoire
+    /**
+     * Loads an image into memory.
+     * @param image The index of the image to load.
      */
     public void loadImage(int image){
         this.resourceMap.append(image, this.resources.getDrawable(image));
     }
 
-    /*
-     * Affiche un bitmap.
-     * @param référence du Bitmap à afficher
-     * @param position x du point en haut à gauche du bitmap
-     * @param position y du point en haut à gauche du bitmap
+    /**
+     * Draws a bitmap on the canvas.
+     * @param bmp The bitmap to draw.
+     * @param x The x-coordinate of the top-left corner of the bitmap.
+     * @param y The y-coordinate of the top-left corner of the bitmap.
      */
     public void drawBitmap(Bitmap bmp, float x, float y){
         this.target.drawBitmap(bmp, x, y, null);
     }
 
-    /*
-     * Charge en mémoire un bitmap.
-     * @param référence du Bitmap à afficher
+    /**
+     * Loads a bitmap into memory.
+     * @param bmp The bitmap to load.
+     * @return The ID of the loaded bitmap.
      */
     public int loadBitmap(Bitmap bmp){
         int id = this.random.nextInt();
@@ -152,9 +153,9 @@ public class RenderManager {
         return id;
     }
 
-    /*
-     * Décharge en mémoire une image.
-     * @param index de l'image
+    /**
+     * Unloads a bitmap from memory.
+     * @param id The ID of the bitmap to unload.
      */
     public void unloadBitmap(int id){
         if(this.resourceMap.indexOfKey(id) >= 0){
@@ -162,17 +163,20 @@ public class RenderManager {
         }
     }
 
+    /**
+     * Retrieves the resources associated with the RenderManager.
+     * @return The resources.
+     */
     public Resources getResources()
     {
         return resources;
     }
 
-
     /**
-     * Writes a text at a certain position
-     * @param x coordinate
-     * @param y coordinate
-     * @param str to be written
+     * Writes text at a specified position.
+     * @param x The x-coordinate.
+     * @param y The y-coordinate.
+     * @param str The text to write.
      */
     public void drawText(int x, int y, String str){
         this.target.drawText(str, x, y, this.brush);
@@ -180,11 +184,12 @@ public class RenderManager {
 
     /** TODO: still crashes
      * second possibility to call the same function name
-     * @param x coordinate
-     * @param y coordinate
-     * @param str to be written
-     * @param font Typeface
-     */
+     * Writes text at a specified position with a custom font.
+     * @param x The x-coordinate.
+     * @param y The y-coordinate.
+     * @param str The text to write.
+     * @param font The custom font to use.
+     * @param ctx The application context.
     public void drawText(int x, int y, String str, String font, Context ctx){
         Typeface oldfont=this.brush.getTypeface();
         Typeface.createFromAsset(ctx.getAssets(), "fonts/" + font + ".ttf");
@@ -192,7 +197,12 @@ public class RenderManager {
         this.target.drawText(str, x, y, this.brush);
         this.brush.setTypeface(oldfont);
     }
+    */
 
+    /**
+     * Sets the text size.
+     * @param s The text size.
+     */
     public void setTextSize(int s){
         this.brush.setTextSize(s);
     }
@@ -216,9 +226,9 @@ public class RenderManager {
     }
 
     /**
-     * Handles touch events for clickable text
-     * @param event MotionEvent
-     * @param clickListener ClickListener for the text
+     * Handles touch events for clickable text.
+     * @param event The MotionEvent.
+     * @param clickListener The ClickListener for the text.
      */
     public void handleTouchEvent(MotionEvent event, ClickListener clickListener) {
         int action = event.getAction();
@@ -234,6 +244,9 @@ public class RenderManager {
         }
     }
 
+    /**
+     * Interface for click events on clickable text.
+     */
     public interface ClickListener {
         void onClick();
         void setClickableBounds(float left, float top, float right, float bottom);
