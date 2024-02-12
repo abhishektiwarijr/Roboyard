@@ -2,27 +2,36 @@ Changelog Deutsch
 =================
 
 
-### Version 11
+### Version 10.3
+
+- Link zum Impressum und Datenschutz ergänzt
+- Upgrade auf SdkVersion 34
+
+### Version 10.2
 
 - Zeigt die Anzahl der verschiedenen Lösungen an, die von der KI gefunden wurden
-- Bein Anzeigen der Lösung die verschiedenen Lösungen durchlaufen, wenn mehr als eine Lösung gefunden wurde
+
+### Version 11 (beta)
+
+- Der Solver in dieser Version ist fehlerhaft! Benutzung auf eigene Gefahr! ;)
+- Beim Anzeigen der Lösung die verschiedenen Lösungen durchlaufen, wenn mehr als eine Lösung gefunden wurde
 
 ### Version 10.1
 
 - Grüner Roboter geschrumpft, damit er nicht mehr die Wände bedeckt
-- weiße Kreise im Hintergrund von Robotern entfernt
+- Weiße Kreise im Hintergrund von Robotern entfernt
 
 ### Version 9.0
 
 - Impossible-Modus mit mindestens 17 Zügen hinzugefügt
-- Beginnerlevels können nur maximal eine Sekunde dauern, um zu berechnen
-- Fix: Leveleinstellung wurde nicht gespeichert, wenn Beginner-Modus ausgewählt wurde
+- Beginnerlevels können maximal nur eine Sekunde dauern, um sie zu berechnen
+- Fix: Leveleinstellung wurde nicht gespeichert, wenn der Beginner-Modus ausgewählt wurde
 - Fix: LevelGame-Auswahl wird nicht mehr neu generiert, kann also jetzt gelöst werden
 - Standardstufe ist jetzt "Beginner"
 
 ### Version 8.1
 
-- große Popup-Nachrichten wieder nach unten verschoben
+- Große Popup-Nachrichten wieder nach unten verschoben
 - Neues Launcher-Symbol
 - Fehler behoben bei Rätseln mit dem Ziel in direkter Linie des Roboters
 
@@ -58,15 +67,15 @@ Changelog Deutsch
 ### Version 5.3
 
 - Hintergrundgeräusche hinzugefügt
-- grüne Wände sind jetzt eher wie Gartenhecken
+- Grüne Wände sind jetzt eher wie Gartenhecken
 - Wände auf dem rechten Bildschirm sind jetzt sichtbar
 - Im Beginnerlevel jedes Mal eine neue Karte generieren
 
 ### Version 5.2
 
-- in Roboyard umbenennen
+- In Roboyard umbenennen
 - Wände sind grün und etwas dicker
-- anfängliche Bewegungsgeschwindigkeit von Robotern erhöht, mit linearer Verlangsamung
+- Anfängliche Bewegungsgeschwindigkeit von Robotern erhöht, mit linearer Verlangsamung
 
 ### Version 5.1
 
@@ -84,8 +93,8 @@ Changelog Deutsch
 Neu in Advanced:
 
 - Das Quadrat darf nicht in der Mitte sein
-- drei Wände in derselben Zeile / Spalte erlaubt
-- kein mehrfarbiges Ziel
+- Drei Wände in derselben Zeile / Spalte erlaubt
+- Kein mehrfarbiges Ziel
 
 Neu in Insane:
 
@@ -94,7 +103,7 @@ Neu in Insane:
 
 ### Version 3.2
 
-- an unterschiedliche Bildschirmauflösungen anpassen
+- An unterschiedliche Bildschirmauflösungen anpassen
 
 ### Version 3.1
 
@@ -128,7 +137,7 @@ Neu in Insane:
 
 ### Version 1.0
 
-- letzte französische Version
+- Letzte französische Version
 
 # Dies sind alle relevanten Änderungen seit Version 1.0:
 
@@ -145,7 +154,7 @@ Neu in Insane:
 - Hintergrundgeräusche hinzugefügt
 - Wände sind grüne Hecken (besser sichtbar)
 - Anfängliche Bewegungsgeschwindigkeit von Robotern erhöht, mit linearer Verlangsamung
-- Beginner-, Advanced-, Insane- und Impossible-Modus mit mindestanzahl Züge für die Lösungen erlaubt
+- Beginner-, Advanced-, Insane- und Impossible-Modus mit Mindestanzahl Züge für die Lösungen erlaubt
 - Kugeln sind jetzt Roboter
 - 35 Spielstände und Level pro Seite
 - Automatisches Speichern des aktuellen Spiels nach 40s in Speicherslot 0

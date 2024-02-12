@@ -1,19 +1,24 @@
 CHANGELOG
 =========
 
+### Version 10.3
 
-### Version 11
-
-- cycle through different solutions if more than one solution is found
+- add links to imprint and privacy
+- upgrade to SdkVersion 34
 
 ### Version 10.2
 
 - Show number of different solutions found by the AI
 
+### Version 11 (beta)
+
+- cycle through different solutions if more than one solution is found
+- The solver in this version is buggy! Use at your own risk! ;)
+
 ### Version 10.1
 
-- remove white circles in the background of robots
 - shrink green robot, so it doesn't cover walls anymore
+- remove white circles in the background of robots
 
 ### Version 9.0
 

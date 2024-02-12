@@ -112,14 +112,14 @@ public class CreditsGameScreen extends GameScreen {
             public boolean isInsideClickableBounds(float x, float y) {
                 // Check if the touch coordinates (x, y) are inside the clickable bounds
                 // Not implemented in this snippet, but you would check the bounds here
-                return false; // Placeholder return value
+                return true; // Placeholder return value
             }
 
             @Override
             public boolean isClickable() {
                 // Determine if the text is clickable
                 // Not implemented in this snippet, but you would handle the clickable state here
-                return false; // Placeholder return value
+                return true; // Placeholder return value
             }
         });
     }
